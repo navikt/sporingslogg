@@ -1,0 +1,21 @@
+  <beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    ">        
+  
+    <!-- Embedded Kafka, uten sikkerhet -->
+    
+    <!-- Kafka som inputkilde for logging -->
+    <bean id="kafkaProperties" class="no.nav.sporingslogg.kafka.KafkaProperties">
+        <property name="topic" value="${no.nav.sporingslogg.kafka.topic}"/>
+        <property name="groupId" value="${no.nav.sporingslogg.kafka.groupid}"/>
+        <property name="bootstrapServers" value="${no.nav.sporingslogg.kafka.servers}"/>
+    </bean>        
+    <bean id="kafkaConsumer" class="no.nav.sporingslogg.standalone.testconfig.EmbeddedKafkaConsumer">
+        <constructor-arg><ref bean="kafkaProperties"/></constructor-arg>
+    </bean>
+    
+</beans>

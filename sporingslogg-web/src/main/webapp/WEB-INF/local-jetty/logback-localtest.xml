@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+        <charset>UTF-8</charset>
+            <pattern>%d{yyyy:MM:dd HH:mm:ss}  [%-5.5t] %0.-5p%-40.40logger{39} : %m%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="no.nav.sporingslogg" level="${log.level.no.nav:-DEBUG}" />
+
+    <!-- Disse kan justeres -->
+    <logger name="jdbc.sql" level="${log.level.jdbc.sql:-WARN}" />
+    <logger name="org.hibernate.SQL" level="${log.level.org.hibernate.SQL:-WARN}" />
+    <logger name="org.hibernate.type" level="${log.level.org.hibernate.type:-WARN}" />
+    <logger name="org.hibernate" level="${log.level.org.hibernate:-WARN}" />
+    <logger name="ch.qos.logback" level="${log.level.ch.qos.logback:-WARN}" />
+    <logger name="org.eclipse.jetty" level="${log.level.org.eclipse.jetty:-INFO}" />
+    <logger name="org.springframework" level="${log.level.org.springframework:-WARN}" />
+    <logger name="org.apache" level="${log.level.org.apache:-ERROR}" />
+    <logger name="org.reflections" level="${log.level.org.reflections:-ERROR}"/>
+    <logger name="no.nav.sporingslogg" level="${log.level.no.nav.flue:-DEBUG}" />
+    <logger name="kafka" level="ERROR"/>
+
+    <root level="${log.level.root:-WARN}">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

@@ -1,0 +1,32 @@
+---
+Test
+---
+
+!2 Test lagre loggmelding via REST-API
+
+
+!3 1. Tøm databasen så andre tester ikke har påvirkning
+
+| !- Table:no.nav.sporingslogg.web.fitnesse.LastDatabaseTabell -! | SPORINGS_LOGG |
+
+
+!3 2. Lagre loggmelding via REST-API
+
+Meldingen 'Dette er meldingen' sendes som Base64-encodet tekst: 'RGV0dGUgZXIgbWVsZGluZ2Vu'
+
+| !- Table:no.nav.sporingslogg.web.fitnesse.LocalJettyRestFixture -! |  |
+| brukernavn | fitnesseBrukerForLogg |
+| jsonMelding | !- {"person":"12345678901", "mottaker":"123456789", "tema":"ABC", "behandlingsGrunnlag":"hjemmel1", "uthentingsTidspunkt":"2018-10-19T12:24:21.675", "leverteData":"RGV0dGUgZXIgbWVsZGluZ2Vu"} -! |
+| POST | /sporingslogg/api/logg | 200 | Content-Type : application/json | | 
+
+
+
+!3 3. Les innhold i databasen, sjekk at loggmeldingen er lagret der med forventede verdier
+
+For ID vet vi ikke hvilken verdi vi forventer, bare at det er lagret en verdi
+!define ikke_blank {=~/$/}
+
+| !- Query:no.nav.sporingslogg.web.fitnesse.LesDatabaseTabell -! | SPORINGS_LOGG | |
+| ID            | PERSON      | MOTTAKER  | TEMA | HJEMMEL  | TIDSPUNKT                  | LEVERTE_DATA             |
+| ${ikke_blank} | 12345678901 | 123456789 | ABC  | hjemmel1 | 2018-10-19 12:24:21.675000 | RGV0dGUgZXIgbWVsZGluZ2Vu |
+

@@ -1,0 +1,33 @@
+---
+Test
+---
+
+!2 Test normal bruk av REST-tjeneste for å lese loggmelding
+
+
+!3 1. Tøm databasen så andre tester ikke har påvirkning
+
+| !- Table:no.nav.sporingslogg.web.fitnesse.LastDatabaseTabell -! | SPORINGS_LOGG |
+
+
+!3 2. Lagre loggmelding i databasen
+
+| !- Table:no.nav.sporingslogg.web.fitnesse.LastDatabaseTabell -! | SPORINGS_LOGG |
+| ID    | PERSON      | MOTTAKER  | TEMA | HJEMMEL  | TIDSPUNKT           | LEVERTE_DATA             |
+| 1001  | 12345678901 | 123456789 | ABC  | hjemmel1 | 2018-10-19T12:24:21 | RGV0dGUgZXIgbWVsZGluZ2Vu |
+
+
+!3 3. Kall REST-tjenesten for å lese loggmelding, sjekk at returnert innhold er det som ble lagret (oidctoken er laget for bruker 12345678901)
+
+| !- Table:no.nav.sporingslogg.web.fitnesse.LocalJettyRestFixture -! |
+| oidctoken | eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwMSIsImV4cCI6MTU0MDkwMjkyOSwiaXNzIjoiZHVtbXlJc3N1ZXIifQ.O9k2NJ04ngkfFKhBRA16gs3hbXl9ZHLLaoMmjLbu2IA |
+| GET | /sporingslogg/api/les | 200 | Content-Type : application/json  |!- 
+ jsonbody[0].person === "12345678901"
+ jsonbody[0].mottaker === "123456789"
+ jsonbody[0].tema === "ABC"
+ jsonbody[0].behandlingsGrunnlag === "hjemmel1"
+ jsonbody[0].uthentingsTidspunkt === "2018-10-19T12:24:21"
+ jsonbody[0].leverteData === "RGV0dGUgZXIgbWVsZGluZ2Vu"
+ -! | 
+
+ 

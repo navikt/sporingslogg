@@ -1,0 +1,121 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd    
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://cxf.apache.org/jaxrs
+    http://cxf.apache.org/schemas/jaxrs.xsd
+    ">
+
+    <import resource="classpath:META-INF/cxf/cxf.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
+    
+    <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
+    <context:annotation-config/>
+    
+    <!-- Kjernen i tjenesten -->
+    <bean id="loggTjeneste" class="no.nav.sporingslogg.tjeneste.LoggTjeneste"/>
+    <bean id="valideringTjeneste" class="no.nav.sporingslogg.tjeneste.ValideringTjeneste"/>
+    <bean id="timestampTjeneste" class="no.nav.sporingslogg.tjeneste.TimestampTjeneste"/>
+  	
+    <!-- OIDC-autentisering av lesing -->
+    <bean id="jwks" class="org.jose4j.jwk.HttpsJwks">
+        <constructor-arg><value>${no.nav.sporingslogg.oidc.jwks}</value></constructor-arg>
+    </bean>
+    <bean id="oidcKeyResolver" class="org.jose4j.keys.resolvers.HttpsJwksVerificationKeyResolver">
+        <constructor-arg><ref bean="jwks"/></constructor-arg>
+    </bean>    
+    <bean id="oidcAuthenticate" class="no.nav.sporingslogg.oidc.OidcAuthenticate">
+        <constructor-arg><ref bean="oidcKeyResolver"/></constructor-arg>
+        <constructor-arg><value>${no.nav.sporingslogg.oidc.issuer}</value></constructor-arg>
+    </bean>
+
+    <!-- Kafka som inputkilde for logging -->
+    <bean id="kafkaProperties" class="no.nav.sporingslogg.kafka.KafkaProperties">
+        <property name="topic" value="${no.nav.sporingslogg.kafka.topic}"/>
+        <property name="groupId" value="${no.nav.sporingslogg.kafka.groupid}"/>
+        <property name="bootstrapServers" value="${no.nav.sporingslogg.kafka.servers}"/>
+        <property name="username" value="${no.nav.sporingslogg.kafka.username}"/>
+        <property name="password" value="${no.nav.sporingslogg.kafka.password}"/>
+        <property name="truststoreFile" value="${no.nav.sporingslogg.kafka.truststorefile}"/>
+        <property name="truststorePassword" value="${no.nav.sporingslogg.kafka.truststorepassword}"/>
+    </bean>        
+    <bean id="kafkaConsumer" class="no.nav.sporingslogg.kafka.KafkaLoggConsumer">
+        <constructor-arg><ref bean="kafkaProperties"/></constructor-arg>
+    </bean>
+    
+    <!-- Tjeneste-API'er, splitter fordi alle har forskjellig aksess-kontroll -->
+    <bean id="loggController" class="no.nav.sporingslogg.restapi.LoggController"/>
+    <jaxrs:server id="loggServer" address="/logg">
+        <jaxrs:serviceBeans><ref bean="loggController" /></jaxrs:serviceBeans>
+        <jaxrs:inInterceptors>
+            <ref bean="jaasLoginInterceptor" />
+        </jaxrs:inInterceptors>
+        <jaxrs:providers>
+           <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider">
+                <constructor-arg ref="customObjectMapper"/>
+           </bean>
+           <bean class="no.nav.sporingslogg.restapi.SecurityExceptionHandler"/>
+           <bean class="no.nav.sporingslogg.restapi.IllegalArgumentExceptionHandler"/>
+        </jaxrs:providers>
+    </jaxrs:server>
+    
+    <bean id="lesController" class="no.nav.sporingslogg.restapi.LesController"/>
+    <jaxrs:server id="lesServer" address="/les">
+        <jaxrs:serviceBeans><ref bean="lesController" /></jaxrs:serviceBeans>
+        <jaxrs:providers>
+           <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider">
+                <constructor-arg ref="customObjectMapper"/>
+           </bean>
+           <bean class="no.nav.sporingslogg.restapi.SecurityExceptionHandler"/>
+        </jaxrs:providers>
+    </jaxrs:server>
+    
+    <bean id="pingController" class="no.nav.sporingslogg.restapi.PingController"/>
+    <jaxrs:server id="pingServer" address="/ping">
+        <jaxrs:serviceBeans><ref bean="pingController" /></jaxrs:serviceBeans>
+    </jaxrs:server>
+
+	<!-- Mindre verbos JSON for timestamps -->
+	<bean id="customObjectMapper" class="no.nav.sporingslogg.restapi.CustomJsonObjectMapper"/>
+    
+    <!-- Innlogging for logging utenom Kafka -->
+    <bean id="jaasLoginInterceptor" class="org.apache.cxf.interceptor.security.JAASLoginInterceptor">
+        <property name="contextName" value="ldaploginmodule"/>
+    </bean>    
+
+  <!-- DATABASE -->
+  <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean" >     
+     <property name="jndiName" value="java:comp/env/jdbc/sporingsloggDS"/> 
+  </bean> 
+
+  <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="persistenceUnitName" value="sporingslogg-db"/>
+    <property name="packagesToScan" value="no.nav.sporingslogg.domain"/>
+    <property name="jpaVendorAdapter">
+      <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="databasePlatform" value="${sporingsloggDB.dialect}"/>
+        <property name="showSql" value="${sporingsloggDB.showSql}"/>
+        <property name="generateDdl" value="${sporingsloggDB.generateDdl}"/>
+      </bean>
+    </property>
+    <property name="jpaProperties"> 
+       <props> 
+           <prop key="hibernate.dialect">${sporingsloggDB.dialect}</prop> 
+       </props>
+    </property>
+  </bean>
+  <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+  
+  <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"/>
+  <tx:annotation-driven transaction-manager="transactionManager"/>
+  
+</beans>

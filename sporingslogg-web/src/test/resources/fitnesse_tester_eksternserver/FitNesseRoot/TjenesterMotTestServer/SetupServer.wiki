@@ -1,0 +1,36 @@
+
+!3 Ikke endre her - det er bare en huskeliste for mulige valg
+
+|Comment|Mulige miljøer:|  
+|      |URL                                   |Bruker (logg)   |Bruker (les)   |Bruker (admin) | MQ-manager URL                                 | MQ-channel       | MQ-kø                                    | Reply-kø                                 |
+|U23:  |https://e34jbsl01787.devillo.no:8443  |srvABACPEP      |srvABACPEP     |srvABACPEP     | mq://e26apvl100.test.local:1411/MDLCLIENT03    | U23_JURIDISKLOGG | QA.U23_JURIDISKLOGG.LAGREJURIDISKLOGG_MQ | QA.U23_JURIDISKLOGG.REPLYQUEUEFORTESTING |
+|T4:   |https://app-t4.adeo.no                |srvsdpkanal     |ad-bruker      |ad-bruker      | mq://d26apvl126.test.local:1412/MTLCLIENT01    | T4_JURIDISKLOGG  | QA.T4_JURIDISKLOGG.LAGREJURIDISKLOGG_MQ  | |
+|Q0:   |https://app-q0.adeo.no                |srvsdpkanal     |ad-bruker      |ad-bruker      | mq://b27apvl057.preprod.local:1413/MQLCLIENT01 | Q0_JURIDISKLOGG  | QA.Q0_JURIDISKLOGG.LAGREJURIDISKLOGG_MQ  | |
+|Q1:   |https://app-q1.adeo.no                |srvsdpkanal     |ad-bruker      |ad-bruker      | mq://b27apvl057.preprod.local:1413/MQLCLIENT01 | Q1_JURIDISKLOGG  |                                          | |
+
+
+!3 Sett opp det som skal brukes her, passordene til brukerne skal ligge i src/test/resources/fitnesseusers.txt. Ikke commit endringer i den fila til git...!
+
+!define server_url     (https://app-t4.adeo.no)
+
+!define logg_username  (srvsdpkanal)
+
+!define les_username   (k148586)
+
+!define admin_username (k148586)
+
+La reply_queue være blank/tom hvis det ikke er opprettet noen reply-kø
+!define mq_url         (mq://d26apvl126.test.local:1412/MTLCLIENT01)
+!define mq_channel     (T4_JURIDISKLOGG)
+!define mq_queue       (QA.T4_JURIDISKLOGG.LAGREJURIDISKLOGG_MQ)
+!define reply_queue    ()
+
+!3 Dette skal heller ikke endres, her brukes parametrene som er satt over
+
+| script | no.nav.juridisklogg.web.fitnesse.SetupServer | ${server_url} |
+| for url som inneholder | /rest/logg     | kall med brukernavn | ${logg_username}  |
+| for url som inneholder | /lagremelding  | kall med brukernavn | ${logg_username}  |
+| for url som inneholder | /rest/les      | kall med brukernavn | ${les_username}   |
+| for url som inneholder | /finnmelding   | kall med brukernavn | ${les_username}   |
+| for url som inneholder | /admin         | kall med brukernavn | ${admin_username} |
+| bruk mq manager url | ${mq_url} | med channel | ${mq_channel} | og koe | ${mq_queue} | og reply koe | ${reply_queue} |

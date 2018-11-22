@@ -1,0 +1,25 @@
+---
+Test
+---
+
+!2 Test bruk av REST-tjenester: lagre, les tilbake
+
+!include SetupServer
+
+!3 1. Kall REST-tjenesten for å lagre en loggmelding, sjekk at HTTP-status er OK (200) og at respons inneholder en ID
+
+Meldingen 'Dette er meldingen' sendes som Base64-encodet tekst: 'RGV0dGUgZXIgbWVsZGluZ2Vu'
+
+| !- Table:no.nav.juridisklogg.web.fitnesse.ServerRestFixture -! |
+| jsonMelding | !- {"meldingsId":"lagreLoggMeldingNr1", "meldingsInnhold":"RGV0dGUgZXIgbWVsZGluZ2Vu", "avsender":"Avsender_1", "mottaker":"Mottaker_1", "joarkRef":"enJoarkRef", "antallAarLagres":5} -! |
+| POST | /juridisklogg/api/rest/logg | 200 | Content-Type : application/json | !- jsonbody.id != null -! | 
+| let | ny_melding_id | js | response.jsonbody.id | |
+
+!3 2. Kall REST-tjenesten for å lese loggmelding (med ID returnert i forrige kall), sjekk at returnert innhold er det som ble lagret
+
+| !- Table:no.nav.juridisklogg.web.fitnesse.ServerRestFixture -! |
+| jsonMelding | !- { "globalMeldingsId":"-!$ny_melding_id!-", "kommentar":"lest fra fitnesse-test" } -! |
+| POST | /juridisklogg/api/rest/les | 200 | Content-Type : application/json  |!- 
+ jsonbody.melding === "RGV0dGUgZXIgbWVsZGluZ2Vu"
+ -! | 
+
