@@ -10,12 +10,17 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import no.nav.sporingslogg.kafka.KafkaProperties;
 import no.nav.sporingslogg.standalone.PropertyNames;
-import no.nav.sporingslogg.standalone.PropertyUtil;
 import no.nav.sporingslogg.standalone.StandaloneJettyServer;
 
 public class StandaloneTestJettyMain {
 
-	// SETT DENNE, SIDEN TRUSTSTORE MÅ HA ABSOLUTT PATH
+	/*
+	 * Denne test-jettyen kan kjøre med dummy configs for login-LDAP og OIDC-issuer, eller testversjoner, sjekk properties lenger ned.
+	 * Den kan også kjøre med dummy kafka (poller ikke), embedded (må starte EmbeddedKafkaMain i tillegg), eller test.local, sjekk properties.
+	 * ManualKafkaSender kan brukes til å logge til kø, både embedded og test.local.
+	 * Kan kjøre med HSQL eller Oracle i T4, se properties.
+	 */
+	// SETT DENNE HVIS KAFKA test.local brukes, SIDEN TRUSTSTORE FOR DENNE MÅ HA ABSOLUTT PATH
 	private static final String SPORINGSLOGG_ROOT = "W:/workspace/sporingslogg";
 	
     static {
@@ -28,11 +33,17 @@ public class StandaloneTestJettyMain {
 
     private static final int JETTY_PORT_STANDALONE_TEST = 9098;
     
-    // Mulige configs for OIDC-autentisering
+    // Mulige configs for OIDC-autentisering (for lesing via REST)
     public enum OidcConfig {
     	DUMMY,           // ingen auth, alt aksepteres
     	TEST_RESTSTS, 
-    	TEST_AZURE;
+    	TEST_AZURE;  // TODO ikke impl ennå
+    }
+    
+    // Mulige configs for LDAP-autentisering ved logging gjennom REST (ikke Kafka)
+    public enum LoginConfig {
+    	DUMMY,          // ingen auth, alt aksepteres
+    	TEST_LDAP;
     }
     
     // Mulige configs for Kafka-input
@@ -40,12 +51,6 @@ public class StandaloneTestJettyMain {
     	DUMMY,          // leser ikke fra Kafka
     	EMBEDDED,
     	TEST_LOCAL;     // Må ha topic satt opp i test-local, se under for properties
-    }
-    
-    // Mulige configs for autentisering ved logging gjennom REST (ikke Kafka)
-    public enum LoginConfig {
-    	DUMMY,          // ingen auth, alt aksepteres
-    	TEST_LDAP;
     }
     
     // Mulige configs for database
@@ -65,10 +70,12 @@ public class StandaloneTestJettyMain {
      */
     public static void main(String[] args) throws Exception {
     	
-    	OidcConfig oidcConfig = useParam(args, "oidcConfig") != null ? OidcConfig.valueOf(useParam(args, "oidcConfig").toUpperCase()) : OidcConfig.DUMMY;
+    	// Bruk parametre, eller default-verdier hvis ikke gitt
+    	OidcConfig oidcConfig =   useParam(args, "oidcConfig") != null ?  OidcConfig.valueOf(useParam(args, "oidcConfig").toUpperCase()) :   OidcConfig.DUMMY;
     	KafkaConfig kafkaConfig = useParam(args, "kafkaConfig") != null ? KafkaConfig.valueOf(useParam(args, "kafkaConfig").toUpperCase()) : KafkaConfig.DUMMY;
     	LoginConfig loginConfig = useParam(args, "loginConfig") != null ? LoginConfig.valueOf(useParam(args, "loginConfig").toUpperCase()) : LoginConfig.DUMMY;
-    	DbConfig dbConfig = useParam(args, "dbConfig") != null ? DbConfig.valueOf(useParam(args, "dbConfig").toUpperCase()) : DbConfig.HSQL_INPROCESS;
+    	DbConfig dbConfig =       useParam(args, "dbConfig") != null ?    DbConfig.valueOf(useParam(args, "dbConfig").toUpperCase()) :       DbConfig.HSQL_INPROCESS;
+    	
     	System.out.println("Starter Sporingslogg TEST med OIDCCONFIG "+oidcConfig+", LOGINCONFIG "+loginConfig+", KAFKACONFIG "+kafkaConfig+", DBCONFIG "+dbConfig);    	
 
         try {
