@@ -9,22 +9,23 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.IntegerSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 
+import no.nav.sporingslogg.kafka.KafkaProperties;
 import no.nav.sporingslogg.standalone.testconfig.StandaloneTestJettyMain;
 
 public class LocalKafkaProducerFixture {
 	
-	static final String SERVER_EMBEDDED = "127.0.0.1:9092";	
+	private static final KafkaProperties EMBEDDED_PROPERTIES = StandaloneTestJettyMain.getKafkaEmbeddedProperties();
 
 	public boolean produce(String json) {
 		System.out.println("Fikk json: " + json);
 		Map<String, Object> senderPropsForEmbeddedKafka = getSenderPropsForEmbeddedKafka();
-		sendMessages(senderPropsForEmbeddedKafka, SERVER_EMBEDDED, StandaloneTestJettyMain.SPORINGS_LOGG_TOPIC, json);
+		sendMessages(senderPropsForEmbeddedKafka, EMBEDDED_PROPERTIES.getBootstrapServers(), EMBEDDED_PROPERTIES.getTopic(), json);
 		return true;
 	}
 
 	public static Map<String, Object> getSenderPropsForEmbeddedKafka() {
 		Map<String, Object> senderProps = getGeneralSenderProps();
-		senderProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, SERVER_EMBEDDED);		
+		senderProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, EMBEDDED_PROPERTIES.getBootstrapServers());		
 		return senderProps;
 	}
 	

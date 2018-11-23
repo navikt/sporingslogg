@@ -8,11 +8,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import no.nav.sporingslogg.kafka.KafkaProperties;
 import no.nav.sporingslogg.standalone.PropertyNames;
+import no.nav.sporingslogg.standalone.PropertyUtil;
 import no.nav.sporingslogg.standalone.StandaloneJettyServer;
 
 public class StandaloneTestJettyMain {
 
+	// SETT DENNE, SIDEN TRUSTSTORE MÅ HA ABSOLUTT PATH
+	private static final String SPORINGSLOGG_ROOT = "W:/workspace/sporingslogg";
+	
     static {
     	System.setProperty("logback.configurationFile", StandaloneTestJettyMain.class.getResource("/webapp/WEB-INF/local-jetty/logback-localtest.xml").toString());
     }
@@ -34,7 +39,7 @@ public class StandaloneTestJettyMain {
     public enum KafkaConfig {
     	DUMMY,          // leser ikke fra Kafka
     	EMBEDDED,
-    	TEST_LOCAL;
+    	TEST_LOCAL;     // Må ha topic satt opp i test-local, se under for properties
     }
     
     // Mulige configs for autentisering ved logging gjennom REST (ikke Kafka)
@@ -55,19 +60,34 @@ public class StandaloneTestJettyMain {
      * 
      *  java -cp sporingslogg-web/target/sporingslogg-web.jar no.nav.sporingslogg.standalone.testconfig.StandaloneTestJettyMain
      *  
+     * Parametre hvis ikke defaultverdier skal brukes, f.eks: oidcconfig=test_reststs loginconfig=test_ldap
+     *  
      */
-    public static void main(String[] args) throws Exception{
-        
+    public static void main(String[] args) throws Exception {
+    	
+    	OidcConfig oidcConfig = useParam(args, "oidcConfig") != null ? OidcConfig.valueOf(useParam(args, "oidcConfig").toUpperCase()) : OidcConfig.DUMMY;
+    	KafkaConfig kafkaConfig = useParam(args, "kafkaConfig") != null ? KafkaConfig.valueOf(useParam(args, "kafkaConfig").toUpperCase()) : KafkaConfig.DUMMY;
+    	LoginConfig loginConfig = useParam(args, "loginConfig") != null ? LoginConfig.valueOf(useParam(args, "loginConfig").toUpperCase()) : LoginConfig.DUMMY;
+    	DbConfig dbConfig = useParam(args, "dbConfig") != null ? DbConfig.valueOf(useParam(args, "dbConfig").toUpperCase()) : DbConfig.HSQL_INPROCESS;
+    	System.out.println("Starter Sporingslogg TEST med OIDCCONFIG "+oidcConfig+", LOGINCONFIG "+loginConfig+", KAFKACONFIG "+kafkaConfig+", DBCONFIG "+dbConfig);    	
+
         try {
-        	StandaloneTestJettyMain jettyMain = new StandaloneTestJettyMain(
-        			OidcConfig.DUMMY, KafkaConfig.DUMMY, LoginConfig.DUMMY, DbConfig.HSQL_INPROCESS, 
-        			JETTY_PORT_STANDALONE_TEST, true);
+        	StandaloneTestJettyMain jettyMain = new StandaloneTestJettyMain(oidcConfig, kafkaConfig, loginConfig, dbConfig, JETTY_PORT_STANDALONE_TEST, true);
         } catch (Exception e) {
             throw new Exception("Exception when running Jetty Embedded Server setup: " + e);
         }
     }
 
-    // Med kjøring fra Fitnesse skal vi IKKE joine server-prosessen, den skal gå separat og polle pga Kafka
+    private static String useParam(String[] args, String arg) {
+		for (String s : args) {
+			if (s.toLowerCase().startsWith(arg.toLowerCase()+"=")) {
+				return s.substring(arg.length()+1);
+			}
+		}
+		return null;
+	}
+
+	// Med kjøring fra Fitnesse skal vi IKKE joine server-prosessen, den skal gå separat og polle pga Kafka
     public StandaloneTestJettyMain(OidcConfig oidcConfig, KafkaConfig kafkaConfig, LoginConfig loginConfig, DbConfig dbConfig, int port, boolean rejoin) throws Exception {
 		setupOidc(oidcConfig);
 		setupKafka(kafkaConfig);
@@ -82,7 +102,11 @@ public class StandaloneTestJettyMain {
 	private void setupDb(DbConfig dbConfig) {
 		switch (dbConfig) {
 		case ORACLE:
-			throw new RuntimeException("Har ikke implementert lokal Oracle...");
+	    	System.setProperty(PropertyNames.PROPERTY_DB_DIALECT, "org.hibernate.dialect.Oracle10gDialect");
+	    	System.setProperty(PropertyNames.PROPERTY_DB_SHOWSQL, "true");
+	    	System.setProperty(PropertyNames.PROPERTY_DB_GENERATEDDL, "false");
+			dataSource = createOracleTestDatasource();
+			return;
 		case HSQL_INPROCESS:
 	    	System.setProperty(PropertyNames.PROPERTY_DB_DIALECT, "org.hibernate.dialect.HSQLDialect");
 	    	System.setProperty(PropertyNames.PROPERTY_DB_SHOWSQL, "true");
@@ -122,25 +146,25 @@ public class StandaloneTestJettyMain {
 	}
 
 
-	public static final String kafkaServer = "127.0.0.1:9092";
-	public static final String SPORINGS_LOGG_TOPIC = "sporingsLoggTopic";
 	private void setupKafka(KafkaConfig kafkaConfig) {
 		switch (kafkaConfig) {
 		case TEST_LOCAL:
-			System.setProperty("kafkaContextOverrides", "/WEB-INF/local-jetty/noContextOverrides.xml"); // TODO fiks path til TS
-	        System.setProperty(PropertyNames.PROPERTY_KAFKA_TOPIC, "sporingslogg");
-	        System.setProperty(PropertyNames.PROPERTY_KAFKA_GROUP, "KC-sporingslogg");
-	        System.setProperty(PropertyNames.PROPERTY_KAFKA_SERVER, "d26apvl00159.test.local:8443");
-	        System.setProperty(PropertyNames.PROPERTY_KAFKA_USERNAME, "srvABACPEP");
-	        System.setProperty(PropertyNames.PROPERTY_KAFKA_PASSWORD, "hUK1.30sKhqp0.(2");
-	        System.setProperty(PropertyNames.PROPERTY_KAFKA_TRUSTSTORE_FILE, "W:/workspace/sporingslogg/kafkaclient/src/test/resources/nav_truststore_nonproduction_ny2.jts");
-	        System.setProperty(PropertyNames.PROPERTY_KAFKA_TRUSTSTORE_PASSWORD, "467792be15c4a8807681fd2d5c9c1748");
+			System.setProperty("kafkaContextOverrides", "/WEB-INF/local-jetty/noContextOverrides.xml"); 
+			KafkaProperties kp = getKafkaTestProperties();
+	        System.setProperty(PropertyNames.PROPERTY_KAFKA_TOPIC, kp.getTopic());
+	        System.setProperty(PropertyNames.PROPERTY_KAFKA_GROUP, kp.getGroupId());
+	        System.setProperty(PropertyNames.PROPERTY_KAFKA_SERVER, kp.getBootstrapServers());
+	        System.setProperty(PropertyNames.PROPERTY_KAFKA_USERNAME, kp.getUsername());
+	        System.setProperty(PropertyNames.PROPERTY_KAFKA_PASSWORD, kp.getPassword());
+	        System.setProperty(PropertyNames.PROPERTY_KAFKA_TRUSTSTORE_FILE, kp.getTruststoreFile());
+	        System.setProperty(PropertyNames.PROPERTY_KAFKA_TRUSTSTORE_PASSWORD, kp.getTruststorePassword());
 			return;
 		case EMBEDDED:
 			System.setProperty("kafkaContextOverrides", "/WEB-INF/local-jetty/embeddedKafkaContextOverrides.xml"); 
-	        System.setProperty(PropertyNames.PROPERTY_KAFKA_TOPIC, "sporingsLoggTopic");
-	        System.setProperty(PropertyNames.PROPERTY_KAFKA_GROUP, "sporingsLoggGroupId");
-	        System.setProperty(PropertyNames.PROPERTY_KAFKA_SERVER, "127.0.0.1:9092");
+			KafkaProperties kp2 = getKafkaEmbeddedProperties();
+	        System.setProperty(PropertyNames.PROPERTY_KAFKA_TOPIC, kp2.getTopic());
+	        System.setProperty(PropertyNames.PROPERTY_KAFKA_GROUP, kp2.getGroupId());
+	        System.setProperty(PropertyNames.PROPERTY_KAFKA_SERVER, kp2.getBootstrapServers());
 			return;
 		case DUMMY:
 			System.setProperty("kafkaContextOverrides", "/WEB-INF/local-jetty/dummyKafkaContextOverrides.xml"); 
@@ -154,6 +178,25 @@ public class StandaloneTestJettyMain {
 		}
 	}
 
+	public static KafkaProperties getKafkaTestProperties() {
+		KafkaProperties kp = new KafkaProperties();
+		kp.setBootstrapServers("d26apvl00159.test.local:8443");
+		kp.setTopic("sporingslogg");
+		kp.setGroupId("KC-sporingslogg");
+		kp.setUsername("srvABACPEP");
+		kp.setPassword("hUK1.30sKhqp0.(2");
+        kp.setTruststoreFile(SPORINGSLOGG_ROOT+"/sporingslogg-web/src/main/webapp/WEB-INF/local-jetty/nav_truststore_nonproduction_ny2.jts");
+        kp.setTruststorePassword("467792be15c4a8807681fd2d5c9c1748");
+        return kp;
+	}
+
+	public static KafkaProperties getKafkaEmbeddedProperties() {
+		KafkaProperties kp = new KafkaProperties();
+		kp.setBootstrapServers("127.0.0.1:9092");
+		kp.setTopic("sporingsLoggTopic");
+		kp.setGroupId("sporingsLoggGroupId");
+        return kp;
+	}
 
 	private void setupOidc(OidcConfig oidcConfig) {
 		switch (oidcConfig) {
@@ -179,6 +222,17 @@ public class StandaloneTestJettyMain {
 
 	private DriverManagerDataSource dataSource;
 	
+	
+    DriverManagerDataSource createOracleTestDatasource() { 
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+        ds.setDriverClassName("oracle.jdbc.OracleDriver");
+        ds.setUrl("jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=d26dbfl021.test.local)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=SPORINGSLOGGT4)(INSTANCE_NAME=cctf02)(UR=A)(SERVER=DEDICATED)))");
+    	log.info("Jetty satt opp med Oracle, T4");
+        ds.setUsername("SPORINGSLOGG_T4");
+        ds.setPassword("fcCsL5wDtsOA");
+        return ds;
+    }
+    
 	DriverManagerDataSource createHsqlDatasource() {
     	log.info("Jetty satt opp med HSQL");
         DriverManagerDataSource ds = new DriverManagerDataSource();

@@ -20,36 +20,37 @@ import org.apache.kafka.common.security.auth.SecurityProtocol;
 import org.apache.kafka.common.serialization.IntegerDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
+import no.nav.sporingslogg.kafka.KafkaProperties;
+import no.nav.sporingslogg.standalone.testconfig.StandaloneTestJettyMain;
+
 public class ManualKafkaReceiver { // Motta melding(er) som sendt fra ManualKafkaSender, fra kafka startet via EmbeddedKafkaMain
 	
-	static final String SERVER_EMBEDDED = "127.0.0.1:9092";  // SETT DENNE SOM EmbeddedKafkaMain SIER 
-	
-	static final String SERVER_TEST = "d26apvl00159.test.local:8443";
-	static final String TOPIC_TEST = "sporingslogg";
-	static final String GROUP_TEST = "KC-sporingslogg";
+	private static final KafkaProperties EMBEDDED_PROPERTIES = StandaloneTestJettyMain.getKafkaEmbeddedProperties();
+	private static final KafkaProperties TEST_PROPERTIES = StandaloneTestJettyMain.getKafkaTestProperties();
 	
 	public static void main(String[] args) {
 		Map<String, Object> props = getConsumerPropsForTest();
-	    new ManualKafkaReceiver().startPollingForever(props, SERVER_TEST, TOPIC_TEST);
+	    new ManualKafkaReceiver().startPollingForever(props, TEST_PROPERTIES.getBootstrapServers(), TEST_PROPERTIES.getTopic());
 	}
 	
 	public static Map<String, Object> getConsumerPropsForEmbeddedKafka() {
 		Map<String, Object> props = getGeneralConsumerProps();
-		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, SERVER_EMBEDDED);		
-	    props.put(ConsumerConfig.GROUP_ID_CONFIG, "someGroup");
+		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, EMBEDDED_PROPERTIES.getBootstrapServers());		
+	    props.put(ConsumerConfig.GROUP_ID_CONFIG, EMBEDDED_PROPERTIES.getGroupId());
 		return props;
 	}
 	
 	public static Map<String, Object> getConsumerPropsForTest() {
 		Map<String, Object> props = getGeneralConsumerProps();
-		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, SERVER_TEST);		
-	    props.put(ConsumerConfig.GROUP_ID_CONFIG, GROUP_TEST);
+		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, TEST_PROPERTIES.getBootstrapServers());		
+	    props.put(ConsumerConfig.GROUP_ID_CONFIG, TEST_PROPERTIES.getGroupId());
 		props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_SSL.name);
-		props.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username='srvABACPEP' password='hUK1.30sKhqp0.(2';");
+		props.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username='"+TEST_PROPERTIES.getUsername()
+		+"' password='"+TEST_PROPERTIES.getPassword()+"';");
 		props.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
 		props.put(SaslConfigs.SASL_KERBEROS_SERVICE_NAME, "kafka");
-		props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "W:/workspace/sporingslogg/kafkaclient/src/test/resources/nav_truststore_nonproduction_ny2.jts");
-		props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG,  "467792be15c4a8807681fd2d5c9c1748");
+		props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, TEST_PROPERTIES.getTruststoreFile());
+		props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG,  TEST_PROPERTIES.getTruststorePassword());
 		return props;
 	}
 	

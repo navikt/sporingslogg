@@ -15,32 +15,37 @@ import org.apache.kafka.common.security.auth.SecurityProtocol;
 import org.apache.kafka.common.serialization.IntegerSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 
+import no.nav.sporingslogg.kafka.KafkaProperties;
+import no.nav.sporingslogg.standalone.testconfig.StandaloneTestJettyMain;
+
 public class ManualKafkaSender { // Send melding(er) til kafka startet via EmbeddedKafkaMain, på LoggMelding JSON format: {"person":"...", "mottaker":"...", "leverteData":"..."}
 	
-	static final String SERVER_EMBEDDED = "127.0.0.1:9092";  // SETT DENNE SOM EmbeddedKafkaMain SIER
 	
-	static final String SERVER_TEST = "d26apvl00159.test.local:8443";
-	static final String TOPIC_TEST = "sporingslogg";
-	
+	private static final KafkaProperties EMBEDDED_PROPERTIES = StandaloneTestJettyMain.getKafkaEmbeddedProperties();
+	private static final KafkaProperties TEST_PROPERTIES = StandaloneTestJettyMain.getKafkaTestProperties();
+
 	public static void main(String[] args) {
 		Map<String, Object> senderProps = getSenderPropsForTest();		
-		new ManualKafkaSender().sendMessages(senderProps, SERVER_TEST, TOPIC_TEST);
+		new ManualKafkaSender().sendMessages(senderProps, TEST_PROPERTIES.getBootstrapServers(), TEST_PROPERTIES.getTopic());
+//		Map<String, Object> senderProps = getSenderPropsForEmbeddedKafka();		
+//		new ManualKafkaSender().sendMessages(senderProps, SERVER_EMBEDDED, TOPIC_EMBEDDED);
 	}
 	
 	public static Map<String, Object> getSenderPropsForEmbeddedKafka() {
 		Map<String, Object> senderProps = getGeneralSenderProps();
-		senderProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, SERVER_EMBEDDED);		
+		senderProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, EMBEDDED_PROPERTIES.getBootstrapServers());		
 		return senderProps;
 	}
 	public static Map<String, Object> getSenderPropsForTest() {
 		Map<String, Object> senderProps = getGeneralSenderProps();
-		senderProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, SERVER_TEST);		
+		senderProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, TEST_PROPERTIES.getBootstrapServers());		
 		senderProps.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_SSL.name);
-		senderProps.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username='srvABACPEP' password='hUK1.30sKhqp0.(2';");
+		senderProps.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username='"+TEST_PROPERTIES.getUsername()
+		+"' password='"+TEST_PROPERTIES.getPassword()+"';");
 		senderProps.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
 		senderProps.put(SaslConfigs.SASL_KERBEROS_SERVICE_NAME, "kafka");
-		senderProps.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "W:/workspace/sporingslogg/kafkaclient/src/test/resources/nav_truststore_nonproduction_ny2.jts");
-		senderProps.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG,  "467792be15c4a8807681fd2d5c9c1748");
+		senderProps.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, TEST_PROPERTIES.getTruststoreFile());
+		senderProps.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG,  TEST_PROPERTIES.getTruststorePassword());
 		return senderProps;
 	}
 	public static Map<String, Object> getGeneralSenderProps() {

@@ -5,6 +5,7 @@ import java.util.concurrent.Executors;
 
 import fitnesseMain.Arguments;
 import fitnesseMain.FitNesseMain;
+import no.nav.sporingslogg.kafka.KafkaProperties;
 import no.nav.sporingslogg.kafkatestclient.EmbeddedKafkaMain;
 import no.nav.sporingslogg.standalone.testconfig.EmulateLoginInterceptor;
 import no.nav.sporingslogg.standalone.testconfig.StandaloneTestJettyMain;
@@ -50,11 +51,12 @@ public class StartFitnesseWithJettySporingsLoggWeb {
 	}
 
 	public static void startEmbeddedKafka() {
+		final KafkaProperties EMBEDDED_PROPERTIES = StandaloneTestJettyMain.getKafkaEmbeddedProperties();
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
 		executorService.execute(new Runnable() {	
 			@Override
 			public void run() {
-				EmbeddedKafkaMain.setupAndStart(StandaloneTestJettyMain.SPORINGS_LOGG_TOPIC);
+				EmbeddedKafkaMain.setupAndStart(EMBEDDED_PROPERTIES.getTopic());
 			}
 		});
 	}

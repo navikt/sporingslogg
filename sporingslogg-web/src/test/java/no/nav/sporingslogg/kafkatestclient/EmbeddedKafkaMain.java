@@ -8,16 +8,17 @@ import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
 
 import kafka.server.KafkaConfig;
+import no.nav.sporingslogg.standalone.testconfig.StandaloneTestJettyMain;
 
 public class EmbeddedKafkaMain { 
 	
 	// Bruk kopiert kode fra https://www.javatips.net/api/examples-master/kafka-streams,
 	// start lokal Zookeeper og kafka, og opprett topic 
-	public static final String SPORINGS_LOGG_TOPIC = "sporingsLoggTopic";
-
+	private static final String EMBEDDED_SERVER = StandaloneTestJettyMain.getKafkaEmbeddedProperties().getBootstrapServers();
+	
 	public static void main(String[] args) {
 		
-		setupAndStart(SPORINGS_LOGG_TOPIC);
+		setupAndStart(EMBEDDED_SERVER);
 	}
 
 
