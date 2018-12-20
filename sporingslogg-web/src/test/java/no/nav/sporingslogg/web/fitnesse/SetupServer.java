@@ -5,8 +5,6 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.net.ssl.SSLContext;
@@ -20,11 +18,7 @@ import org.jsslutils.extra.apachehttpclient.SslContextedSecureProtocolSocketFact
 public class SetupServer {
 	
 	static String url;
-	static Map<String, BrukernavnOgPassord> brukerPerUrl = new HashMap<String, BrukernavnOgPassord>();
-	static String mqManagerUrl;
-	static String mqChannelName;
-	static String mqQueueName;
-	static String mqReplyQueueName;
+	static BrukernavnOgPassord bruker;
 	
 	private Properties testUserPasswords = null;
 
@@ -44,35 +38,17 @@ public class SetupServer {
     	}
     }
 	
-	public void forUrlSomInneholderKallMedBrukernavn(String urlInnhold, String brukernavn) { 
+	public void bruker(String brukernavn) { 
 		String passord = getPassord("fitnesseusers.txt", brukernavn);
-		brukerPerUrl.put(urlInnhold, new BrukernavnOgPassord(brukernavn.trim(), passord.trim()));
+		bruker = new BrukernavnOgPassord(brukernavn.trim(), passord.trim());
 	}
 	
-	public void brukMqManagerUrlMedChannelOgKoeOgReplyKoe(String mqUrl, String mqChannel, String mqQueue, String replyQueue) {
-		mqManagerUrl = mqUrl;
-		mqChannelName = mqChannel;
-		mqQueueName = mqQueue;
-		mqReplyQueueName = replyQueue;
-	}	
-	
-	public static String brukernavn(String url) {
-		for (String urlKey : brukerPerUrl.keySet()) {
-			if (url.contains(urlKey)) {
-				return brukerPerUrl.get(urlKey).brukernavn;
-			}
-		}
-		return null;
+	public static String brukernavn() {
+		return bruker.brukernavn;
 	}
-	public static String passord(String url) {
-		for (String urlKey : brukerPerUrl.keySet()) {
-			if (url.contains(urlKey)) {
-				return brukerPerUrl.get(urlKey).passord;
-			}
-		}
-		return null;
+	public static String passord() {
+		return bruker.passord;
 	}
-	
 	private String getPassord(String fil, String brukernavn) {
 		try {
 			if (testUserPasswords == null) {

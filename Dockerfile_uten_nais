@@ -1,0 +1,37 @@
+FROM navikt/java:8
+LABEL maintainer="aage.kramarics@nav.no"
+
+# Props needed, bruk CAPS og underscore for å simulere NAIS
+ENV NO_NAV_SPORINGSLOGG_OIDC_JWKS="https://security-token-service.nais.preprod.local/rest/v1/sts/jwks"
+ENV NO_NAV_SPORINGSLOGG_OIDC_ISSUER="https://security-token-service.nais.preprod.local"
+    
+ENV NO_NAV_SPORINGSLOGG_KAFKA_TOPIC="sporingslogg"
+ENV NO_NAV_SPORINGSLOGG_KAFKA_GROUPID="KC-sporingslogg"
+ENV NO_NAV_SPORINGSLOGG_KAFKA_SERVERS="d26apvl00159.test.local:8443"
+ENV NO_NAV_SPORINGSLOGG_KAFKA_USERNAME="srvABACPEP"
+ENV NO_NAV_SPORINGSLOGG_KAFKA_PASSWORD="hUK1.30sKhqp0.(2"
+
+ENV NAV_TRUSTSTORE_PATH="/app/truststore.jts"
+ENV NAV_TRUSTSTORE_PASSWORD="467792be15c4a8807681fd2d5c9c1748"
+    
+ENV SPORINGSLOGGDB_URL="jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=d26dbfl021.test.local)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=SPORINGSLOGGT4)(INSTANCE_NAME=cctf02)(UR=A)(SERVER=DEDICATED)))"
+ENV SPORINGSLOGGDB_USERNAME="SPORINGSLOGG_T4"
+ENV SPORINGSLOGGDB_PASSWORD="fcCsL5wDtsOA"
+    
+ENV LDAP_URL="ldap://ldapgw.test.local:389"
+ENV LDAP_USERNAME="srvSSOLinux"
+ENV LDAP_PASSWORD="khFKL0GCusWe72"
+ENV LDAP_BASEDN="dc=test,dc=local"
+ENV LDAP_USER_BASEDN="ou=NAV,ou=BusinessUnits,dc=test,dc=local"
+ENV LDAP_SERVICEUSER_BASEDN="ou=ServiceAccounts,dc=test,dc=local"
+
+COPY sporingslogg-web/target/sporingslogg-web.jar /app/app.jar
+# Hent denne
+COPY sporingslogg-web/src/main/webapp/WEB-INF/local-jetty/nav_truststore_nonproduction_ny2.jts /app/truststore.jts
+
+
+# Expose default http jetty port
+EXPOSE 8088
+
+# Start (for Docker uten Nais)
+CMD java -jar /app/app.jar

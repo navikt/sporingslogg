@@ -32,6 +32,7 @@ public class KafkaLoggConsumer {
 		
 	public KafkaLoggConsumer(KafkaProperties kafkaProperties) {
 	    Properties props = setProperties(kafkaProperties);		
+	    log.info("Kafka consumer bruker props: " + props);
 		pollForever(kafkaProperties.getTopic(), props);
 	}
 

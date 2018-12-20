@@ -21,7 +21,7 @@
     <logger name="org.reflections" level="${log.level.org.reflections:-ERROR}"/>
     <logger name="no.nav.sporingslogg" level="${log.level.no.nav.flue:-DEBUG}" />
 
-    <root level="${log.level.root:-WARN}">
+    <root level="${log.level.root:-INFO}">
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>

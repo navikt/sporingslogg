@@ -6,6 +6,9 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 public class StandaloneJettyMain {
 
+	// Skru av denne når en skikkelig Docker/kubernetes blir brukt
+	private static final boolean DOCKER_VERSION_DOES_NOT_HANDLE_ENV_VARIABLES_WITH_DOT_NAMES = true;
+	
     static {
     	System.setProperty("logback.configurationFile", StandaloneJettyServer.class.getResource("/webapp/WEB-INF/logback-nais.xml").toString());
     }
@@ -13,13 +16,18 @@ public class StandaloneJettyMain {
 
     private static final String WEB_XML = "/webapp/WEB-INF/web.xml";
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         
+    	PropertyUtil.fixDockerEnvProblem();
+    	
     	System.setProperty(PropertyNames.PROPERTY_DB_DIALECT, "org.hibernate.dialect.Oracle10gDialect");
     	System.setProperty(PropertyNames.PROPERTY_DB_SHOWSQL, "false");
     	System.setProperty(PropertyNames.PROPERTY_DB_GENERATEDDL, "false");
 
-        try {
+    	System.setProperty(PropertyNames.PROPERTY_KAFKA_TRUSTSTORE_FILE, System.getenv("NAV_TRUSTSTORE_PATH"));
+    	System.setProperty(PropertyNames.PROPERTY_KAFKA_TRUSTSTORE_PASSWORD, System.getenv("NAV_TRUSTSTORE_PASSWORD"));
+
+    	try {
         	StandaloneJettyServer jettyServer = new StandaloneJettyServer(WEB_XML);
         	jettyServer.createContextHandler(createOracleDatasource());
             jettyServer.startJetty(true);

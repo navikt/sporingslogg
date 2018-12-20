@@ -8,8 +8,7 @@ import org.junit.Test;
 
 import fitnesse.junit.JUnitHelper;
 
-// Kafka-biten feiler herfra. Fiks det eller ta ut kafka-testen fra suiten som junit
-@Ignore
+// TODO Kafka-biten feiler herfra. Fiks det og ta med kafka-suiten
 public class FitnesseJunitRunnerTest {
 
 	private static final int FITNESSE_PORT = 9290; // Brukes når denne startes som Junit test
@@ -31,5 +30,6 @@ public class FitnesseJunitRunnerTest {
     @Test
     public void runAllFitnesseTests() throws Exception {
         junitHelper.assertSuitePasses("SporingsLoggRestTjenester");
+        //junitHelper.assertSuitePasses("SporingsLoggKafkaTjenester");
     }
 }

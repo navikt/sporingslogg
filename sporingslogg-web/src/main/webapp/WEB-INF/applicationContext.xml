@@ -17,7 +17,11 @@
     <import resource="classpath:META-INF/cxf/cxf.xml"/>
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
     
-    <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
+    <!-- DENNE ER VIKTIG med Docker/Nais: bruk systemprops hvis ikke props er satt ellers, OG BRUK ENV PROPS hvis ikke system-props er satt -->
+    <bean id="propertyPlaceholderConfigurer" class="no.nav.sporingslogg.standalone.DockerProofPropertyPlaceholderConfigurer">
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_FALLBACK"/>
+        <property name="searchSystemEnvironment" value="true"/>
+    </bean>
     <context:annotation-config/>
     
     <!-- Kjernen i tjenesten -->

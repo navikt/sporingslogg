@@ -8,6 +8,8 @@ import smartrics.rest.fitnesse.fixture.support.CellWrapper;
 
 public class ServerRestFixture extends RestFixture {
 	
+	boolean authSet = false;
+	
 	public ServerRestFixture() {
 		super(SetupServer.url);
 		addHeader("Content-Type: application/json");		
@@ -19,8 +21,15 @@ public class ServerRestFixture extends RestFixture {
 
 	@Override
 	protected void doMethod(String method, String resUrl, Map<String, String> headers, String rBody) {
-		addHeader("Authorization: " + getEncodedBasicAuth(SetupServer.brukernavn(resUrl), SetupServer.passord(resUrl)));
+		if (!authSet) {
+			addHeader("Authorization: " + getEncodedBasicAuth(SetupServer.brukernavn(), SetupServer.passord()));
+		}
 		super.doMethod(method, resUrl, getHeaders(), rBody); // mister en substitute() i superklassen her, men vi bruker ikke global variabel-substitusjon uansett
+	}
+
+	public void oidctoken() {
+		addHeader("Authorization: Bearer "+hentTabellCelleInnhold("oidctoken")); 
+		authSet = true;
 	}
 
 	@SuppressWarnings("unchecked")

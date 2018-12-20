@@ -1,0 +1,45 @@
+image:  "docker.adeo.no:5000/integrasjon/sporingslogg"
+replicas:
+  min: 1
+  max: 1
+  cpuThresholdPercentage: 80
+port: 8088
+healthcheck:
+  liveness:
+    path: /sporingslogg/api/ping
+    initialDelay: 5
+    periodSeconds: 5
+    failureThreshold: 60
+  readiness:
+    path: /sporingslogg/api/ping
+    initialDelay: 5
+    periodSeconds: 5
+    failureThreshold: 60
+resources:
+  limits:
+    cpu: 400m
+    memory: 512Mi
+  requests:
+    cpu: 200m
+    memory: 256Mi
+fasitResources:
+  used:
+  - alias: ldap
+    resourceType: ldap
+  - alias: sporingsloggDB
+    resourceType: datasource
+    propertyMap:
+      url: SPORINGSLOGGDB_URL
+      username: SPORINGSLOGGDB_USERNAME
+      password: SPORINGSLOGGDB_PASSWORD
+# legg inn denne naar man bruker eksisterende credential i fasit
+#  - alias: srvABACPEP
+#    resourceType: credential
+#    propertyMap:     
+#      username: NO_NAV_SPORINGSLOGG_KAFKA_USERNAME
+#      password: NO_NAV_SPORINGSLOGG_KAFKA_PASSWORD  
+#
+# Kan legge OIDC-props i ressurs med type OpenIdConnect?
+# Resten av Kafka-propsene?  
+  - alias: sporingslogg_properties
+    resourceType: applicationproperties
