@@ -17,7 +17,7 @@ Meldingen 'Dette er meldingen' sendes som Base64-encodet tekst: 'RGV0dGUgZXIgbWV
 
 !3 2. Kall REST-tjenesten for å lese loggmelding, sjekk at returnert innhold er det som ble lagret (oidctoken må lages for bruker 12345678901)
 
-For REST-STS i test kan token hentes ved GET til https://security-token-service.nais.preprod.local/rest/v1/sts/token?grant_type=client_credentials&scope=openid
+For REST-STS i test kan token hentes ved GET til https://security-token-service-t10.nais.preprod.local/rest/v1/sts/token?grant_type=client_credentials&scope=openid
 med basic auth for bruker ('Basic c3J2QUJBQ1BFUDpoVUsxLjMwc0tocXAwLigy' for 12345678901)
 
 | !- Table:no.nav.sporingslogg.web.fitnesse.ServerRestFixture -! |

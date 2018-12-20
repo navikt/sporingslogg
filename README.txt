@@ -13,3 +13,20 @@ Testing med "lokal" Docker:
   
 Testing med NAIS:
 - Fitnesse-tester for ekstern-server
+
+
+------------------- Manuelle operasjoner pr miljø/prodsetting:
+
+- opprette DB i Basta (se db_ddl.sql under resources i core-prosjekt)
+- opprette srvsporingslogg i Basta
+- opprette topic++ i Kafka, oneShot-json:
+{ "topics": [ { "configEntries": {},
+      "members": [
+        { "member": "srvsporingslogg", "role": "PRODUCER" },
+        { "member": "srvsporingslogg", "role": "CONSUMER" }
+      ], "numPartitions": 1,
+      "topicName": "aapen-sporingslogg-loggmeldingMottatt"
+    } ] }
+- opprette baseurl (?) for topic i Fasit, url = topicnavn
+- brukere som skal kunne POSTe til kafka/restapi må i gruppe KP-<topicnavn>
+- brukere som skal kunne GETe egne logger må ha OIDC-token fra oppsatt provider

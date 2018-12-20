@@ -2,14 +2,13 @@ FROM navikt/java:8
 LABEL maintainer="aage.kramarics@nav.no"
 
 # Props needed, bruk CAPS og underscore for å simulere NAIS
-ENV NO_NAV_SPORINGSLOGG_OIDC_JWKS="https://security-token-service.nais.preprod.local/rest/v1/sts/jwks"
-ENV NO_NAV_SPORINGSLOGG_OIDC_ISSUER="https://security-token-service.nais.preprod.local"
+ENV NO_NAV_SPORINGSLOGG_OIDC_JWKS="https://security-token-service-t10.nais.preprod.local/rest/v1/sts/jwks"
+ENV NO_NAV_SPORINGSLOGG_OIDC_ISSUER="https://security-token-service-t10.nais.preprod.local"
     
-ENV NO_NAV_SPORINGSLOGG_KAFKA_TOPIC="sporingslogg"
-ENV NO_NAV_SPORINGSLOGG_KAFKA_GROUPID="KC-sporingslogg"
+ENV NO_NAV_SPORINGSLOGG_KAFKA_TOPIC="aapen-sporingslogg-loggmeldingMottatt"
 ENV NO_NAV_SPORINGSLOGG_KAFKA_SERVERS="d26apvl00159.test.local:8443"
-ENV NO_NAV_SPORINGSLOGG_KAFKA_USERNAME="srvABACPEP"
-ENV NO_NAV_SPORINGSLOGG_KAFKA_PASSWORD="hUK1.30sKhqp0.(2"
+ENV NO_NAV_SPORINGSLOGG_KAFKA_USERNAME="srvsporingslogg"
+ENV NO_NAV_SPORINGSLOGG_KAFKA_PASSWORD="EbLAPrQYvY1JrLS"
 
 ENV NAV_TRUSTSTORE_PATH="/app/truststore.jts"
 ENV NAV_TRUSTSTORE_PASSWORD="467792be15c4a8807681fd2d5c9c1748"

@@ -184,14 +184,34 @@ public class StandaloneTestJettyMain {
 	        setPropertyNotUsed(PropertyNames.PROPERTY_KAFKA_TRUSTSTORE_PASSWORD);
 		}
 	}
-
+/*
+Denne ble opprettet med følgende JSON til oneShot-tjenesten, av bruker k148586 (Aage K):
+{
+  "topics": [
+    {
+      "configEntries": {},
+      "members": [
+        {
+          "member": "srvsporingslogg",
+          "role": "PRODUCER"
+        },
+        {
+          "member": "srvsporingslogg",
+          "role": "CONSUMER"
+        }
+      ],
+      "numPartitions": 1,
+      "topicName": "aapen-sporingslogg-loggmeldingMottatt"
+    }
+  ]
+} */
 	public static KafkaProperties getKafkaTestProperties() {
 		KafkaProperties kp = new KafkaProperties();
-		kp.setBootstrapServers("d26apvl00159.test.local:8443");
-		kp.setTopic("sporingslogg");
-		kp.setGroupId("KC-sporingslogg");
-		kp.setUsername("srvABACPEP");
-		kp.setPassword("hUK1.30sKhqp0.(2");
+		kp.setBootstrapServers("d26apvl00159.test.local:8443,d26apvl00160.test.local:8443,d26apvl00161.test.local:8443");
+		kp.setTopic("aapen-sporingslogg-loggmeldingMottatt");
+		kp.setGroupId("KC-aapen-sporingslogg-loggmeldingMottatt");
+		kp.setUsername("srvsporingslogg");
+		kp.setPassword("EbLAPrQYvY1JrLS");
         kp.setTruststoreFile(SPORINGSLOGG_ROOT+"/sporingslogg-web/src/main/webapp/WEB-INF/local-jetty/nav_truststore_nonproduction_ny2.jts");
         kp.setTruststorePassword("467792be15c4a8807681fd2d5c9c1748");
         return kp;

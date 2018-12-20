@@ -26,6 +26,13 @@ public class StandaloneJettyMain {
 
     	System.setProperty(PropertyNames.PROPERTY_KAFKA_TRUSTSTORE_FILE, System.getenv("NAV_TRUSTSTORE_PATH"));
     	System.setProperty(PropertyNames.PROPERTY_KAFKA_TRUSTSTORE_PASSWORD, System.getenv("NAV_TRUSTSTORE_PASSWORD"));
+    	
+    	String kafkaGroupId = System.getenv("NO_NAV_SPORINGSLOGG_KAFKA_GROUPID");
+    	if (kafkaGroupId == null) {
+    		kafkaGroupId = "KC-"+System.getenv("NO_NAV_SPORINGSLOGG_KAFKA_TOPIC");
+    		log.info("Kafka consumer group not explicitly set, using topic name to set group name: ");
+    		System.setProperty(PropertyNames.PROPERTY_KAFKA_GROUP, kafkaGroupId);
+    	}
 
     	try {
         	StandaloneJettyServer jettyServer = new StandaloneJettyServer(WEB_XML);
