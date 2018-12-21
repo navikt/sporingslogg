@@ -28,7 +28,7 @@ public class PingController {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public Response ping() {
-        log.debug("Ping er kalt");
+//        log.debug("Ping er kalt");
         if (loggTjeneste.isReady()) {
             log.info("Ping returnerer OK"); 
             return Response.status(Response.Status.OK).entity("OK").build();

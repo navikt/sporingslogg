@@ -7,8 +7,10 @@
     ">        
   
     <!-- Forenkling av login :
-    Aksepter alt uten sjekk -->
+    Aksepter alt uten sjekk, unntatt spesifikke brukere -->
     
     <bean id="jaasLoginInterceptor" class="no.nav.sporingslogg.standalone.testconfig.EmulateLoginInterceptor"/>
+    
+    <bean id="ldapGroupService" class="no.nav.sporingslogg.standalone.testconfig.DummyLdapGroupService"/>
     
 </beans>

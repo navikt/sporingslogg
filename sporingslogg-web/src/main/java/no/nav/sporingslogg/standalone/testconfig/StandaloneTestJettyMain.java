@@ -49,7 +49,7 @@ public class StandaloneTestJettyMain {
     // Mulige configs for Kafka-input
     public enum KafkaConfig {
     	DUMMY,          // leser ikke fra Kafka
-    	EMBEDDED,
+    	EMBEDDED,       // må ha en embedded broker startet opp på localhost
     	TEST_LOCAL;     // Må ha topic satt opp i test-local, se under for properties
     }
     
@@ -160,6 +160,7 @@ public class StandaloneTestJettyMain {
 			KafkaProperties kp = getKafkaTestProperties();
 	        System.setProperty(PropertyNames.PROPERTY_KAFKA_TOPIC, kp.getTopic());
 	        System.setProperty(PropertyNames.PROPERTY_KAFKA_GROUP, kp.getGroupId());
+	        System.setProperty(PropertyNames.PROPERTY_KAFKA_PRODUCERGROUP, kp.getProducerGroupId());
 	        System.setProperty(PropertyNames.PROPERTY_KAFKA_SERVER, kp.getBootstrapServers());
 	        System.setProperty(PropertyNames.PROPERTY_KAFKA_USERNAME, kp.getUsername());
 	        System.setProperty(PropertyNames.PROPERTY_KAFKA_PASSWORD, kp.getPassword());
@@ -171,12 +172,14 @@ public class StandaloneTestJettyMain {
 			KafkaProperties kp2 = getKafkaEmbeddedProperties();
 	        System.setProperty(PropertyNames.PROPERTY_KAFKA_TOPIC, kp2.getTopic());
 	        System.setProperty(PropertyNames.PROPERTY_KAFKA_GROUP, kp2.getGroupId());
+	        System.setProperty(PropertyNames.PROPERTY_KAFKA_PRODUCERGROUP, kp2.getGroupId());
 	        System.setProperty(PropertyNames.PROPERTY_KAFKA_SERVER, kp2.getBootstrapServers());
 			return;
 		case DUMMY:
 			System.setProperty("kafkaContextOverrides", "/WEB-INF/local-jetty/dummyKafkaContextOverrides.xml"); 
 	        setPropertyNotUsed(PropertyNames.PROPERTY_KAFKA_TOPIC);
 	        setPropertyNotUsed(PropertyNames.PROPERTY_KAFKA_GROUP);
+	        setPropertyNotUsed(PropertyNames.PROPERTY_KAFKA_PRODUCERGROUP);
 	        setPropertyNotUsed(PropertyNames.PROPERTY_KAFKA_SERVER);
 	        setPropertyNotUsed(PropertyNames.PROPERTY_KAFKA_USERNAME);
 	        setPropertyNotUsed(PropertyNames.PROPERTY_KAFKA_PASSWORD);
@@ -210,6 +213,7 @@ Denne ble opprettet med følgende JSON til oneShot-tjenesten, av bruker k148586 
 		kp.setBootstrapServers("d26apvl00159.test.local:8443,d26apvl00160.test.local:8443,d26apvl00161.test.local:8443");
 		kp.setTopic("aapen-sporingslogg-loggmeldingMottatt");
 		kp.setGroupId("KC-aapen-sporingslogg-loggmeldingMottatt");
+		kp.setProducerGroupId("KP-aapen-sporingslogg-loggmeldingMottatt");
 		kp.setUsername("srvsporingslogg");
 		kp.setPassword("EbLAPrQYvY1JrLS");
         kp.setTruststoreFile(SPORINGSLOGG_ROOT+"/sporingslogg-web/src/main/webapp/WEB-INF/local-jetty/nav_truststore_nonproduction_ny2.jts");

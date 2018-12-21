@@ -2,7 +2,7 @@
 Test
 ---
 
-!2 Test lagre loggmelding via REST-API, med uautorisert bruker
+!2 Test lagre loggmelding via REST-API, med uautentisert bruker
 
 
 !3 1. Tøm databasen så andre tester ikke har påvirkning
@@ -13,7 +13,7 @@ Test
 !3 2. Lagre loggmelding via REST-API, sjekk forventet status
 
 | !- Table:no.nav.sporingslogg.web.fitnesse.LocalJettyRestFixture -! |  |
-| brukernavn | IKKE_I_GRUPPA |
+| brukernavn | IKKELOV |
 | jsonMelding | !- {"person":"12345678901", "mottaker":"123456789", "tema":"ABC", "behandlingsGrunnlag":"hjemmel1", "uthentingsTidspunkt":"2018-10-19T12:24:21.675", "leverteData":"RGV0dGUgZXIgbWVsZGluZ2Vu"} -! |
-| POST | /sporingslogg/api/logg | 401 | | | 
+| POST | /sporingslogg/api/logg | 403 | | | 
 

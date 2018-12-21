@@ -10,6 +10,7 @@ public class PropertyNames {
     
     public static final String PROPERTY_KAFKA_TOPIC = "no.nav.sporingslogg.kafka.topic";
     public static final String PROPERTY_KAFKA_GROUP = "no.nav.sporingslogg.kafka.groupid";
+    public static final String PROPERTY_KAFKA_PRODUCERGROUP = "no.nav.sporingslogg.kafka.producergroupid";
     public static final String PROPERTY_KAFKA_SERVER = "no.nav.sporingslogg.kafka.servers";
     public static final String PROPERTY_KAFKA_USERNAME = "no.nav.sporingslogg.kafka.username";
     public static final String PROPERTY_KAFKA_PASSWORD = "no.nav.sporingslogg.kafka.password";

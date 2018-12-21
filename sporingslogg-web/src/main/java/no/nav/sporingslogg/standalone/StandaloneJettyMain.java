@@ -6,9 +6,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 public class StandaloneJettyMain {
 
-	// Skru av denne når en skikkelig Docker/kubernetes blir brukt
-	private static final boolean DOCKER_VERSION_DOES_NOT_HANDLE_ENV_VARIABLES_WITH_DOT_NAMES = true;
-	
     static {
     	System.setProperty("logback.configurationFile", StandaloneJettyServer.class.getResource("/webapp/WEB-INF/logback-nais.xml").toString());
     }
@@ -18,6 +15,8 @@ public class StandaloneJettyMain {
 
     public static void main(String[] args) throws Exception {
         
+    	// Fiks properties så de får korrekte navn, og sett de som evt ikke er satt i env
+    	
     	PropertyUtil.fixDockerEnvProblem();
     	
     	System.setProperty(PropertyNames.PROPERTY_DB_DIALECT, "org.hibernate.dialect.Oracle10gDialect");
@@ -28,12 +27,20 @@ public class StandaloneJettyMain {
     	System.setProperty(PropertyNames.PROPERTY_KAFKA_TRUSTSTORE_PASSWORD, System.getenv("NAV_TRUSTSTORE_PASSWORD"));
     	
     	String kafkaGroupId = System.getenv("NO_NAV_SPORINGSLOGG_KAFKA_GROUPID");
+    	String kafkaProducerGroupId = System.getenv("NO_NAV_SPORINGSLOGG_KAFKA_PRODUCERGROUPID");
     	if (kafkaGroupId == null) {
     		kafkaGroupId = "KC-"+System.getenv("NO_NAV_SPORINGSLOGG_KAFKA_TOPIC");
     		log.info("Kafka consumer group not explicitly set, using topic name to set group name: ");
     		System.setProperty(PropertyNames.PROPERTY_KAFKA_GROUP, kafkaGroupId);
     	}
+    	if (kafkaProducerGroupId == null) {
+    		kafkaProducerGroupId = "KP-"+System.getenv("NO_NAV_SPORINGSLOGG_KAFKA_TOPIC");
+    		log.info("Kafka producer group not explicitly set, using topic name to set group name: ");
+    		System.setProperty(PropertyNames.PROPERTY_KAFKA_PRODUCERGROUP, kafkaProducerGroupId);
+    	}
 
+    	// Start serveren
+    	
     	try {
         	StandaloneJettyServer jettyServer = new StandaloneJettyServer(WEB_XML);
         	jettyServer.createContextHandler(createOracleDatasource());

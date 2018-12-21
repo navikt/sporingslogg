@@ -57,11 +57,11 @@ fasitResources:
   - alias: security-token-service-issuer
     resourceType: baseurl
     propertyMap:     
-      url: ENV NO_NAV_SPORINGSLOGG_OIDC_ISSUER
+      url: NO_NAV_SPORINGSLOGG_OIDC_ISSUER
   - alias: security-token-service-jwks
     resourceType: restservice
     propertyMap:     
-      url: ENV NO_NAV_SPORINGSLOGG_OIDC_JWKS
+      url: NO_NAV_SPORINGSLOGG_OIDC_JWKS
       
   exposed:
   - alias: sporingslogg-lagrelogg

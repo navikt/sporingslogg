@@ -3,6 +3,7 @@ package no.nav.sporingslogg.kafka;
 public class KafkaProperties {
 	private String topic;
 	private String groupId; 
+	private String producerGroupId; 
 	private String bootstrapServers;
 	private String username;
 	private String password;
@@ -20,6 +21,12 @@ public class KafkaProperties {
 	}
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
+	}
+	public String getProducerGroupId() {
+		return producerGroupId;
+	}
+	public void setProducerGroupId(String producerGroupId) {
+		this.producerGroupId = producerGroupId;
 	}
 	public String getBootstrapServers() {
 		return bootstrapServers;

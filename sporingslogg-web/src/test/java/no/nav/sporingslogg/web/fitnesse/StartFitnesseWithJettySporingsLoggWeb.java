@@ -7,6 +7,7 @@ import fitnesseMain.Arguments;
 import fitnesseMain.FitNesseMain;
 import no.nav.sporingslogg.kafka.KafkaProperties;
 import no.nav.sporingslogg.kafkatestclient.EmbeddedKafkaMain;
+import no.nav.sporingslogg.standalone.testconfig.DummyLdapGroupService;
 import no.nav.sporingslogg.standalone.testconfig.EmulateLoginInterceptor;
 import no.nav.sporingslogg.standalone.testconfig.StandaloneTestJettyMain;
 import no.nav.sporingslogg.standalone.testconfig.StandaloneTestJettyMain.DbConfig;
@@ -43,6 +44,7 @@ public class StartFitnesseWithJettySporingsLoggWeb {
 
 	static void startJettyOgKafka(int port) throws Exception {
 		EmulateLoginInterceptor.USER_TO_REFUSE = "IKKELOV"; // For at test med ikke-autorisert bruker skal funke
+		DummyLdapGroupService.USER_TO_REFUSE = "IKKE_I_GRUPPA"; // For at test med ikke-autorisert bruker skal funke
 
 		startLocalJetty(port); 
   	

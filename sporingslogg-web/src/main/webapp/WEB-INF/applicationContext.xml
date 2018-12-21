@@ -94,7 +94,10 @@
     <bean id="jaasLoginInterceptor" class="org.apache.cxf.interceptor.security.JAASLoginInterceptor">
         <property name="contextName" value="ldaploginmodule"/>
     </bean>    
-
+    <bean id="ldapGroupService" class="no.nav.sporingslogg.ldap.LdapGroupService">
+         <constructor-arg value="${no.nav.sporingslogg.kafka.producergroupid}"/>
+    </bean>
+    
   <!-- DATABASE -->
   <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean" >     
      <property name="jndiName" value="java:comp/env/jdbc/sporingsloggDS"/> 

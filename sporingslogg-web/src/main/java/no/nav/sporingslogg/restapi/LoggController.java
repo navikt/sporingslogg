@@ -1,6 +1,5 @@
 package no.nav.sporingslogg.restapi;
 
-//import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -14,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import no.nav.sporingslogg.ldap.LdapGroupService;
 import no.nav.sporingslogg.tjeneste.LoggTjeneste;
 
 @Path("/") // restcontext satt i web.xml
@@ -26,18 +26,28 @@ public class LoggController {
     @Autowired
     private LoggTjeneste loggTjeneste;
 
+    @Autowired
+    private LdapGroupService ldapGroupService;
+
     @Path("")
     @POST
-    public Response logg(@Context SecurityContext securityContext, LoggMelding loggMelding) { // TODO Sjekk AD-gruppe, som DriftContr i ApiMan
+    public Response logg(@Context SecurityContext securityContext, LoggMelding loggMelding) {
         log.debug("Lagrer logg");
+
         String userName = getUserName(securityContext);  
         log.debug("User: " + userName);
+        boolean brukerErIGruppe = ldapGroupService.brukerErIGruppe(userName);
+        if (!brukerErIGruppe) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        
         Long loggId = loggTjeneste.lagreLoggInnslag(LoggConverter.fromJsonObject(loggMelding));
         log.info("Lagret logg med ny id " + loggId);
         LoggMeldingResponse response = new LoggMeldingResponse();
         response.setId(""+loggId);
         return Response.status(Response.Status.OK).entity(response).build();
     }
+    
 	private String getUserName(SecurityContext securityContext) {
         if (securityContext == null || securityContext.getUserPrincipal() == null) {
             return null;
