@@ -66,10 +66,10 @@ public class KafkaLoggConsumer {
 				kafkaConsumer.subscribe(Collections.singletonList(topic));  
 				
 				while (true) { 
-					log.info("Starter polling 10 sek");
+					log.debug("Starter polling 10 sek");
 //					try {
 						ConsumerRecords<Integer, LoggMelding> records = kafkaConsumer.poll(Duration.ofSeconds(10));   
-						log.info("Polling ferdig, ga "+records.count() + " records");
+						log.debug("Polling ferdig, ga "+records.count() + " records");
 						for (ConsumerRecord<Integer, LoggMelding> record : records) {                
 							LoggMelding loggMelding = record.value();
 							if (loggMelding != null) {
@@ -85,7 +85,7 @@ public class KafkaLoggConsumer {
 	}
 
 	public void store(LoggMelding loggMelding) {
-		log.info("Lagrer sporingsmelding mottatt via Kafka: " + loggMelding);
+		log.debug("Lagrer sporingsmelding mottatt via Kafka: " + loggMelding);
 		try {
 			loggTjeneste.lagreLoggInnslag(LoggConverter.fromJsonObject(loggMelding));
 		} catch (Exception e) {

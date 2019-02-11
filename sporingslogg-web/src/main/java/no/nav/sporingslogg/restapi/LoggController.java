@@ -42,7 +42,7 @@ public class LoggController {
         }
         
         Long loggId = loggTjeneste.lagreLoggInnslag(LoggConverter.fromJsonObject(loggMelding));
-        log.info("Lagret logg med ny id " + loggId);
+        log.debug("Lagret logg med ny id " + loggId);
         LoggMeldingResponse response = new LoggMeldingResponse();
         response.setId(""+loggId);
         return Response.status(Response.Status.OK).entity(response).build();

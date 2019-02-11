@@ -28,7 +28,7 @@ public class LoggTjeneste {
     private ValideringTjeneste valideringTjeneste;
     
     public Long lagreLoggInnslag(LoggInnslag loggInnslag) {
-        log.debug("Lagrer for person " + loggInnslag.getPerson()); // TODO sett lengder ihht. DB-kolonner
+        log.info("Lagrer for person " + loggInnslag.getPerson() + ", mottaker: " + loggInnslag.getMottaker() + ", tema: " + loggInnslag.getTema()); // TODO sett lengder ihht. DB-kolonner
         
         valideringTjeneste.validerIkkeBlank(loggInnslag.getPerson(), "person");
         valideringTjeneste.validerMaxLengde(loggInnslag.getPerson(), 11, "person");

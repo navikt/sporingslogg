@@ -10,12 +10,19 @@ if [ -z $APP ] || [ -z $VERSION ] || [ -z $ENV ] || [ -z $FASITUSER ]; then
 	echo "Usage: $0 <appname> <version> <env/namespace> <fasituser>"
 	echo
 	echo "Example: $0 sporingslogg 1.0.0 t4 k12345"
+    if [ -f deploys.txt ]; then
+       echo 
+       echo "Tidligere deploys/versjoner:"
+       cat deploys.txt
+    fi
 	exit
 fi
 
 echo -n Password for $FASITUSER: 
 read -s PASSWORD
 echo
+
+echo $APP $VERSION $ENV > deploys.txt
 
 # Hardkodet docker-repo, cluster og zone, dette kunne også vært parametre
 # Bruker env og namespace på NAIS

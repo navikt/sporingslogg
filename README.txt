@@ -19,7 +19,7 @@ Testing med NAIS:
 
 - opprette DB i Basta (se db_ddl.sql under resources i core-prosjekt)
 - opprette srvsporingslogg i Basta
-- opprette topic++ i Kafka, oneShot-json:
+- opprette topic++ i Kafka-adminapi, oneShot-json:
 { "topics": [ { "configEntries": {},
       "members": [
         { "member": "srvsporingslogg", "role": "PRODUCER" },
@@ -28,5 +28,5 @@ Testing med NAIS:
       "topicName": "aapen-sporingslogg-loggmeldingMottatt"
     } ] }
 - opprette baseurl (?) for topic i Fasit, url = topicnavn
-- brukere som skal kunne POSTe til kafka/restapi må i gruppe KP-<topicnavn>
+- brukere som skal kunne POSTe til kafka/restapi må i gruppe KP-<topicnavn>. Bruk Kafka-adminapi for å legge til bruker.
 - brukere som skal kunne GETe egne logger må ha OIDC-token fra oppsatt provider
