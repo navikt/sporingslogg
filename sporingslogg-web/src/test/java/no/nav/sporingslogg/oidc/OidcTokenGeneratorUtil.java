@@ -40,6 +40,7 @@ public class OidcTokenGeneratorUtil {
 	public static String generateToken(JwtClaims claims, Key key) throws JoseException {
 	    final JsonWebSignature jws = new JsonWebSignature();
 	    jws.setPayload(claims.toJson());
+	    System.out.println(claims.toJson());
 	    jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.HMAC_SHA256);
 	    jws.setKey(key);
 	    return jws.getCompactSerialization();

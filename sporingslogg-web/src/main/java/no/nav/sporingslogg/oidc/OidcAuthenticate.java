@@ -10,12 +10,19 @@ import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import org.jose4j.keys.resolvers.VerificationKeyResolver;
 import org.jose4j.lang.UnresolvableKeyException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import no.nav.sporingslogg.standalone.PropertyNames;
+import no.nav.sporingslogg.standalone.PropertyUtil;
 
 public class OidcAuthenticate {
 
-	// ID-porten gir ut tokens med "acr":"Level4" hvis innlogging er skjedd med BankID e.l.
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    // ID-porten gir ut tokens med "acr":"Level4" hvis innlogging er skjedd med BankID e.l.
 	private static final String AUTH_LEVEL_CLAIM = "acr";
-    private static final String AUTH_LEVEL_4 = "Level4";
+    static final String AUTH_LEVEL_4 = "Level4";
     
 	// Aksepterer ikke "evigvarende" tokens
 	private static final int MAX_VALIDITY_SECONDS = 3600;
@@ -25,17 +32,39 @@ public class OidcAuthenticate {
 	private final Key publicKey;
 	private final VerificationKeyResolver keyResolver;
 	private final String issuer;
+	private final String requiredAuthLevel;
 	
-	public OidcAuthenticate(Key publicKey, String issuer) {
+	// Brukes bare av test
+	public OidcAuthenticate(Key publicKey, String issuer, String requiredAuthLevel) {
 		this.publicKey = publicKey;
 		this.keyResolver = null;
 		this.issuer = issuer;
+		this.requiredAuthLevel = requiredAuthLevel;
+
 	}
 
 	public OidcAuthenticate(VerificationKeyResolver keyResolver, String issuer) {
 		this.publicKey = null;
 		this.keyResolver = keyResolver;
 		this.issuer = issuer;
+		requiredAuthLevel = getRequiredAuthLevel();
+	}
+
+	private String getRequiredAuthLevel() {
+        String authLevelProperty = PropertyUtil.getProperty(PropertyNames.PROPERTY_OIDC_AUTHLEVEL);
+        if ("0".equals(authLevelProperty)) {
+        	// Bruker test-OIDCprovider, som ikke angir authlevel
+            log.info("OIDC auth level check turned OFF by env property " + PropertyNames.PROPERTY_OIDC_AUTHLEVEL);
+        	return null;
+        }
+        if ("4".equals(authLevelProperty)) {
+        	// Bruker ID-porten
+            log.info("Required OIDC auth level set to 4 by env property " + PropertyNames.PROPERTY_OIDC_AUTHLEVEL);
+        	return AUTH_LEVEL_4;
+        }
+        // Godtar egentlig ikke andre settinger, men velger isåfall sikreste variant: krever authlevel 4
+        log.warn("Required OIDC auth level is not set, will require level 4");
+    	return AUTH_LEVEL_4;
 	}
 
 	private final int MISSING_ISSUER = 11;
@@ -46,13 +75,15 @@ public class OidcAuthenticate {
 	private final int FEIL_SIGNATUR = 9;
 	private final int FEIL_TOKEN_FORMAT = 17;
 
-	public String getVerifiedSubject(String bearerToken)  { //TODO får vi autnivå av reststs????
+	public String getVerifiedSubject(String bearerToken)  { 
 		JwtConsumer jwtConsumer = buildJwtConsumer(); 
 		try {
 			JwtClaims jwtClaims = jwtConsumer.processToClaims(bearerToken);
-			String authLevelClaim = jwtClaims.getStringClaimValue(AUTH_LEVEL_CLAIM);
-			if (!AUTH_LEVEL_4.equals(authLevelClaim)) {
-				throw new RuntimeException("OIDC-token har ikke tilstrekkelig autentiseringsnivå (Level4): "+authLevelClaim);
+			if (requiredAuthLevel != null) {
+				String authLevelClaim = jwtClaims.getStringClaimValue(AUTH_LEVEL_CLAIM);
+				if (!requiredAuthLevel.equals(authLevelClaim)) {
+					throw new RuntimeException("OIDC-token har ikke tilstrekkelig autentiseringsnivå ("+requiredAuthLevel+"): "+authLevelClaim);
+				}
 			}
 	        return jwtClaims.getSubject();
 	        

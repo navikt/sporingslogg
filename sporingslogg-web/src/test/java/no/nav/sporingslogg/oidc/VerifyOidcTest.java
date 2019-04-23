@@ -33,7 +33,7 @@ public class VerifyOidcTest {
 	
 	@Before
 	public void setup() {
-		oidcAuthenticate = new OidcAuthenticate(OidcTokenGeneratorUtil.getKey(PUBLIC_KEY), ISSUER);
+		oidcAuthenticate = new OidcAuthenticate(OidcTokenGeneratorUtil.getKey(PUBLIC_KEY), ISSUER, OidcAuthenticate.AUTH_LEVEL_4);
 	}
 	
 	@Test
@@ -192,6 +192,15 @@ public class VerifyOidcTest {
 		}
 	}
 
+	@Test
+	public void ingenAuthLevelOkHvisSjekkErSlaattAv() throws Exception {
+		JwtClaims claims = OidcTokenGeneratorUtil.generateClaims(USER, ISSUER);
+		claims.unsetClaim("acr");
+		String token = OidcTokenGeneratorUtil.generateToken(claims, PUBLIC_KEY);
+		oidcAuthenticate = new OidcAuthenticate(OidcTokenGeneratorUtil.getKey(PUBLIC_KEY), ISSUER, null);
+		oidcAuthenticate.getVerifiedSubject(token);
+	}
+
 	private VerificationKeyResolver getOkResolver() {
 		return new VerificationKeyResolver() {			
 			@Override
@@ -266,17 +275,17 @@ public class VerifyOidcTest {
 	@Test
 	public void manualTestWithRestStsResolver() throws Exception {
 		SslCertificateBypasser.disableSSLCertificateChecking(); // For å få til SSL
-	    HttpsJwks httpsJkws = new HttpsJwks("https://security-token-service.nais.preprod.local/rest/v1/sts/jwks");
+	    HttpsJwks httpsJkws = new HttpsJwks("https://security-token-service-t10.nais.preprod.local/rest/v1/sts/jwks");
 	    HttpsJwksVerificationKeyResolver httpsJwksKeyResolver = new HttpsJwksVerificationKeyResolver(httpsJkws);
 		JwtConsumer jwtConsumer = new JwtConsumerBuilder()
 	            .setRequireExpirationTime() 
 	            .setMaxFutureValidityInMinutes(500) 
 	            .setAllowedClockSkewInSeconds(30) 
-	            .setExpectedIssuer("https://security-token-service.nais.preprod.local") 
+	            .setExpectedIssuer("https://security-token-service-t10.nais.preprod.local") 
 	            .setSkipDefaultAudienceValidation()
 	            .setVerificationKeyResolver(httpsJwksKeyResolver)
 	            .build(); 
-		String jwt = "eyJraWQiOiIzNWRhYTFkNS0xMDY0LTRkZTAtODc3OC03M2JhNWU3YTZkNGYiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJzcnZBQkFDUEVQIiwiYXVkIjpbInNydkFCQUNQRVAiLCJwcmVwcm9kLmxvY2FsIl0sInZlciI6IjEuMCIsIm5iZiI6MTU0MjI4NTc4MywiYXpwIjoic3J2QUJBQ1BFUCIsImlkZW50VHlwZSI6IlN5c3RlbXJlc3N1cnMiLCJhdXRoX3RpbWUiOjE1NDIyODU3ODMsImlzcyI6Imh0dHBzOlwvXC9zZWN1cml0eS10b2tlbi1zZXJ2aWNlLm5haXMucHJlcHJvZC5sb2NhbCIsImV4cCI6MTU0MjI4OTM4MywiaWF0IjoxNTQyMjg1NzgzLCJqdGkiOiJlZTFiMGJmMC0zYzNlLTQzNGQtOGQwOS03MTI1NTc1NWZmZmEifQ.OJc5KUSlOsSbuyJlu5-KV5mFk5349NeCxqwqYa494tVoG6ZWI-8K2-EEziWhvUGllO9entlwPaQpUk_xRQkRR4Cqp9ymhTSGUebuV4m8sKdr04IP8sPead2qOJSwN9Zpv64YGkGnb9feuCUXmPvhRCN49iNEB28ED9OhDaOr65suKo0FF4lzdZG91ehsOpuTYKxz8uSCUV08-8tflnY1BRcQoowdScHP_L2Su_N-dDuzV2tQ3CrLmeTZmo70T4c8UVOX1_HRvkv9tCmD0P85c1ZNkNKP2Q-oHPK7XQOqCGPVbt9jfUoSzhBySyw4joKBYn6cUkLYGJLAENQL6uF8jQ";
+		String jwt = "eyJraWQiOiI4M2ZhNTgyZC0zYWM2LTQzZWEtYWRlNi1hY2MyYjJmMjU2MWIiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJzcnZBQkFDUEVQIiwiYXVkIjpbInNydkFCQUNQRVAiLCJwcmVwcm9kLmxvY2FsIl0sInZlciI6IjEuMCIsIm5iZiI6MTU1NjAxMDE0MSwiYXpwIjoic3J2QUJBQ1BFUCIsImlkZW50VHlwZSI6IlN5c3RlbXJlc3N1cnMiLCJhdXRoX3RpbWUiOjE1NTYwMTAxNDEsImlzcyI6Imh0dHBzOlwvXC9zZWN1cml0eS10b2tlbi1zZXJ2aWNlLXQxMC5uYWlzLnByZXByb2QubG9jYWwiLCJleHAiOjE1NTYwMTM3NDEsImlhdCI6MTU1NjAxMDE0MSwianRpIjoiMGM0NGYyNDEtMzJjOS00OTIwLWIyNDgtNjYyYTZjMGY4YmExIn0.fMTJDorq2-5Aw1QMUFxM2uUqduG-iZNS8HeGCNnM9lAieFPeoEk36W9OA8Z15nGLI-AcNEjjpUFH3evZCJfaMSFOA7P-kcJvVMTcCc57sTNIpKNn8ZzrA8V9XL_n4PDVJFG36BXYmJSUFBEoXwI9deHT4znP5_MLUTOR846ruZLrYneNPAZsM0O4sBfYm6YO4E7qA2krEqTtzjwl9t0YC-7543aSDqk-9xVdSogDc20ljs8SIPPSom01HpRcOpMudUCf7U4-cgvs_pS29f7w4GIHtf59D0T93ZgUkubrvv_Vt63-nhukT_IjzExUjaZEjjfA9pdJ8eH1js-52Suy4A";
 		JwtClaims jwtClaims = jwtConsumer.processToClaims(jwt);
 		System.out.println(jwtClaims.getSubject());
 	}

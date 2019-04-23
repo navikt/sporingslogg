@@ -19,7 +19,7 @@ class OidcAuthenticateAcceptEverything extends OidcAuthenticate { // Godtar alle
     public static String USER_TO_REFUSE = null;
 
     public OidcAuthenticateAcceptEverything() {
-		super((Key) null, null);
+		super((Key) null, null, null);
 	}
 
 	public String getVerifiedSubject(String bearerToken)  {
