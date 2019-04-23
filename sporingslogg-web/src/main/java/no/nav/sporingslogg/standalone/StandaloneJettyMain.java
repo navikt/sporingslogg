@@ -1,8 +1,17 @@
 package no.nav.sporingslogg.standalone;
 
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp2.ConnectionFactory;
+import org.apache.commons.dbcp2.DriverManagerConnectionFactory;
+import org.apache.commons.dbcp2.PoolableConnection;
+import org.apache.commons.dbcp2.PoolableConnectionFactory;
+import org.apache.commons.dbcp2.PoolingDataSource;
+import org.apache.commons.pool2.ObjectPool;
+import org.apache.commons.pool2.impl.GenericObjectPool;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 public class StandaloneJettyMain {
 
@@ -50,14 +59,40 @@ public class StandaloneJettyMain {
         }
     }
 	
-    public static DriverManagerDataSource createOracleDatasource() { 
-        DriverManagerDataSource ds = new DriverManagerDataSource();
-        ds.setDriverClassName("oracle.jdbc.OracleDriver");
+    public static DataSource createOracleDatasource() { 
+    	
         String url = PropertyUtil.getProperty(PropertyNames.PROPERTY_DB_URL);
-        ds.setUrl(url);
-    	log.info("Jetty satt opp med Oracle, url: " + url);
-        ds.setUsername(PropertyUtil.getProperty(PropertyNames.PROPERTY_DB_USERNAME));
-        ds.setPassword(PropertyUtil.getProperty(PropertyNames.PROPERTY_DB_PASSWORD));
-        return ds;
+        String username = PropertyUtil.getProperty(PropertyNames.PROPERTY_DB_USERNAME);
+        String pw = PropertyUtil.getProperty(PropertyNames.PROPERTY_DB_PASSWORD);
+        return createOracleDatasource(url, username, pw);
+    }
+    
+    public static DataSource createOracleDatasource(String url, String username, String pw) {  // brukes også fra testversjon
+    	
+        ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(url, username, pw);
+                PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory, null);
+                
+        GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
+        // Sett konfig for pool her med poolConfig.setXXX
+        String params = "";
+        params += "-- max total: " + poolConfig.getMaxTotal() + "\n";
+        params += "-- max idle: " + poolConfig.getMaxIdle() + "\n";
+        params += "-- min idle: " + poolConfig.getMinIdle() + "\n";
+        params += "-- max wait millis: " + poolConfig.getMaxWaitMillis() + "\n";
+        params += "-- block when exhausted: " + poolConfig.getBlockWhenExhausted() + "\n";
+        params += "-- getEvictionPolicyClassName: " + poolConfig.getEvictionPolicyClassName() + "\n";
+        params += "-- getTimeBetweenEvictionRunsMillis: " + poolConfig.getTimeBetweenEvictionRunsMillis() + "\n";
+        params += "-- getMinEvictableIdleTimeMillis: " + poolConfig.getMinEvictableIdleTimeMillis() + "\n";
+        params += "-- getSoftMinEvictableIdleTimeMillis: " + poolConfig.getSoftMinEvictableIdleTimeMillis() + "\n";
+        params += "-- getNumTestsPerEvictionRun: " + poolConfig.getNumTestsPerEvictionRun() + "\n";
+        params += "-- getEvictorShutdownTimeoutMillis: " + poolConfig.getEvictorShutdownTimeoutMillis() + "\n";
+        log.info("DB conn pool satt opp med disse parametrene: \n" + params);
+        
+        ObjectPool<PoolableConnection> connectionPool = new GenericObjectPool<>(poolableConnectionFactory, poolConfig);
+        poolableConnectionFactory.setPool(connectionPool);
+        PoolingDataSource<PoolableConnection> dataSource = new PoolingDataSource<>(connectionPool);
+        
+    	log.info("Jetty satt opp med DB, url: " + url);
+        return dataSource;
     }
 }

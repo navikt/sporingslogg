@@ -18,6 +18,9 @@ import org.eclipse.jetty.webapp.WebInfConfiguration;
 import org.eclipse.jetty.webapp.WebXmlConfiguration;
 import org.springframework.web.context.ContextLoaderListener;
 
+import io.prometheus.client.exporter.MetricsServlet;
+import io.prometheus.client.hotspot.DefaultExports;
+
 //import io.prometheus.client.hotspot.DefaultExports;
 
 
@@ -86,6 +89,10 @@ public class StandaloneJettyServer {
         webAppContext.setDescriptor(getClass().getResource(webXml).toString());
         webAppContext.setConfigurations(CONFIGURATIONS);
         //webAppContext.setAttribute(WebInfConfiguration.CONTAINER_JAR_PATTERN, JETTY_EMBEDDED_ATTRIBUTES_VALUE);
+        
+        webAppContext.addServlet(MetricsServlet.class, "/prometheus");
+        DefaultExports.initialize();
+        
         return webAppContext;
     }
 

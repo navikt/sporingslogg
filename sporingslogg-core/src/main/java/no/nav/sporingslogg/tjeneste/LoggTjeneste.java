@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import io.prometheus.client.Counter;
 import no.nav.sporingslogg.domain.LoggInnslag;
 
 @Component
@@ -27,6 +28,9 @@ public class LoggTjeneste {
     @Autowired
     private ValideringTjeneste valideringTjeneste;
     
+    private static final Counter lagredeLoggInnslag = Counter.build().name("sporingslogg_logger").help("Lagrede logginnslag").register();
+    private static final Counter loggOppslag = Counter.build().name("sporingslogg_oppslag").help("Loggoppslag").register();
+
     public Long lagreLoggInnslag(LoggInnslag loggInnslag) {
         log.info("Lagrer for person " + loggInnslag.getPerson() + ", mottaker: " + loggInnslag.getMottaker() + ", tema: " + loggInnslag.getTema()); // TODO sett lengder ihht. DB-kolonner
         
@@ -40,13 +44,14 @@ public class LoggTjeneste {
         valideringTjeneste.validerMaxLengde(loggInnslag.getHjemmel(), 100, "hjemmel");
         valideringTjeneste.validerIkkeBlank(loggInnslag.getLeverteData(), "data");
         valideringTjeneste.validerMaxLengde(loggInnslag.getLeverteData(), 4000, "data"); 
-        valideringTjeneste.validerMaxLengde(loggInnslag.getSamtykkeToken(), 1000, "data"); 
+        valideringTjeneste.validerMaxLengde(loggInnslag.getSamtykkeToken(), 1000, "samtykketoken"); 
         
         if (loggInnslag.getUthentingsTidspunkt() == null) {
         	loggInnslag.setUthentingsTidspunkt(timestampTjeneste.now());
         }
         entityManager.persist(loggInnslag);
         entityManager.flush();
+        lagredeLoggInnslag.inc();
         
         Long id = loggInnslag.getId();
         log.debug("Melding lagret med unik ID " + id);
@@ -54,6 +59,7 @@ public class LoggTjeneste {
     }
 
     public List<LoggInnslag> finnAlleLoggInnslagForPerson(String person) {
+    	loggOppslag.inc();
         return entityManager.createQuery("from LoggInnslag where person = :p", LoggInnslag.class)
         		.setParameter("p", person)
         		.getResultList();

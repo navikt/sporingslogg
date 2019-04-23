@@ -2,16 +2,17 @@
 !3 Ikke endre her - det er bare en huskeliste for mulige valg
 
 |Comment|Mulige miljøer:|  
-|                    |URL                                   |Bruker | Kommentar
-|Standalone docker:  |http://e34apvl00253.devillo.no:8088   |srvPDP | Bruker test-LDAP, klarer ikke OIDC pga SSL til REST-STS
-|NAIS T4:            |https://app-t4.adeo.no                |srvPDP | Bruker T(4)
+|                    |URL                                           |Bruker          | Kommentar
+|Standalone docker:  |http://e34apvl00253.devillo.no:8088           |srvPDP          | Bruker test-LDAP, klarer ikke OIDC pga SSL til REST-STS
+|NAIS T4:            |https://sporingslogg-t4.nais.preprod.local    |srvsporingslogg | Bruker T(4)
+|NAIS Q2:            |https://sporingslogg-q2.nais.preprod.local    |srvsporingslogg | Bruker Q(2)
 
 
 !3 Sett opp det som skal brukes her, passordene til brukerne skal ligge i src/test/resources/fitnesseusers.txt. Ikke commit endringer i den fila til git...!
 
-!define server_url     (http://e34apvl00253.devillo.no:8088)
+!define server_url     (http://localhost:9098)
 
-!define username  (srvPDP)
+!define username  (srvsporingslogg)
 
 !3 Dette skal heller ikke endres, her brukes parametrene som er satt over
 

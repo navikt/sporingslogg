@@ -13,7 +13,11 @@ import org.jose4j.lang.UnresolvableKeyException;
 
 public class OidcAuthenticate {
 
-    // Aksepterer ikke "evigvarende" tokens
+	// ID-porten gir ut tokens med "acr":"Level4" hvis innlogging er skjedd med BankID e.l.
+	private static final String AUTH_LEVEL_CLAIM = "acr";
+    private static final String AUTH_LEVEL_4 = "Level4";
+    
+	// Aksepterer ikke "evigvarende" tokens
 	private static final int MAX_VALIDITY_SECONDS = 3600;
 	// Godta slingringsmonn pga unøyaktige klokker
 	private static final int AKSEPTERT_TIDSFORSKJELL_SEKUNDER = 30;
@@ -42,10 +46,14 @@ public class OidcAuthenticate {
 	private final int FEIL_SIGNATUR = 9;
 	private final int FEIL_TOKEN_FORMAT = 17;
 
-	public String getVerifiedSubject(String bearerToken)  {
+	public String getVerifiedSubject(String bearerToken)  { //TODO får vi autnivå av reststs????
 		JwtConsumer jwtConsumer = buildJwtConsumer(); 
 		try {
 			JwtClaims jwtClaims = jwtConsumer.processToClaims(bearerToken);
+			String authLevelClaim = jwtClaims.getStringClaimValue(AUTH_LEVEL_CLAIM);
+			if (!AUTH_LEVEL_4.equals(authLevelClaim)) {
+				throw new RuntimeException("OIDC-token har ikke tilstrekkelig autentiseringsnivå (Level4): "+authLevelClaim);
+			}
 	        return jwtClaims.getSubject();
 	        
 		} catch (InvalidJwtException e) {

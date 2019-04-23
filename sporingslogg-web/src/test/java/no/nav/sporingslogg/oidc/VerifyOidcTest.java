@@ -166,6 +166,32 @@ public class VerifyOidcTest {
 		}
 	}
 
+	@Test
+	public void authLevelUnder4GirFeilkode() throws Exception {
+		JwtClaims claims = OidcTokenGeneratorUtil.generateClaims(USER, ISSUER);
+		claims.setStringClaim("acr", "Level3");
+		String token = OidcTokenGeneratorUtil.generateToken(claims, PUBLIC_KEY);
+		try {
+			oidcAuthenticate.getVerifiedSubject(token);
+			fail("fikk ikke forventet exception");
+		} catch (Exception e) {
+			assertTrue("Forventer for lavt aut.nivå", e.getMessage().contains("autentiseringsnivå"));
+		}
+	}
+
+	@Test
+	public void ingenAuthLevelGirFeilkode() throws Exception {
+		JwtClaims claims = OidcTokenGeneratorUtil.generateClaims(USER, ISSUER);
+		claims.unsetClaim("acr");
+		String token = OidcTokenGeneratorUtil.generateToken(claims, PUBLIC_KEY);
+		try {
+			oidcAuthenticate.getVerifiedSubject(token);
+			fail("fikk ikke forventet exception");
+		} catch (Exception e) {
+			assertTrue("Forventer for lavt aut.nivå", e.getMessage().contains("autentiseringsnivå"));
+		}
+	}
+
 	private VerificationKeyResolver getOkResolver() {
 		return new VerificationKeyResolver() {			
 			@Override

@@ -29,6 +29,7 @@ public class OidcTokenGeneratorUtil {
 	    claims.setSubject(subject);
 	    claims.setExpirationTimeMinutesInTheFuture(5);
 	    claims.setIssuer(issuer);
+	    claims.setStringClaim("acr", "Level4");
 	    return claims;
 	}
 	

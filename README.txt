@@ -29,4 +29,11 @@ Testing med NAIS:
     } ] }
 - opprette baseurl (?) for topic i Fasit, url = topicnavn
 - brukere som skal kunne POSTe til kafka/restapi må i gruppe KP-<topicnavn>. Bruk Kafka-adminapi for å legge til bruker.
+  PUT /api/v1/topics/aapen-sporingslogg-loggmeldingMottatt/groups     - add/remove members in topic groups. Only members in KM-{topicName} are authorized
+  body: {
+    "member": "srvXXXX",
+    "operation": "ADD",
+    "role": "PRODUCER"
+  }
+ 
 - brukere som skal kunne GETe egne logger må ha OIDC-token fra oppsatt provider

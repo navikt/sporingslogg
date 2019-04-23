@@ -16,6 +16,10 @@ healthcheck:
     initialDelay: 5
     periodSeconds: 5
     failureThreshold: 60
+
+prometheus: 
+    enabled: true
+    path: /prometheus
     
 resources:
   limits:

@@ -2,6 +2,8 @@ package no.nav.sporingslogg.standalone.testconfig;
 
 import java.io.IOException;
 
+import javax.sql.DataSource;
+
 import org.hsqldb.persist.HsqlProperties;
 import org.hsqldb.server.ServerAcl.AclFormatException;
 import org.slf4j.Logger;
@@ -10,6 +12,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import no.nav.sporingslogg.kafka.KafkaProperties;
 import no.nav.sporingslogg.standalone.PropertyNames;
+import no.nav.sporingslogg.standalone.StandaloneJettyMain;
 import no.nav.sporingslogg.standalone.StandaloneJettyServer;
 
 public class StandaloneTestJettyMain {
@@ -251,17 +254,18 @@ Denne ble opprettet med følgende JSON til oneShot-tjenesten, av bruker k148586 
 		System.setProperty(key, "not_used");
 	}
 
-	private DriverManagerDataSource dataSource;
+	private DataSource dataSource;
 	
 	
-    DriverManagerDataSource createOracleTestDatasource() { 
-        DriverManagerDataSource ds = new DriverManagerDataSource();
-        ds.setDriverClassName("oracle.jdbc.OracleDriver");
-        ds.setUrl("jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=d26dbfl021.test.local)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=SPORINGSLOGGT4)(INSTANCE_NAME=cctf02)(UR=A)(SERVER=DEDICATED)))");
+    DataSource createOracleTestDatasource() { 
+//        DriverManagerDataSource ds = new DriverManagerDataSource();
+//        ds.setDriverClassName("oracle.jdbc.OracleDriver");
+//        ds.setUrl("jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=d26dbfl021.test.local)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=SPORINGSLOGGT4)(INSTANCE_NAME=cctf02)(UR=A)(SERVER=DEDICATED)))");
     	log.info("Jetty satt opp med Oracle, T4");
-        ds.setUsername("SPORINGSLOGG_T4");
-        ds.setPassword("fcCsL5wDtsOA");
-        return ds;
+//        ds.setUsername("SPORINGSLOGG_T4");
+//        ds.setPassword("fcCsL5wDtsOA");
+    	return StandaloneJettyMain.createOracleDatasource("jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=d26dbfl021.test.local)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=SPORINGSLOGGT4)(INSTANCE_NAME=cctf02)(UR=A)(SERVER=DEDICATED)))", 
+    			"SPORINGSLOGG_T4", "fcCsL5wDtsOA");
     }
     
 	DriverManagerDataSource createHsqlDatasource() {
