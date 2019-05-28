@@ -8,9 +8,9 @@ Test
 
 !3 1. Legg loggmelding på Kafka topic
 
-Meldingen 'Dette er meldingen' sendes som Base64-encodet tekst: 'RGV0dGUgZXIgbWVsZGluZ2Vu', på topic 'sporingslogg', angitt kafka-server
+Meldingen 'Dette er meldingen' sendes som Base64-encodet tekst: 'RGV0dGUgZXIgbWVsZGluZ2Vu', på topic 'aapen-sporingslogg-loggmeldingMottatt'
 
-| script | no.nav.sporingslogg.web.fitnesse.ExternKafkaProducerFixture  | d26apvl00159.test.local:8443 | sporingslogg |
+| script | no.nav.sporingslogg.web.fitnesse.ExternKafkaProducerFixture  | aapen-sporingslogg-loggmeldingMottatt |
 | produce | !- {"person":"12345678901", "mottaker":"123456789", "tema":"ABC", "behandlingsGrunnlag":"hjemmel1", "uthentingsTidspunkt":"2018-10-19T12:24:21.675", "leverteData":"RGV0dGUgZXIgbWVsZGluZ2Vu"} -! |
 
 
@@ -26,7 +26,7 @@ For REST-STS i test kan token hentes ved GET til https://security-token-service-
 med basic auth for bruker ('Basic c3J2QUJBQ1BFUDpoVUsxLjMwc0tocXAwLigy' for 12345678901)
 
 | !- Table:no.nav.sporingslogg.web.fitnesse.ServerRestFixture -! |
-| oidctoken | eyJraWQiOiJhZTUyMzFkMC1hYjA3LTRhZmEtYjk1Ny00MTUwODFjM2Q4M2MiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJzcnZBQkFDUEVQIiwiYXVkIjpbInNydkFCQUNQRVAiLCJwcmVwcm9kLmxvY2FsIl0sInZlciI6IjEuMCIsIm5iZiI6MTU0NDYxNzk5MywiYXpwIjoic3J2QUJBQ1BFUCIsImlkZW50VHlwZSI6IlN5c3RlbXJlc3N1cnMiLCJhdXRoX3RpbWUiOjE1NDQ2MTc5OTMsImlzcyI6Imh0dHBzOlwvXC9zZWN1cml0eS10b2tlbi1zZXJ2aWNlLm5haXMucHJlcHJvZC5sb2NhbCIsImV4cCI6MTU0NDYyMTU5MywiaWF0IjoxNTQ0NjE3OTkzLCJqdGkiOiJiYjVmOGRkMy0wOGU1LTQ2MDItYjY1My01MzEyYjI1NGEwZmMifQ.CkfeGjSVPlPEnw7dl0bF1CXat04K_bW3iWvIjhXbNc73UudW-PFxjyRoc2Fir9SgEvuI_Dic8WQiSb62NOYZzPC3TM-vqaxDLvdN_zRTB0foHc-6406dTrPTOeN6szTbScgV_vi6VnfeyxfmYPLBsLuyVzo3wxeBHjyXGofJ8ILg6h7o2nJxzPoUy6ymjvblWJc16InlGNI60_8EwMZjT_W7qHqgqGFxJmsIf4bIYpD_e5JXJSHBB8ndaAaUZp-myFGNKN1OkI3Rylg2Asa-8WT6Mh9Ur9uQn2BYtwBJIL6HuB9m2L24WPdXG7-754Yrg6DAzMH8QIgR91-NwJbXDg |
+| oidctoken | eyJraWQiOiIyYzIyZTUwNC04YmRhLTRjZmItOGU0Ny1iNDM2NmI3OThkMDAiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJzcnZBQkFDUEVQIiwiYXVkIjpbInNydkFCQUNQRVAiLCJwcmVwcm9kLmxvY2FsIl0sInZlciI6IjEuMCIsIm5iZiI6MTU1OTAzOTk0NiwiYXpwIjoic3J2QUJBQ1BFUCIsImlkZW50VHlwZSI6IlN5c3RlbXJlc3N1cnMiLCJhdXRoX3RpbWUiOjE1NTkwMzk5NDYsImlzcyI6Imh0dHBzOlwvXC9zZWN1cml0eS10b2tlbi1zZXJ2aWNlLXQxMC5uYWlzLnByZXByb2QubG9jYWwiLCJleHAiOjE1NTkwNDM1NDYsImlhdCI6MTU1OTAzOTk0NiwianRpIjoiNGU1OWY5YzgtNGY4Ni00ZTViLTg3OTgtMGJjZDJmNmFjNzIwIn0.g72JKPhpRmjJSCppBmm_DsEt-vghChA6Mt-n4Q0UZa6ofzj7wrm5qfsEHLEkO53GoMA_2m71xyNfi9ekfaKTLkaFBabqlfO7qtcN16N3SuSuiZ-XsEMmPt6qkr8y506U-_QfNp6w5d1CqDCiwCYKvXTT7kzIuRevcC23o0qwJT-vukG4UeXSnvwAOd15o9qKBxhEERuduNkQ1KcRsYyh0zA8U8EVg04L-qjbFG1-r3nwTkHiLW1WvSYE-STnDffclqjBgMvsMM2d6WViRP5-tsf2N0IzM8uoHxoreuFv99jlgXytffRatOvVJ43FJJP2RsHIEG8s9FgLOpNFHZUASQ |
 | GET | /sporingslogg/api/les | 200 | Content-Type : application/json  |!- 
  jsonbody[0].person === "12345678901"
  jsonbody[0].mottaker === "123456789"

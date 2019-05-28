@@ -30,7 +30,7 @@ public class PingController {
     public Response ping() {
 //        log.debug("Ping er kalt");
         if (loggTjeneste.isReady()) {
-            log.debug("Ping returnerer OK"); 
+//            log.debug("Ping returnerer OK"); 
             return Response.status(Response.Status.OK).entity("OK").build();
         }
         log.warn("Ping returnerer feil");

@@ -6,13 +6,8 @@ Testing lokalt:
   Kan konfigurere både ldap, oidc-provider, kafka og database til mer eller mindre realistiske utgaver.
   Fitnesse-testene som kjører som enhetstester bruker en enkel standalone-variant.
 
-Testing med "lokal" Docker:
-- bruk Dockerfile_uten_nais, f.eks docker image build -t sporingslogg:latest -f Dockerfile_uten_nais . ; docker container run -p 8088:8088 <image>
-  Kan bl.a. testes med Fitnesse-tester for ekstern-server
-  NB: Kan bli problemer med SSL til f.eks. kafka, hvis ikke Docker-serveren klarer dette
-  
-Testing med NAIS:
-- Fitnesse-tester for ekstern-server
+Testing på NAIS:
+- Fitnesse-tester for ekstern-server (start StartFitnesseSporingsLoggWeb, åpne http://localhost:9090 i nettleser)
 
 
 ------------------- Manuelle operasjoner pr miljø/prodsetting:
@@ -22,7 +17,7 @@ Testing med NAIS:
 - opprette topic++ i Kafka-adminapi, oneShot-json:
 { "topics": [ { "configEntries": {},
       "members": [
-        { "member": "srvsporingslogg", "role": "PRODUCER" },
+        { "member": "srvsporingslogg", "role": "PRODUCER" },               !! ble ikke laget i prod !
         { "member": "srvsporingslogg", "role": "CONSUMER" }
       ], "numPartitions": 1,
       "topicName": "aapen-sporingslogg-loggmeldingMottatt"

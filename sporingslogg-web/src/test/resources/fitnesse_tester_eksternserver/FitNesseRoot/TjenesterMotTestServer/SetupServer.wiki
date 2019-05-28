@@ -2,19 +2,20 @@
 !3 Ikke endre her - det er bare en huskeliste for mulige valg
 
 |Comment|Mulige miljøer:|  
-|                    |URL                                           |Bruker          | Kommentar
-|Standalone docker:  |http://e34apvl00253.devillo.no:8088           |srvPDP          | Bruker test-LDAP, klarer ikke OIDC pga SSL til REST-STS
-|NAIS T4:            |https://sporingslogg-t4.nais.preprod.local    |srvsporingslogg | Bruker T(4)
-|NAIS Q2:            |https://sporingslogg-q2.nais.preprod.local    |srvsporingslogg | Bruker Q(2)
+|                    |URL                                           |Bruker          | Kafka-broker | Kommentar
+|NAIS T4:            |https://sporingslogg-t4.nais.preprod.local    |srvsporingslogg | d26apvl00159.test.local:8443 | Bruker LDAP i T
+|NAIS Q2:            |https://sporingslogg-q2.nais.preprod.local    |srvsporingslogg |  | Bruker Q(2)
 
 
 !3 Sett opp det som skal brukes her, passordene til brukerne skal ligge i src/test/resources/fitnesseusers.txt. Ikke commit endringer i den fila til git...!
 
-!define server_url     (http://localhost:9098)
+!define server_url     (https://sporingslogg-t4.nais.preprod.local)
+
+!define kafka_broker     (d26apvl00159.test.local:8443)
 
 !define username  (srvsporingslogg)
 
 !3 Dette skal heller ikke endres, her brukes parametrene som er satt over
 
-| script | no.nav.sporingslogg.web.fitnesse.SetupServer | ${server_url} |
+| script | no.nav.sporingslogg.web.fitnesse.SetupServer | ${server_url} | ${kafka_broker} |
 | bruker | ${username}  |

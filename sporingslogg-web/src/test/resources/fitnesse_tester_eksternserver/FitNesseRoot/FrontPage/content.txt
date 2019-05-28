@@ -1,9 +1,8 @@
-!1 Systemtester for Juridisk Logg
+!1 Systemtester for Sporingslogg
 
 
-!3 Test suite for Juridisklogg-tjenester, med bruk av en faktisk server. Kjøres MANUELT som "syretest" på et testmiljø:
-!4 Testene dekker et representativt utvalg av hovedfunksjoner, f.eks. logging via alle input-kanaler.
-!4 Sett opp ønsket servermiljø på !-SetupServer-!-siden (URLer, brukernavn og passord) og kjør deretter suiten.
+!3 Test suite for Sporingslogg-tjenester, med bruk av en faktisk server. Kjøres MANUELT som "syretest" på et testmiljø:
+!4 Sett opp ønsket servermiljø på !-SetupServer-!-siden (URL, brukernavn) og kjør deretter suiten.
 
 TjenesterMotTestServer
 

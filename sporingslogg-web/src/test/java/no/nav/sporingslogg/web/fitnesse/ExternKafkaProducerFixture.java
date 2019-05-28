@@ -17,16 +17,18 @@ public class ExternKafkaProducerFixture {
 	
 	private String bootstrapServers; // TODO noen av disse settes i testen, kunne vært satt i setupServer, eller hardkodet som her
 	private String topic;
-	private String user = "srvABACPEP";
-	private String password = "hUK1.30sKhqp0.(2";
+	private String user;
+	private String password;
 	private String tsFile = "W:/workspace/sporingslogg/sporingslogg-web/src/main/webapp/WEB-INF/local-jetty/nav_truststore_nonproduction_ny2.jts";
 	private String tsPassword = "467792be15c4a8807681fd2d5c9c1748";
 
 	KafkaProducer<Integer, String> producer;		
 
-	public ExternKafkaProducerFixture(String bootstrapServers, String topic) {
-		this.bootstrapServers = bootstrapServers;
+	public ExternKafkaProducerFixture(String topic) {
+		this.bootstrapServers = SetupServer.kafkaBroker;
 		this.topic = topic;
+		this.user = SetupServer.brukernavn();
+		this.password = SetupServer.passord();
 		Map<String, Object> senderProps = getSenderPropsForExternKafka();
 		System.out.println("Bruker Kafka props: " + senderProps);
 		System.out.println("################################### Oppretter producer mot server: " + bootstrapServers);	

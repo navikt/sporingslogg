@@ -1,5 +1,9 @@
 package no.nav.sporingslogg.standalone;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.ConnectionFactory;
@@ -28,6 +32,13 @@ public class StandaloneJettyMain {
     	
     	PropertyUtil.fixDockerEnvProblem();
     	
+		String passwordFile = System.getenv("PASSWORD_FILE");
+		Properties passwords = readFromSecretsPropertyFile(passwordFile);
+		
+		System.setProperty(PropertyNames.PROPERTY_LDAP_PASSWORD, passwords.getProperty("LDAP_PASSWORD"));
+		System.setProperty(PropertyNames.PROPERTY_DB_PASSWORD, passwords.getProperty("SPORINGSLOGGDB_PASSWORD"));
+		System.setProperty(PropertyNames.PROPERTY_KAFKA_PASSWORD, passwords.getProperty("NO_NAV_SPORINGSLOGG_KAFKA_PASSWORD"));
+		
     	System.setProperty(PropertyNames.PROPERTY_DB_DIALECT, "org.hibernate.dialect.Oracle10gDialect");
     	System.setProperty(PropertyNames.PROPERTY_DB_SHOWSQL, "false");
     	System.setProperty(PropertyNames.PROPERTY_DB_GENERATEDDL, "false");
@@ -59,6 +70,16 @@ public class StandaloneJettyMain {
         }
     }
 	
+	private static Properties readFromSecretsPropertyFile(String filename) {
+		try (FileInputStream f = new FileInputStream(filename)) {
+			Properties secrets = new Properties();
+			secrets.load(f);
+			return secrets;
+		} catch (IOException e) {
+			throw new RuntimeException("Kan ikke lese secrets fil "+filename+" fra vault", e);
+		}
+	}
+
     public static DataSource createOracleDatasource() { 
     	
         String url = PropertyUtil.getProperty(PropertyNames.PROPERTY_DB_URL);

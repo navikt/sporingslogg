@@ -18,11 +18,12 @@ import org.jsslutils.extra.apachehttpclient.SslContextedSecureProtocolSocketFact
 public class SetupServer {
 	
 	static String url;
+	static String kafkaBroker;
 	static BrukernavnOgPassord bruker;
 	
 	private Properties testUserPasswords = null;
 
-	private static class BrukernavnOgPassord {
+	 static class BrukernavnOgPassord {
 		final String brukernavn;
 		final String passord;
 		public BrukernavnOgPassord(String brukernavn, String passord) {
@@ -31,11 +32,12 @@ public class SetupServer {
 		}		
 	}
 	
-    public SetupServer(String url) {
+    public SetupServer(String url, String kafkaBroker) {
     	SetupServer.url = url.trim();
     	if (url.contains("https")) {
     		setupSsl();
     	}
+    	SetupServer.kafkaBroker = kafkaBroker.trim();
     }
 	
 	public void bruker(String brukernavn) { 
