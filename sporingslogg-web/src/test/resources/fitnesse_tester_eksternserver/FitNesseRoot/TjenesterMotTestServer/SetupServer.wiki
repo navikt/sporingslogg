@@ -2,16 +2,16 @@
 !3 Ikke endre her - det er bare en huskeliste for mulige valg
 
 |Comment|Mulige miljøer:|  
-|                    |URL                                           |Bruker          | Kafka-broker | Kommentar
-|NAIS T4:            |https://sporingslogg-t4.nais.preprod.local    |srvsporingslogg | d26apvl00159.test.local:8443 | Bruker LDAP i T
-|NAIS Q2:            |https://sporingslogg-q2.nais.preprod.local    |srvsporingslogg |  | Bruker Q(2)
+|                    |URL                                           |Bruker          | Kafka-broker                    | Kommentar
+|NAIS T4:            |https://sporingslogg-t4.nais.preprod.local    |srvsporingslogg | d26apvl00159.test.local:8443    | Bruker LDAP i T
+|NAIS Q2:            |https://sporingslogg-q2.nais.preprod.local    |srvsporingslogg | b27apvl00045.preprod.local:8443 | Bruker LDAP i Q
 
 
 !3 Sett opp det som skal brukes her, passordene til brukerne skal ligge i src/test/resources/fitnesseusers.txt. Ikke commit endringer i den fila til git...!
 
-!define server_url     (https://sporingslogg-t4.nais.preprod.local)
+!define server_url     (https://sporingslogg-q2.nais.preprod.local)
 
-!define kafka_broker     (d26apvl00159.test.local:8443)
+!define kafka_broker     (b27apvl00045.preprod.local:8443)
 
 !define username  (srvsporingslogg)
 

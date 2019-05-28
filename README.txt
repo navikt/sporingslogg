@@ -12,7 +12,7 @@ Testing på NAIS:
 
 ------------------- Manuelle operasjoner pr miljø/prodsetting:
 
-- opprette DB i Basta (se db_ddl.sql under resources i core-prosjekt)
+- opprette DB i Basta (Og opprettet tabeller etc - se db_ddl.sql under resources i core-prosjekt)
 - opprette srvsporingslogg i Basta
 - opprette topic++ i Kafka-adminapi, oneShot-json:
 { "topics": [ { "configEntries": {},
