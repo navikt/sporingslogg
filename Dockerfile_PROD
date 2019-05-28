@@ -31,7 +31,3 @@ COPY sporingslogg-web/target/sporingslogg-web.jar /app/app.jar
 
 # Expose default http jetty port
 EXPOSE 8088
-
-
-oMe2NpmGvMJBRo7
-JwVWVStKg6lk0nrXOlaA
