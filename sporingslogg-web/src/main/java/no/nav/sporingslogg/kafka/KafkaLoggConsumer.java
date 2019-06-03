@@ -31,8 +31,11 @@ public class KafkaLoggConsumer {
 	LoggTjeneste loggTjeneste;
 		
 	public KafkaLoggConsumer(KafkaProperties kafkaProperties) {
-	    Properties props = setProperties(kafkaProperties);		
-	    log.info("Kafka consumer bruker props: " + props);
+	    Properties props = setProperties(kafkaProperties);
+	    // Fjern passord fra props før display, bruk samme kode som i setProperties
+	    Properties propsToDisplay = new Properties(props);
+	    propsToDisplay.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username='"+kafkaProperties.getUsername()+"' password='.......';");
+	    log.info("Kafka consumer bruker props: " + propsToDisplay);
 		pollForever(kafkaProperties.getTopic(), props);
 	}
 
@@ -44,8 +47,7 @@ public class KafkaLoggConsumer {
 	    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, LoggmeldingJsonMapper.class);
 	    
 		props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_SSL.name);
-		props.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username='"+kafkaProperties.getUsername()
-		+"' password='"+kafkaProperties.getPassword()+"';");
+		props.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username='"+kafkaProperties.getUsername()+"' password='"+kafkaProperties.getPassword()+"';");
 		props.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
 		props.put(SaslConfigs.SASL_KERBEROS_SERVICE_NAME, "kafka");
 		
