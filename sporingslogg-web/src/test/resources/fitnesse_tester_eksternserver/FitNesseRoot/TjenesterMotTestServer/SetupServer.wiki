@@ -9,9 +9,9 @@
 
 !3 Sett opp det som skal brukes her, passordene til brukerne skal ligge i src/test/resources/fitnesseusers.txt. Ikke commit endringer i den fila til git...!
 
-!define server_url     (https://sporingslogg-q2.nais.preprod.local)
+!define server_url     (https://sporingslogg-t4.nais.preprod.local)
 
-!define kafka_broker     (b27apvl00045.preprod.local:8443)
+!define kafka_broker     (d26apvl00159.test.local:8443)
 
 !define username  (srvsporingslogg)
 

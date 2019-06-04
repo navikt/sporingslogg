@@ -6,6 +6,5 @@ target/
 .idea/
 **/FitNesseRoot/files/
 nais.yaml
-Dockerfile
 deploys.txt
 

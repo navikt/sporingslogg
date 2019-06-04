@@ -1,0 +1,57 @@
+# Miljøspesifikke verdier: metadata.namespace, spec.ingresses, og spec.env-verdiene
+# image-navnet injiseres med riktig versjon
+#
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: sporingslogg
+  namespace: t4
+  labels:
+    team: integrasjon
+spec:
+  image: _IMAGE_FULLNAME_
+  port: 8088
+  ingresses:
+    - "https://sporingslogg-t4.nais.preprod.local"
+  secureLogs:
+    enabled: false
+  replicas:
+    min: 2
+    max: 4
+    cpuThresholdPercentage: 60
+  liveness:
+    path: /sporingslogg/api/ping
+  readiness:
+    path: /sporingslogg/api/ping
+  resources:
+    limits:
+      cpu: 400m
+      memory: 512Mi
+    requests:
+      cpu: 200m
+      memory: 256Mi
+  vault: 
+    enabled: true
+  env:
+    - name: LDAP_URL
+      value: "ldaps://ldapgw.test.local"
+    - name: LDAP_BASEDN
+      value: "DC=test,DC=local"
+    - name: LDAP_USER_BASEDN
+      value: "ou=NAV,ou=BusinessUnits,dc=test,dc=local"
+    - name: LDAP_SERVICEUSER_BASEDN
+      value: "ou=ServiceAccounts,dc=test,dc=local"
+    - name: SPORINGSLOGGDB_URL
+      value: "jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=d26dbfl021.test.local)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=SPORINGSLOGGT4)(INSTANCE_NAME=cctf02)(UR=A)(SERVER=DEDICATED)))"
+    - name: SPORINGSLOGGDB_USERNAME
+      value: "SPORINGSLOGG_T4"
+    - name: NO_NAV_SPORINGSLOGG_KAFKA_SERVERS
+      value: "d26apvl00159.test.local:8443,d26apvl00160.test.local:8443,d26apvl00161.test.local:8443"
+# OIDC-ressursene er annerledes for idporten/openam
+    - name: NO_NAV_SPORINGSLOGG_OIDC_ISSUER
+      value: "https://security-token-service-t4.nais.preprod.local"
+    - name: NO_NAV_SPORINGSLOGG_OIDC_JWKS
+      value: "https://security-token-service-t4.nais.preprod.local/rest/v1/sts/jwks"
+# Skal være satt til 4 (Bank-ID) når man går mot ID-porten, 0 ellers
+    - name: SPORINGSLOGG_CHECK_AUTHLEVEL
+      value: "0"
