@@ -21,8 +21,14 @@ spec:
     cpuThresholdPercentage: 60
   liveness:
     path: /sporingslogg/api/ping
+    initialDelay: 5
+    periodSeconds: 5
+    failureThreshold: 60
   readiness:
     path: /sporingslogg/api/ping
+    initialDelay: 5
+    periodSeconds: 5
+    failureThreshold: 60
   resources:
     limits:
       cpu: 400m
