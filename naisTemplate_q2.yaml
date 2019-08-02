@@ -54,10 +54,27 @@ spec:
     - name: NO_NAV_SPORINGSLOGG_KAFKA_SERVERS
       value: "b27apvl00045.preprod.local:8443,b27apvl00046.preprod.local:8443,b27apvl00047.preprod.local:8443"
 # OIDC-ressursene er annerledes for idporten/openam
+#Issuer:
+#  https://stub-oidc-provider.azurewebsites.net
+#Jwks: 
+#  https://stub-oidc-provider.azurewebsites.net/certs
+#
+# Azure:
+#   https://login.microsoftonline.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/
+#   https://login.microsoftonline.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1
+# NAV STS i Q
+#   https://security-token-service.nais.preprod.local
+#   https://security-token-service.nais.preprod.local/rest/v1/sts/jwks
+
     - name: NO_NAV_SPORINGSLOGG_OIDC_ISSUER
-      value: "https://security-token-service.nais.preprod.local"
+      value: "https://login.microsoftonline.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/"
     - name: NO_NAV_SPORINGSLOGG_OIDC_JWKS
-      value: "https://security-token-service.nais.preprod.local/rest/v1/sts/jwks"
+      value: "https://login.microsoftonline.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1"
 # Skal være satt til 4 (Bank-ID) når man går mot ID-porten, 0 ellers
     - name: SPORINGSLOGG_CHECK_AUTHLEVEL
-      value: "0"
+      value: "4"
+# Må sette opp web proxy hvis JWKS-URL er ekstern
+    - name: NO_NAV_SPORINGSLOGG_OIDC_PROVIDER_PROXYHOST
+      value: "webproxy-nais.nav.no"
+    - name: NO_NAV_SPORINGSLOGG_OIDC_PROVIDER_PROXYPORT
+      value: "8088"

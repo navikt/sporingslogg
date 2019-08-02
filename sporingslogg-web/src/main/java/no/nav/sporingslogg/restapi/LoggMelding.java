@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class LoggMelding { // JSON-melding ved logging av datautlevering
 
+	private String id;                           // Unik ID (brukes kun ved les/uthenting)
     private String person;                       // Fnr/dnr for personen dataene gjelder
     private String mottaker;                     // Orgnr som dataene leveres ut til
     private String tema;                         // Type data, som definert i https://modapp.adeo.no/kodeverksklient/viskodeverk, Tema
@@ -12,7 +13,13 @@ public class LoggMelding { // JSON-melding ved logging av datautlevering
     private String leverteData;                  // Utleverte data, B64-encodet JSON
     private String samtykkeToken;                // JWT fra Altinn, encoded som i https://altinn.github.io/docs/guides/samtykke/datakilde/bruk-av-token/
 
-    public String getPerson() {
+    public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getPerson() {
 		return person;
 	}
 	public void setPerson(String person) {
@@ -56,7 +63,7 @@ public class LoggMelding { // JSON-melding ved logging av datautlevering
 	}
 	@Override
 	public String toString() {
-		return "LoggMelding [person=" + person + ", mottaker=" + mottaker + ", tema=" + tema + ", behandlingsGrunnlag=" + behandlingsGrunnlag
+		return "LoggMelding [id=" + id + ", person=" + person + ", mottaker=" + mottaker + ", tema=" + tema + ", behandlingsGrunnlag=" + behandlingsGrunnlag
 				+ ", uthentingsTidspunkt=" + uthentingsTidspunkt + ", leverteData=" + leverteData + ", samtykkeToken=" + samtykkeToken + "]";
 	}
 }

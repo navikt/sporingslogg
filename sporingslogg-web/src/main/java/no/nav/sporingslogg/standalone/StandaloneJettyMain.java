@@ -59,6 +59,14 @@ public class StandaloneJettyMain {
     		System.setProperty(PropertyNames.PROPERTY_KAFKA_PRODUCERGROUP, kafkaProducerGroupId);
     	}
 
+    	// Sett opp proxy for JWKS-kall mot OIDC-provider, hvis nødvendig
+    	String proxyHost = System.getenv("NO_NAV_SPORINGSLOGG_OIDC_PROVIDER_PROXYHOST");
+    	if (proxyHost != null && proxyHost.trim().length() > 0) {
+    		log.info("Will use web proxy when connecting to OIDC-provider: " + proxyHost);
+    		System.setProperty(PropertyNames.PROPERTY_PROXYHOST, proxyHost);
+    		System.setProperty(PropertyNames.PROPERTY_PROXYPORT, System.getenv("NO_NAV_SPORINGSLOGG_OIDC_PROVIDER_PROXYPORT"));    		
+    	}
+
     	// Start serveren
     	
     	try {

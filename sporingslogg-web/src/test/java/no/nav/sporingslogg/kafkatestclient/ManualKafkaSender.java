@@ -23,10 +23,13 @@ public class ManualKafkaSender { // Send melding(er) til kafka startet via Embed
 	
 	private static final KafkaProperties EMBEDDED_PROPERTIES = StandaloneTestJettyMain.getKafkaEmbeddedProperties();
 	private static final KafkaProperties TEST_PROPERTIES = StandaloneTestJettyMain.getKafkaTestProperties();
+	private static final KafkaProperties PREPROD_PROPERTIES = StandaloneTestJettyMain.getKafkaPreprodProperties();
 
 	public static void main(String[] args) {
-		Map<String, Object> senderProps = getSenderPropsForTest();		
-		new ManualKafkaSender().sendMessages(senderProps, TEST_PROPERTIES.getBootstrapServers(), TEST_PROPERTIES.getTopic());
+//		Map<String, Object> senderProps = getSenderPropsForTest();		
+//		new ManualKafkaSender().sendMessages(senderProps, TEST_PROPERTIES.getBootstrapServers(), TEST_PROPERTIES.getTopic());
+		Map<String, Object> senderProps = getSenderPropsForPreprod();		
+		new ManualKafkaSender().sendMessages(senderProps, PREPROD_PROPERTIES.getBootstrapServers(), PREPROD_PROPERTIES.getTopic());
 //		Map<String, Object> senderProps = getSenderPropsForEmbeddedKafka();		
 //		new ManualKafkaSender().sendMessages(senderProps, SERVER_EMBEDDED, TOPIC_EMBEDDED);
 	}
@@ -46,6 +49,18 @@ public class ManualKafkaSender { // Send melding(er) til kafka startet via Embed
 		senderProps.put(SaslConfigs.SASL_KERBEROS_SERVICE_NAME, "kafka");
 		senderProps.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, TEST_PROPERTIES.getTruststoreFile());
 		senderProps.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG,  TEST_PROPERTIES.getTruststorePassword());
+		return senderProps;
+	}
+	public static Map<String, Object> getSenderPropsForPreprod() {
+		Map<String, Object> senderProps = getGeneralSenderProps();
+		senderProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, PREPROD_PROPERTIES.getBootstrapServers());		
+		senderProps.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_SSL.name);
+		senderProps.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username='"+PREPROD_PROPERTIES.getUsername()
+		+"' password='"+PREPROD_PROPERTIES.getPassword()+"';");
+		senderProps.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
+		senderProps.put(SaslConfigs.SASL_KERBEROS_SERVICE_NAME, "kafka");
+		senderProps.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, PREPROD_PROPERTIES.getTruststoreFile());
+		senderProps.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG,  PREPROD_PROPERTIES.getTruststorePassword());
 		return senderProps;
 	}
 	public static Map<String, Object> getGeneralSenderProps() {

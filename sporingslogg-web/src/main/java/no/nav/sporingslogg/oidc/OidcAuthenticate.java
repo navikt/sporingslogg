@@ -124,6 +124,20 @@ public class OidcAuthenticate {
 		}
 	}
 
+	public String getUnverifiedSubject(String bearerToken)  {  // Denne er laget for å bypasse all token-sjekking i test - ikke bruk den i prod
+		JwtConsumer jwtConsumer = buildAcceptAnythingJwtConsumer(); 
+		try {
+			JwtClaims jwtClaims = jwtConsumer.processToClaims(bearerToken);
+	        return jwtClaims.getSubject();
+	        
+		} catch (InvalidJwtException e) {
+			throw new RuntimeException("OIDC-token er ikke gyldig", e);
+			
+		} catch (MalformedClaimException e) {
+			throw new RuntimeException("Kan ikke hente ut bruker fra OIDC-token", e);
+		}
+	}
+	
 	private JwtConsumer buildJwtConsumer() {
 		JwtConsumerBuilder builder = new JwtConsumerBuilder()
 	            .setRequireExpirationTime() 
@@ -138,6 +152,12 @@ public class OidcAuthenticate {
 			builder.setVerificationKeyResolver(keyResolver);
 		}
 		
+		return builder.build();
+	}
+	private JwtConsumer buildAcceptAnythingJwtConsumer() {
+		JwtConsumerBuilder builder = new JwtConsumerBuilder()
+	            .setSkipAllValidators()
+	            .setSkipSignatureVerification();
 		return builder.build();
 	}
 }

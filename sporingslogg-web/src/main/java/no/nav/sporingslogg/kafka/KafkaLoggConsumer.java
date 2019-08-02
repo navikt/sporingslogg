@@ -68,10 +68,10 @@ public class KafkaLoggConsumer {
 				kafkaConsumer.subscribe(Collections.singletonList(topic));  
 				
 				while (true) { 
-					log.debug("Starter polling 10 sek");
+//					log.debug("Starter polling 10 sek");
 //					try {
 						ConsumerRecords<Integer, LoggMelding> records = kafkaConsumer.poll(Duration.ofSeconds(10));   
-						log.debug("Polling ferdig, ga "+records.count() + " records");
+//						log.debug("Polling ferdig, ga "+records.count() + " records");
 						for (ConsumerRecord<Integer, LoggMelding> record : records) {                
 							LoggMelding loggMelding = record.value();
 							if (loggMelding != null) {

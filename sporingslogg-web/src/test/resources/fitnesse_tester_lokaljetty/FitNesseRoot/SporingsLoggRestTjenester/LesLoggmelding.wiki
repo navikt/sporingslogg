@@ -22,6 +22,7 @@ Test
 | !- Table:no.nav.sporingslogg.web.fitnesse.LocalJettyRestFixture -! |
 | oidctoken | eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwMSIsImV4cCI6MTU0MDkwMjkyOSwiaXNzIjoiZHVtbXlJc3N1ZXIifQ.O9k2NJ04ngkfFKhBRA16gs3hbXl9ZHLLaoMmjLbu2IA |
 | GET | /sporingslogg/api/les | 200 | Content-Type : application/json  |!- 
+ jsonbody[0].id === "1001"
  jsonbody[0].person === "12345678901"
  jsonbody[0].mottaker === "123456789"
  jsonbody[0].tema === "ABC"

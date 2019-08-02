@@ -8,6 +8,9 @@ public class PropertyNames {
     public static final String PROPERTY_OIDC_JWKS = "no.nav.sporingslogg.oidc.jwks";
     public static final String PROPERTY_OIDC_ISSUER = "no.nav.sporingslogg.oidc.issuer";
     public static final String PROPERTY_OIDC_AUTHLEVEL = "SPORINGSLOGG_CHECK_AUTHLEVEL";
+    // Disse brukes hvis JWKS-URLen må aksesseres via web proxy
+    public static final String PROPERTY_PROXYHOST = "https.proxyHost";
+    public static final String PROPERTY_PROXYPORT = "https.proxyPort";
     
     public static final String PROPERTY_KAFKA_TOPIC = "no.nav.sporingslogg.kafka.topic";
     public static final String PROPERTY_KAFKA_GROUP = "no.nav.sporingslogg.kafka.groupid";

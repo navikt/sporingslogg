@@ -6,6 +6,7 @@ public class LoggConverter {
 
     public static LoggMelding toJsonObject(LoggInnslag loggInnslag) {
 		LoggMelding loggMelding = new LoggMelding();
+		loggMelding.setId(""+loggInnslag.getId());
 		loggMelding.setPerson(loggInnslag.getPerson());
 		loggMelding.setMottaker(loggInnslag.getMottaker());
 		loggMelding.setTema(loggInnslag.getTema());

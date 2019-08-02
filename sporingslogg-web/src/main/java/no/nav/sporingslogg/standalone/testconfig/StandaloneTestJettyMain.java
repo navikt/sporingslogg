@@ -224,6 +224,19 @@ Denne ble opprettet med følgende JSON til oneShot-tjenesten, av bruker k148586 
         return kp;
 	}
 
+	public static KafkaProperties getKafkaPreprodProperties() {
+		KafkaProperties kp = new KafkaProperties();
+		kp.setBootstrapServers("b27apvl00045.preprod.local:8443,b27apvl00046.preprod.local:8443,b27apvl00047.preprod.local:8443");
+		kp.setTopic("aapen-sporingslogg-loggmeldingMottatt");
+		kp.setGroupId("KC-aapen-sporingslogg-loggmeldingMottatt");
+		kp.setProducerGroupId("KP-aapen-sporingslogg-loggmeldingMottatt");
+		kp.setUsername("srvsporingslogg");
+		kp.setPassword("cZ0KeUiRCXkT9Y9");
+        kp.setTruststoreFile(SPORINGSLOGG_ROOT+"/sporingslogg-web/src/main/webapp/WEB-INF/local-jetty/nav_truststore_nonproduction_ny2.jts");
+        kp.setTruststorePassword("467792be15c4a8807681fd2d5c9c1748");
+        return kp;
+	}
+
 	public static KafkaProperties getKafkaEmbeddedProperties() {
 		KafkaProperties kp = new KafkaProperties();
 		kp.setBootstrapServers("127.0.0.1:9092");

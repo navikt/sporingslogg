@@ -62,15 +62,10 @@ public class LesController {
             throw new SecurityException("Ingen Bearer Authorization header i request");
     	}
 
-		// Må settes opp med keys og issuer
-//		String issuer = "https://login.microsoftonline.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/";
-//		String keys =   "https://login.microsoftonline.com/common/discovery/keys";
-//	    HttpsJwks httpsJkws = new HttpsJwks(keys);
-//	    HttpsJwksVerificationKeyResolver httpsJwksKeyResolver = new HttpsJwksVerificationKeyResolver(httpsJkws);
-//		OidcAuthenticate oidcAuthenticate = new OidcAuthenticate(httpsJwksKeyResolver, issuer);
 		try {
 			String token = bearerHeader.substring("Bearer".length()).trim();
-			return oidcAuthenticate.getVerifiedSubject(token); 
+			return oidcAuthenticate.getVerifiedSubject(token);  // bruk unVerified i test hvis man ikke kan validere token
+			//return oidcAuthenticate.getUnverifiedSubject(token); 
 		} catch (RuntimeException e) {
 			log.debug("OIDC validering feiler: ", e);
             throw new SecurityException("OIDC-token validering feiler", e);  // Det er mulig å få feil her pga. trøbbel med å nå OIDC-issuer, som er et teknisk problem, men oftest feil i token
