@@ -10,6 +10,10 @@ Testing på NAIS:
 - Fitnesse-tester for ekstern-server (start StartFitnesseSporingsLoggWeb, åpne http://localhost:9090 i nettleser)
 
 
+Kibana: application:sporingslogg AND namespace:q2 (t4) evt environment:p
+
+Grafana: ikke ferdig
+
 ------------------- Manuelle operasjoner pr miljø/prodsetting:
 
 - opprette DB i Basta (Og opprettet tabeller etc - se db_ddl.sql under resources i core-prosjekt)
@@ -32,3 +36,4 @@ Testing på NAIS:
   }
  
 - brukere som skal kunne GETe egne logger må ha OIDC-token fra oppsatt provider
+  I testmiljøer brukes enten intern rest-sts eller azure-test (med webproxy)
