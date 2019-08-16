@@ -28,10 +28,10 @@ public class ManualKafkaSender { // Send melding(er) til kafka startet via Embed
 	public static void main(String[] args) {
 //		Map<String, Object> senderProps = getSenderPropsForTest();		
 //		new ManualKafkaSender().sendMessages(senderProps, TEST_PROPERTIES.getBootstrapServers(), TEST_PROPERTIES.getTopic());
-		Map<String, Object> senderProps = getSenderPropsForPreprod();		
-		new ManualKafkaSender().sendMessages(senderProps, PREPROD_PROPERTIES.getBootstrapServers(), PREPROD_PROPERTIES.getTopic());
-//		Map<String, Object> senderProps = getSenderPropsForEmbeddedKafka();		
-//		new ManualKafkaSender().sendMessages(senderProps, SERVER_EMBEDDED, TOPIC_EMBEDDED);
+//		Map<String, Object> senderProps = getSenderPropsForPreprod();		
+//		new ManualKafkaSender().sendMessages(senderProps, PREPROD_PROPERTIES.getBootstrapServers(), PREPROD_PROPERTIES.getTopic());
+		Map<String, Object> senderProps = getSenderPropsForEmbeddedKafka();		
+		new ManualKafkaSender().sendMessages(senderProps, EMBEDDED_PROPERTIES.getBootstrapServers(), EMBEDDED_PROPERTIES.getTopic());
 	}
 	
 	public static Map<String, Object> getSenderPropsForEmbeddedKafka() {
@@ -79,8 +79,16 @@ public class ManualKafkaSender { // Send melding(er) til kafka startet via Embed
 //			producer.send(lagKafkaRecord(counter++, topic)).get();
 //			producer.send(lagKafkaRecord(counter++, topic)).get();
 //			producer.send(lagKafkaRecord(counter++, topic)).get();
-//			producer.send(lagKafkaRecord(counter++, topic)).get();
-			producer.send(lagTestKafkaRecord(counter++, "srvABACPEP", topic)).get();
+			producer.send(lagKafkaRecord(counter++, topic)).get();
+			
+			// Uten try/catch ender alle disse med at serveren stopper/henger, men meldingen ligger igjen (på embedded kafka)
+			//producer.send(hardcodedRecord(counter, topic, "Ikke JSON i det hele tatt")); // JsonParseException
+			//producer.send(hardcodedRecord(counter, topic, "{ ugyldig json }")); // JsonParseException
+			//producer.send(hardcodedRecord(counter, topic, "{ \"bareEnUnknown\":\"property\" }")); // UnrecognizedPropertyException
+			// Denne blir spist fra køen, og gir logging
+			//producer.send(hardcodedRecord(counter, topic, "{ \"person\":\"mye_mangler\" }")); // IllegalArgumentException fra ValideringsTjeneste
+			
+//			producer.send(lagTestKafkaRecord(counter++, "srvABACPEP", topic)).get();
 		} catch (Exception e) {
 			throw new RuntimeException("Kunne ikke sende melding", e);
 		} finally {
@@ -91,6 +99,10 @@ public class ManualKafkaSender { // Send melding(er) til kafka startet via Embed
 	}
 	private ProducerRecord<Integer, String> lagTestKafkaRecord(int c, String person, String topic) {
 		return new ProducerRecord<Integer, String>(topic, c, lagLoggMelding(person,"mott.Org","ABC","hjemmelbeskrivelsen",LocalDateTime.now(),"encoded leverte data","samtykket"));
+	}
+
+	private ProducerRecord<Integer, String> hardcodedRecord(int c, String topic, String melding) {
+		return new ProducerRecord<Integer, String>(topic, c, melding);
 	}
 
 	private ProducerRecord<Integer, String> lagKafkaRecord(int c, String topic) {

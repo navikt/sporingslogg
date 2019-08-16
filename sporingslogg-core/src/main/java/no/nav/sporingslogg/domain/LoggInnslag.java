@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -37,6 +38,7 @@ public class LoggInnslag {                // Logger en uthenting av data om en p
     @Convert(converter = TimestampConverter.class)
     private LocalDateTime uthentingsTidspunkt;
 
+    @Lob
     @Column(name = "LEVERTE_DATA", nullable = false)
     private String leverteData;  // dataene som ble hentet ut, B64-encodet JSON-format
     

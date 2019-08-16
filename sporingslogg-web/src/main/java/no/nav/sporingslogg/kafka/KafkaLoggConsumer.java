@@ -68,19 +68,29 @@ public class KafkaLoggConsumer {
 				kafkaConsumer.subscribe(Collections.singletonList(topic));  
 				
 				while (true) { 
+					
 //					log.debug("Starter polling 10 sek");
-//					try {
-						ConsumerRecords<Integer, LoggMelding> records = kafkaConsumer.poll(Duration.ofSeconds(10));   
+					ConsumerRecords<Integer, LoggMelding> records = null;
+//					try {  // Denne try-catchen får polling til å gå i loop..... har byttet ut med null-return fra Json-deserialisering istedenfor
+						records = kafkaConsumer.poll(Duration.ofSeconds(10));   
+//					} catch (Exception e) {
+//						kafkaConsumer.commitSync(); // hjelper ikke, går i loop likevel...
+//						log.error("Exception ved prosessering av loggmelding, må evt rettes og sendes inn på nytt", e);
+//					}
+					
+					if (records != null) {
 //						log.debug("Polling ferdig, ga "+records.count() + " records");
 						for (ConsumerRecord<Integer, LoggMelding> record : records) {                
 							LoggMelding loggMelding = record.value();
 							if (loggMelding != null) {
 								store(loggMelding);
+							} else {
+//								log.debug("Kunne ikke lese/parse loggmelding");
 							}
-						}    
-//					} catch (Exception e) {
-//						log.error("Exception ved prosessering av logg", e);         TODO fortsette uten å spise feilmeldingene på nytt...?
-//					}
+						}
+					} else {
+//						log.debug("Polling ferdig, kunne ikke lese melding(er)");
+					}
 				} 
 			}
 		});

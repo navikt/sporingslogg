@@ -32,7 +32,7 @@ public class LoggTjeneste {
     private static final Counter loggOppslag = Counter.build().name("sporingslogg_oppslag").help("Loggoppslag").register();
 
     public Long lagreLoggInnslag(LoggInnslag loggInnslag) {
-        log.info("Lagrer for person " + loggInnslag.getPerson() + ", mottaker: " + loggInnslag.getMottaker() + ", tema: " + loggInnslag.getTema()); // TODO sett lengder ihht. DB-kolonner
+        log.info("Lagrer for person " + loggInnslag.getPerson() + ", mottaker: " + loggInnslag.getMottaker() + ", tema: " + loggInnslag.getTema()); 
         
         valideringTjeneste.validerIkkeBlank(loggInnslag.getPerson(), "person");
         valideringTjeneste.validerMaxLengde(loggInnslag.getPerson(), 11, "person");
@@ -43,7 +43,7 @@ public class LoggTjeneste {
         valideringTjeneste.validerIkkeBlank(loggInnslag.getHjemmel(), "hjemmel");
         valideringTjeneste.validerMaxLengde(loggInnslag.getHjemmel(), 100, "hjemmel");
         valideringTjeneste.validerIkkeBlank(loggInnslag.getLeverteData(), "data");
-        valideringTjeneste.validerMaxLengde(loggInnslag.getLeverteData(), 4000, "data"); 
+        valideringTjeneste.validerMaxLengde(loggInnslag.getLeverteData(), 10000, "data"); 
         valideringTjeneste.validerMaxLengde(loggInnslag.getSamtykkeToken(), 1000, "samtykketoken"); 
         
         if (loggInnslag.getUthentingsTidspunkt() == null) {

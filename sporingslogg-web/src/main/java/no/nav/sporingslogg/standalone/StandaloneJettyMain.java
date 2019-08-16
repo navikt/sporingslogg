@@ -28,9 +28,13 @@ public class StandaloneJettyMain {
 
     public static void main(String[] args) throws Exception {
         
-    	// Fiks properties så de får korrekte navn, og sett de som evt ikke er satt i env
-    	
+    	// Fiks properties så de får korrekte navn   	
     	PropertyUtil.fixDockerEnvProblem();
+    	
+    	// Sett properties som ikke er satt i env fordi de
+    	// - ikke er miljøspesifikke
+    	// - har navn som ikke Docker/Nais fikser, eller 
+    	// - hentes fra vault
     	
 		String passwordFile = System.getenv("PASSWORD_FILE");
 		Properties passwords = readFromSecretsPropertyFile(passwordFile);

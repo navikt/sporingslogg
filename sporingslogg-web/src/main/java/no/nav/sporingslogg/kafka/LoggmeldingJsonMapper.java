@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -12,6 +14,7 @@ import no.nav.sporingslogg.restapi.LoggMelding;
 
 public class LoggmeldingJsonMapper implements Serializer<LoggMelding>, Deserializer<LoggMelding> {
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
 	private final ObjectMapper objectMapper;
 		
 	public LoggmeldingJsonMapper() {
@@ -31,7 +34,10 @@ public class LoggmeldingJsonMapper implements Serializer<LoggMelding>, Deseriali
 		try {
 			return objectMapper.readValue(json, LoggMelding.class);
 		} catch (Exception e) {
-			throw new RuntimeException("Kan ikke parse json til LoggMelding", e);
+			// Får ikke til å håndtere exceptions i poll-kallet, håndter NULL istedenfor
+			//throw new RuntimeException("Kan ikke parse json til LoggMelding", e);
+			log.error("Exception ved prosessering av loggmelding, må evt rettes og sendes inn på nytt", e);
+			return null;
 		}
 	}
 
