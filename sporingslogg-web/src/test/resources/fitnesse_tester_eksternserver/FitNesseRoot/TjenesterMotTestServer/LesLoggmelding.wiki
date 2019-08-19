@@ -1,0 +1,20 @@
+---
+Test
+---
+
+!2 Test Lese loggmelding via REST-API
+
+!include SetupServer
+
+
+!3 3. Kall REST-tjenesten for å lese loggmelding, sjekk at returnert innhold er OK. Forutsetter at det finnes minst 1 melding for brukeren i basic-auth.
+Det må hentes oppdatert OIDC-token for brukeren hos den provider som miljøet er satt opp med.
+
+For REST-STS i test kan token hentes ved GET til https://security-token-service-t4.nais.preprod.local/rest/v1/sts/token?grant_type=client_credentials&scope=openid
+med basic auth for bruker ('Basic c3J2QUJBQ1BFUDpoVUsxLjMwc0tocXAwLigy' for srvABACPEP)
+
+| !- Table:no.nav.sporingslogg.web.fitnesse.ServerRestFixture -! |
+| oidctoken | eyJraWQiOiI0YzE1Zjk5NS0xYzgwLTQyZGMtOTg3NS1lMjI0MmQwNjk1ZTEiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJzcnZBQkFDUEVQIiwiYXVkIjpbInNydkFCQUNQRVAiLCJwcmVwcm9kLmxvY2FsIl0sInZlciI6IjEuMCIsIm5iZiI6MTU2NjIwMDI2MywiYXpwIjoic3J2QUJBQ1BFUCIsImlkZW50VHlwZSI6IlN5c3RlbXJlc3N1cnMiLCJhdXRoX3RpbWUiOjE1NjYyMDAyNjMsImlzcyI6Imh0dHBzOlwvXC9zZWN1cml0eS10b2tlbi1zZXJ2aWNlLXQ0Lm5haXMucHJlcHJvZC5sb2NhbCIsImV4cCI6MTU2NjIwMzg2MywiaWF0IjoxNTY2MjAwMjYzLCJqdGkiOiI2ZjE2ODk1Ni1mZGI0LTRmMjgtODQ4OC02MGU1NGE1YzUwYmEifQ.Mt3iTJRF3c8OM7s5AbjZEw7tJzWNBshjQEzQSNGiVuWtxFmD6NHIY03fuFLT9pIeEVkBh6lO0luz2LF176v-a6yvjRaAD2PQSGSqqh3MD4htEg8D0IafulMJ7CZzYGwdhIXsS3Hp4jKLH-4LIHjitWX0WHA0IvM2r9rlfKHcrrK5qRQOSPpbHIicqNypLo8F3DKjwry3xXvThrk-yyM3tG5w9juiKr3dlTKNUJket5q4KPKfPlnOtRItAQMelBpA0REgWfTxf4Gsgr9VBVqi3EboJ753EK_MclNJhPJTjIuFnt-aPNVW2pDMjLxbxv1X-MLpVOr4A1Ei7hpskSiyqA |
+| GET | /sporingslogg/api/les | 200 | Content-Type : application/json  |!- 
+ jsonbody[0].person === "srvABACPEP"
+ -! | 
