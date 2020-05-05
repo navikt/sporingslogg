@@ -13,6 +13,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.config.SslConfigs;
+import org.apache.kafka.common.errors.WakeupException;
 import org.apache.kafka.common.security.auth.SecurityProtocol;
 import org.apache.kafka.common.serialization.IntegerDeserializer;
 import org.slf4j.Logger;
@@ -30,13 +31,17 @@ public class KafkaLoggConsumer {
     @Autowired
 	LoggTjeneste loggTjeneste;
 		
-	public KafkaLoggConsumer(KafkaProperties kafkaProperties) {
+    private final KafkaConsumer<Integer, LoggMelding> kafkaConsumer;
+    
+    public KafkaLoggConsumer(KafkaProperties kafkaProperties) {
 	    Properties props = setProperties(kafkaProperties);
 	    // Fjern passord fra props før display, bruk samme kode som i setProperties
 	    Properties propsToDisplay = new Properties(props);
 	    propsToDisplay.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username='"+kafkaProperties.getUsername()+"' password='.......';");
 	    log.info("Kafka consumer bruker props: " + propsToDisplay);
-		pollForever(kafkaProperties.getTopic(), props);
+	    kafkaConsumer = new KafkaConsumer<>(props);
+	    setCleanupAtShutdown();
+		pollForever(kafkaProperties.getTopic());
 	}
 
 	public Properties setProperties(KafkaProperties kafkaProperties) {
@@ -46,62 +51,92 @@ public class KafkaLoggConsumer {
 	    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, IntegerDeserializer.class);
 	    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, LoggmeldingJsonMapper.class);
 	    
-		props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_SSL.name);
-		props.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username='"+kafkaProperties.getUsername()+"' password='"+kafkaProperties.getPassword()+"';");
-		props.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
-		props.put(SaslConfigs.SASL_KERBEROS_SERVICE_NAME, "kafka");
-		
-		props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, kafkaProperties.getTruststoreFile());
-		props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG,  kafkaProperties.getTruststorePassword());
+	    if (kafkaProperties.getUsername() != null) {
+			props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_SSL.name);
+			props.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username='"+kafkaProperties.getUsername()+"' password='"+kafkaProperties.getPassword()+"';");
+			props.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
+			props.put(SaslConfigs.SASL_KERBEROS_SERVICE_NAME, "kafka");
+			
+			props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, kafkaProperties.getTruststoreFile());
+			props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG,  kafkaProperties.getTruststorePassword());
+	    }
 		return props;
 	}
 
-	public void pollForever(String topic, final Properties props) {
+	// public: overrides i tester
+	public void pollForever(String topic) {
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
-		log.info("Starter Kafka consumer");
-		executorService.execute(new Runnable() {			// TODO kan ta med en catch WakeupException og legge inn en wakeup i shutdown...
+		log.info("Starter Kafka consumer mot topic " + topic);
+		executorService.execute(new Runnable() {
 			@Override
-			public void run() {
-				
-				@SuppressWarnings("resource")
-				KafkaConsumer<Integer, LoggMelding> kafkaConsumer = new KafkaConsumer<>(props);
-				kafkaConsumer.subscribe(Collections.singletonList(topic));  
-				
-				while (true) { 
-					
-//					log.debug("Starter polling 10 sek");
-					ConsumerRecords<Integer, LoggMelding> records = null;
-//					try {  // Denne try-catchen får polling til å gå i loop..... har byttet ut med null-return fra Json-deserialisering istedenfor
-						records = kafkaConsumer.poll(Duration.ofSeconds(10));   
-//					} catch (Exception e) {
-//						kafkaConsumer.commitSync(); // hjelper ikke, går i loop likevel...
-//						log.error("Exception ved prosessering av loggmelding, må evt rettes og sendes inn på nytt", e);
-//					}
-					
-					if (records != null) {
-//						log.debug("Polling ferdig, ga "+records.count() + " records");
-						for (ConsumerRecord<Integer, LoggMelding> record : records) {                
-							LoggMelding loggMelding = record.value();
-							if (loggMelding != null) {
-								store(loggMelding);
-							} else {
-//								log.debug("Kunne ikke lese/parse loggmelding");
-							}
-						}
-					} else {
-//						log.debug("Polling ferdig, kunne ikke lese melding(er)");
-					}
-				} 
+			public void run() {				
+				try {
+					kafkaConsumer.subscribe(Collections.singletonList(topic));  					
+					while (true) { 						
+//						log.debug("Starter polling 10 sek");
+						ConsumerRecords<Integer, LoggMelding> records = null;
+//						try {  // Denne try-catchen får polling til å gå i loop..... har byttet ut med null-return fra Json-deserialisering istedenfor
+							records = kafkaConsumer.poll(Duration.ofSeconds(10));   
+//						} catch (Exception e) {
+//							kafkaConsumer.commitSync(); // hjelper ikke, går i loop likevel...
+//							log.error("Exception ved prosessering av loggmelding, må evt rettes og sendes inn på nytt", e);
+//						}
+						lagreMeldinger(records);
+					} 
+			    } catch (WakeupException e) {
+			        // Kalt fra shutdown 
+			    } finally {
+					log.info("Stopper Kafka consumer mot topic " + topic);
+					kafkaConsumer.close();
+					log.info("Kafka consumer stoppet.");
+			    }
 			}
 		});
 	}
+	
+	private void lagreMeldinger(ConsumerRecords<Integer, LoggMelding> records) {
+					
+		if (records != null) {
+//			log.debug("Polling ferdig, ga "+records.count() + " records");
+			try {
+				for (ConsumerRecord<Integer, LoggMelding> record : records) {                
+					LoggMelding loggMelding = record.value();
+					if (loggMelding != null) {
+						store(loggMelding);
+					} else {
+	//					log.debug("Kunne ikke lese/parse loggmelding");
+					}
+				}
+				// Commiter bare hvis alle lot seg lagre. Det betyr at noen vil lagres om igjen dersom noen gikk bra
+				kafkaConsumer.commitSync();
+			} catch (Exception e) {
+				log.error("Feilet ved forsøk på å lagre melding fra topic til DB, meldingen vil fortsatt ligge på topic og vil forsøkes igjen", e);
+			}
+		} else {
+//			log.debug("Polling ferdig, kunne ikke lese melding(er)");
+		}
+	}
 
 	public void store(LoggMelding loggMelding) {
-		log.debug("Lagrer sporingsmelding mottatt via Kafka: " + loggMelding);
+		log.debug("Lagrer sporingsmelding mottatt via Kafka.");
 		try {
 			loggTjeneste.lagreLoggInnslag(LoggConverter.fromJsonObject(loggMelding));
 		} catch (Exception e) {
 			log.error("Lagring av sporingsmelding feiler, må evt sendes inn på nytt",e);
 		}
+	}
+	
+	private void setCleanupAtShutdown() {
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+		    @Override
+		    public void run() {
+				shutdown();
+		    }
+		}));
+	}
+
+	// Kan kalles eksplisitt av tester
+    public void shutdown() {
+		kafkaConsumer.wakeup();
 	}
 }

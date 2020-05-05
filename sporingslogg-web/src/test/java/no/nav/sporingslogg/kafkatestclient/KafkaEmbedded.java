@@ -29,7 +29,10 @@ import kafka.utils.TestUtils;
  */
 public class KafkaEmbedded {
 
-  private static final Logger log = LoggerFactory.getLogger(KafkaEmbedded.class);
+	public static final String KAFKA_BROKER_HOST = "127.0.0.1";
+	public static final String KAFKA_BROKER_PORT = "9092";
+
+	private static final Logger log = LoggerFactory.getLogger(KafkaEmbedded.class);
 
   private static final String DEFAULT_ZK_CONNECT = "127.0.0.1:2181";
 
@@ -63,8 +66,8 @@ public class KafkaEmbedded {
   private  Properties effectiveConfigFrom(Properties initialConfig) throws IOException {
     Properties effectiveConfig = new Properties();
     effectiveConfig.put(KafkaConfig.BrokerIdProp(), 0);
-    effectiveConfig.put(KafkaConfig.HostNameProp(), "127.0.0.1");
-    effectiveConfig.put(KafkaConfig.PortProp(), "9092");
+    effectiveConfig.put(KafkaConfig.HostNameProp(), KAFKA_BROKER_HOST);
+    effectiveConfig.put(KafkaConfig.PortProp(), KAFKA_BROKER_PORT);
     effectiveConfig.put(KafkaConfig.NumPartitionsProp(), 1);
     effectiveConfig.put(KafkaConfig.AutoCreateTopicsEnableProp(), true);
     effectiveConfig.put(KafkaConfig.MessageMaxBytesProp(), 1000000);

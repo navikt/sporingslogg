@@ -2,6 +2,8 @@ package no.nav.sporingslogg.restapi;
 
 import java.time.LocalDateTime;
 
+import no.nav.sporingslogg.tjeneste.LoggTjeneste;
+
 public class LoggMelding { // JSON-melding ved logging av datautlevering
 
 	private String id;                           // Unik ID (brukes kun ved les/uthenting)
@@ -63,7 +65,7 @@ public class LoggMelding { // JSON-melding ved logging av datautlevering
 	}
 	@Override
 	public String toString() {
-		return "LoggMelding [id=" + id + ", person=" + person + ", mottaker=" + mottaker + ", tema=" + tema + ", behandlingsGrunnlag=" + behandlingsGrunnlag
+		return "LoggMelding [id=" + id + ", person=" + LoggTjeneste.scrambleFnr(person) + ", mottaker=" + mottaker + ", tema=" + tema + ", behandlingsGrunnlag=" + behandlingsGrunnlag
 				+ ", uthentingsTidspunkt=" + uthentingsTidspunkt + ", leverteData=" + leverteData + ", samtykkeToken=" + samtykkeToken + "]";
 	}
 }

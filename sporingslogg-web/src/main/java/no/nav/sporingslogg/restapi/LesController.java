@@ -39,7 +39,7 @@ public class LesController {
     @GET
     public Response les(@Context SecurityContext securityContext, @Context HttpHeaders headers) { // Beskyttet via access-token
         String innloggetPerson = validerAccessToken(headers);
-    	log.info("Henter logger for person " + innloggetPerson);
+    	log.info("Henter logger for person " + LoggTjeneste.scrambleFnr(innloggetPerson));
         
         List<LoggMelding> response = new ArrayList<LoggMelding>();        
         List<LoggInnslag> liste = loggTjeneste.finnAlleLoggInnslagForPerson(innloggetPerson);

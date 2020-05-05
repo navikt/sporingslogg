@@ -29,6 +29,9 @@ spec:
     initialDelay: 5
     periodSeconds: 5
     failureThreshold: 60
+  prometheus:
+    enabled: true
+    path: /sporingslogg/prometheus
   resources:
     limits:
       cpu: 400m

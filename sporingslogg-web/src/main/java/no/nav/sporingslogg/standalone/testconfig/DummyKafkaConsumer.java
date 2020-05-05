@@ -23,7 +23,7 @@ public class DummyKafkaConsumer extends KafkaLoggConsumer { // Dropp polling, ik
 	}
 
 	@Override	
-	public void pollForever(String topic, Properties props) {
+	public void pollForever(String topic) {
 		// gjesp
 	}
 

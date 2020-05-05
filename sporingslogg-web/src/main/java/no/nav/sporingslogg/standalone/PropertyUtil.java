@@ -27,7 +27,7 @@ public class PropertyUtil {
 			if (key.toLowerCase().contains("sporingslogg") && containsUnderscoreAndNoDots(key)) {
 				String keyWithDotsInsteadOfUnderscores = key.replace('_','.');
 				String value = allEnvs.get(key);
-				log.info("Kopierer verdi fra env '"+key+"' til system-prop '"+keyWithDotsInsteadOfUnderscores+"'");
+//				log.info("Kopierer verdi fra env '"+key+"' til system-prop '"+keyWithDotsInsteadOfUnderscores+"'");
 				System.setProperty(keyWithDotsInsteadOfUnderscores, value);
 			}
 		}

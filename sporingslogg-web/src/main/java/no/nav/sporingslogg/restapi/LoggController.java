@@ -32,17 +32,17 @@ public class LoggController {
     @Path("")
     @POST
     public Response logg(@Context SecurityContext securityContext, LoggMelding loggMelding) {
-        log.debug("Lagrer logg");
+//        log.debug("Lagrer logg");
 
         String userName = getUserName(securityContext);  
-        log.debug("User: " + userName);
+        log.debug("Lagrer logg, user: " + userName);
         boolean brukerErIGruppe = ldapGroupService.brukerErIGruppe(userName);
         if (!brukerErIGruppe) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         
         Long loggId = loggTjeneste.lagreLoggInnslag(LoggConverter.fromJsonObject(loggMelding));
-        log.debug("Lagret logg med ny id " + loggId);
+//        log.debug("Lagret logg med ny id " + loggId);
         LoggMeldingResponse response = new LoggMeldingResponse();
         response.setId(""+loggId);
         return Response.status(Response.Status.OK).entity(response).build();

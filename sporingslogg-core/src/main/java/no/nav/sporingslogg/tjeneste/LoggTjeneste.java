@@ -32,7 +32,7 @@ public class LoggTjeneste {
     private static final Counter loggOppslag = Counter.build().name("sporingslogg_oppslag").help("Loggoppslag").register();
 
     public Long lagreLoggInnslag(LoggInnslag loggInnslag) {
-        log.info("Lagrer for person " + loggInnslag.getPerson() + ", mottaker: " + loggInnslag.getMottaker() + ", tema: " + loggInnslag.getTema()); 
+        log.info("Lagrer for person " + scrambleFnr(loggInnslag.getPerson()) + ", mottaker: " + loggInnslag.getMottaker() + ", tema: " + loggInnslag.getTema()); 
         
         valideringTjeneste.validerIkkeBlank(loggInnslag.getPerson(), "person");
         valideringTjeneste.validerMaxLengde(loggInnslag.getPerson(), 11, "person");
@@ -67,6 +67,15 @@ public class LoggTjeneste {
 
     public boolean isReady() {
 		// Brukes til ping/selftest
-		return entityManager != null && valideringTjeneste != null && timestampTjeneste != null;
-	}    
+		//return entityManager != null && valideringTjeneste != null && timestampTjeneste != null;
+    	// er ent av og til null?
+		return true;
+	}  
+    
+    public static String scrambleFnr(String fnr) { // Bytt ut de 5 siste tegnene av et reelt fnr med xxxxx
+    	if (fnr == null || fnr.length() < 6) {
+    		return fnr;
+    	}
+    	return fnr.substring(0,6)+"xxxxx";
+    }
 }

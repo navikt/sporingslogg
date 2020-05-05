@@ -4,7 +4,7 @@ import java.util.Properties;
 
 public class DockerProofPropertyPlaceholderConfigurer extends org.springframework.beans.factory.config.PropertyPlaceholderConfigurer {
 
-	// Håndterer fuckup fra Docker/kubernetes som endrer propertynavn til CAPS LOCK
+	// Håndterer propertynavn med CAPS LOCK
 	
 	@Override
 	protected String resolvePlaceholder(String placeholder, Properties props, int systemPropertiesMode) {

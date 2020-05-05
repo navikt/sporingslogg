@@ -29,8 +29,8 @@ public class ManualKafkaReceiver { // Motta melding(er) som sendt fra ManualKafk
 	private static final KafkaProperties TEST_PROPERTIES = StandaloneTestJettyMain.getKafkaTestProperties();
 	
 	public static void main(String[] args) {
-		Map<String, Object> props = getConsumerPropsForTest();
-	    new ManualKafkaReceiver().startPollingForever(props, TEST_PROPERTIES.getBootstrapServers(), TEST_PROPERTIES.getTopic());
+		Map<String, Object> props = getConsumerPropsForEmbeddedKafka();
+	    new ManualKafkaReceiver().startPollingForever(props, EMBEDDED_PROPERTIES.getBootstrapServers(), EMBEDDED_PROPERTIES.getTopic());
 	}
 	
 	public static Map<String, Object> getConsumerPropsForEmbeddedKafka() {
