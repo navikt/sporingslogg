@@ -16,7 +16,7 @@ ENV=$3
 # Hardkodede verdier - endre ved behov. Envs må være lowercase for å matche NAIS namespace.
 APP=sporingslogg
 ENVS=t4/q2/prod
-REPO=docker.adeo.no:5000
+REPO=repo.adeo.no:5443
 REPOGROUP=integrasjon
 
 # Vis hjelp hvis ingen parametre angis
@@ -47,6 +47,10 @@ IMAGENAME=${REPO}/${REPOGROUP}/${APP}":"${VERSION}
 # Command inneholder 'd': kjør DOCKER-DEPLOY -------------------------------------------
 if [[ $COMMAND == "d"* ]] 
 then
+    echo
+    echo --------------------------------
+    echo ---------- Logging in to docker repo $REPO with $USERNAME
+    docker login -u $USERNAME $REPO
     echo
     echo --------------------------------
     echo ---------- Building docker image $IMAGENAME
