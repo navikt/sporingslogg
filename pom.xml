@@ -20,7 +20,7 @@
 		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
 
         <spring.version>4.1.7.RELEASE</spring.version>
-        <logback.version>1.1.3</logback.version>
+        <logback.version>1.2.3</logback.version>
         <slf4j.version>1.7.25</slf4j.version>
         <net.logback.version>5.1</net.logback.version>
         <commons-io.version>2.4</commons-io.version>
