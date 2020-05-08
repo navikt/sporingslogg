@@ -118,7 +118,7 @@ public class KafkaLoggConsumer {
 	}
 
 	public void store(LoggMelding loggMelding) {
-		log.debug("Lagrer sporingsmelding mottatt via Kafka.");
+//		log.debug("Lagrer sporingsmelding mottatt via Kafka.");
 		try {
 			loggTjeneste.lagreLoggInnslag(LoggConverter.fromJsonObject(loggMelding));
 		} catch (Exception e) {
