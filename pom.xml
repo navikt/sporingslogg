@@ -5,7 +5,7 @@
     <groupId>no.nav</groupId>
     <artifactId>sporingslogg</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.0.5</version>
 
     <modules>
         <module>sporingslogg-core</module>
@@ -140,7 +140,7 @@
 	<scm>
 		<developerConnection>scm:git:ssh://git@stash.devillo.no:7999/kes/sporingslogg.git</developerConnection>
 		<url>http://stash.devillo.no/projects/KES/repos/sporingslogg</url>
-		<tag>HEAD</tag>
+		<tag>sporingslogg-1.0.5</tag>
 	</scm>
 
 </project>
