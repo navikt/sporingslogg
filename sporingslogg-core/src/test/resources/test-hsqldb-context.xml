@@ -15,7 +15,7 @@
  <bean id="dbClearUtil" class="no.nav.sporingslogg.tjeneste.DbClearUtil"/> 
   <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
     <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
-    <property name="url" value="jdbc:hsqldb:mem:mydb;sql.enforce_strict_size=true"/>
+    <property name="url" value="jdbc:hsqldb:mem:mydb;sql.enforce_strict_size=true;hsqldb.lob_file_scale=100"/>
     <property name="username" value="sa"/>
     <property name="password" value=""/>
   </bean>
@@ -31,7 +31,7 @@
     <property name="packagesToScan" value="no.nav.sporingslogg.domain"/>
     <property name="jpaVendorAdapter">
       <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-        <property name="databasePlatform" value="org.hibernate.dialect.HSQLDialect"/>
+        <property name="databasePlatform" value="no.nav.sporingslogg.tjeneste.CustomisedHsqlDialect"/>
         <property name="showSql" value="true"/>
         <property name="generateDdl" value="true"/>
       </bean>

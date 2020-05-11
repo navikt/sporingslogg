@@ -28,4 +28,13 @@ public class EncodeMessage {
 		table.add(tableRecord);
 		return table;
 	}
+	
+	// For å generere filer med encoded payload i (til test av store meldinger)
+//	public static void main(String[] args) throws IOException {
+//		
+//		byte[] x = IOUtils.toByteArray(new FileInputStream("c:/temp/inpuEncode1.txt"));
+//		String encoded = Base64.getEncoder().encodeToString(x);
+//		System.out.println("Encoded length: " + encoded.length());
+//		IOUtils.write(encoded, new FileWriter("c:/temp/filRettOver100KEncoded.txt"));
+//	}
 }

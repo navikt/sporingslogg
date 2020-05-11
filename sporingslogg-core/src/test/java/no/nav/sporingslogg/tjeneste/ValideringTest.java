@@ -94,5 +94,25 @@ public class ValideringTest {
             // OK
         }
     }
+    @Test
+    public void forLangDataGirValideringsFeil() {
+        try {
+            loggTjeneste.lagreLoggInnslag(l("id", "org", string(100001)));
+            fail("Forventet exception");
+        } catch (Exception e) {
+            // OK
+        }
+    }
+    @Test
+    public void langDataErOk() {
+        loggTjeneste.lagreLoggInnslag(l("id", "org", string(100000)));
+    }
+	private String string(int l) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < l; i++) {
+			sb.append("q");
+		}
+		return sb.toString();
+	}
 
 }

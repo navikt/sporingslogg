@@ -1,8 +1,11 @@
 package no.nav.sporingslogg.web.fitnesse;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -44,7 +47,23 @@ public class ExternKafkaProducerFixture {
 	public boolean produce(String json) {
 		System.out.println("Fikk json: " + json);
 		sendMessages(topic, json);
+//		produceLongMessage();
 		return true;
+	}
+	
+	private void produceLongMessage() {
+		String s1 = "{\"person\":\"12345678901\", \"mottaker\":\"123456789\", \"tema\":\"ABC\", \"behandlingsGrunnlag\":\"hjemmel1\", \"uthentingsTidspunkt\":\"2019-08-16T12:24:21.675\", \"leverteData\":\""
+                +lesFraFil("c:/temp/filRettOver100KEncoded.txt")
+                +"\"}";
+		sendMessages(topic, s1);
+	}
+
+	private String lesFraFil(String f) {
+		try {
+			return IOUtils.toString(new FileReader(f));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private Map<String, Object> getSenderPropsForExternKafka() {

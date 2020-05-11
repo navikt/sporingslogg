@@ -107,7 +107,8 @@ public class KafkaLoggConsumer {
 	//					log.debug("Kunne ikke lese/parse loggmelding");
 					}
 				}
-				// Commiter bare hvis alle lot seg lagre. Det betyr at noen vil lagres om igjen dersom noen gikk bra
+				// TODO dette skal forbedres   Siden man må lese ukjent antall records, kan man ikke commite en og en fra kafka.
+				// Dermed må man uansett late som alle ble lest OK og logge de som feilet for å få sendt dem på nytt.
 				kafkaConsumer.commitSync();
 			} catch (Exception e) {
 				log.error("Feilet ved forsøk på å lagre melding fra topic til DB, meldingen vil fortsatt ligge på topic og vil forsøkes igjen", e);
@@ -122,7 +123,8 @@ public class KafkaLoggConsumer {
 		try {
 			loggTjeneste.lagreLoggInnslag(LoggConverter.fromJsonObject(loggMelding));
 		} catch (Exception e) {
-			log.error("Lagring av sporingsmelding feiler, må evt sendes inn på nytt",e);
+			String melding = "ID: " + loggMelding.getId() + ", person: " + LoggTjeneste.scrambleFnr(loggMelding.getPerson()) + ", tema: " + loggMelding.getTema() + ", mottaker: " + loggMelding.getMottaker();
+			log.error("Lagring av sporingsmelding feiler, må evt sendes inn på nytt: " + melding, e);
 		}
 	}
 	

@@ -23,7 +23,11 @@ public class ValideringTjeneste {
 
     public void validerMaxLengde(String s, int max, String label) {
         if (s != null && s.length() > max) {
-            throw new IllegalArgumentException("Kan ikke ta imot verdi for "+label+" lenger enn " + max + " tegn: " + s);
+        	String logString = s;
+        	if (logString.length() > 100) {
+        		logString = logString.substring(0,100) + "....";
+        	}
+            throw new IllegalArgumentException("Kan ikke ta imot verdi for "+label+" lenger enn " + max + " tegn: " + logString);
         }
     }
 

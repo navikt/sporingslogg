@@ -43,7 +43,7 @@ public class LoggTjeneste {
         valideringTjeneste.validerIkkeBlank(loggInnslag.getHjemmel(), "hjemmel");
         valideringTjeneste.validerMaxLengde(loggInnslag.getHjemmel(), 100, "hjemmel");
         valideringTjeneste.validerIkkeBlank(loggInnslag.getLeverteData(), "data");
-        valideringTjeneste.validerMaxLengde(loggInnslag.getLeverteData(), 10000, "data"); 
+        valideringTjeneste.validerMaxLengde(loggInnslag.getLeverteData(), 100000, "data"); 
         valideringTjeneste.validerMaxLengde(loggInnslag.getSamtykkeToken(), 1000, "samtykketoken"); 
         
         if (loggInnslag.getUthentingsTidspunkt() == null) {

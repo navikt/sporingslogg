@@ -1,7 +1,12 @@
 package no.nav.sporingslogg.web.fitnesse;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Base64;
 import java.util.Map;
+
+import org.apache.commons.io.IOUtils;
 
 import smartrics.rest.fitnesse.fixture.RestFixture;
 import smartrics.rest.fitnesse.fixture.support.CellWrapper;
@@ -17,6 +22,21 @@ public class ServerRestFixture extends RestFixture {
 
 	public void jsonMelding() {
 		setBody(hentTabellCelleInnhold("jsonMelding")); 
+//		setBody(longMelding()); 
+	}
+	
+	private String longMelding() {
+		return "{\"person\":\"12345678901\", \"mottaker\":\"123456789\", \"tema\":\"ABC\", \"behandlingsGrunnlag\":\"hjemmel1\", \"uthentingsTidspunkt\":\"2019-08-16T12:24:21.675\", \"leverteData\":\""
+                +lesFraFil("c:/temp/filRettOver100KEncoded.txt")
+                +"\"}";
+	}
+
+	private String lesFraFil(String f) {
+		try {
+			return IOUtils.toString(new FileReader(f));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
