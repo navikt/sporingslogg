@@ -41,7 +41,7 @@ import no.nav.sporingslogg.domain.LoggInnslag;
 import no.nav.sporingslogg.restapi.LoggMelding;
 import no.nav.sporingslogg.tjeneste.LoggTjeneste;
 
-//@Ignore
+@Ignore
 public class TestWithKafka {  // Disse testene er veldig vaklete, virker ca annenhver gang... ikke lurt å kjøre dem automatisk
 
 	private static final String TOPIC = "messages";
