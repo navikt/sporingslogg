@@ -2,6 +2,9 @@ package no.nav.sporingslogg.kafka;
 
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,17 +20,28 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.IntegerSerializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.kafka.test.rule.KafkaEmbedded;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+
 import no.nav.sporingslogg.domain.LoggInnslag;
 import no.nav.sporingslogg.restapi.LoggMelding;
 import no.nav.sporingslogg.tjeneste.LoggTjeneste;
 
-@Ignore
+//@Ignore
 public class TestWithKafka {  // Disse testene er veldig vaklete, virker ca annenhver gang... ikke lurt å kjøre dem automatisk
 
 	private static final String TOPIC = "messages";
@@ -84,8 +98,8 @@ public class TestWithKafka {  // Disse testene er veldig vaklete, virker ca anne
 	public void produceAndConsumeWithKafkaLoggConsumer() throws Exception {
 		Map<String, Object> senderProps = KafkaTestUtils.producerProps(embeddedKafka);
 		senderProps.put("key.serializer", IntegerSerializer.class);
-		senderProps.put("value.serializer", LoggmeldingJsonMapper.class);
-		KafkaProducer<Integer, LoggMelding> producer = new KafkaProducer<>(senderProps);
+		senderProps.put("value.serializer", StringSerializer.class);
+		KafkaProducer<Integer, String> producer = new KafkaProducer<>(senderProps);
 
 		String server = embeddedKafka.getBrokersAsString();
 		KafkaProperties kp = new KafkaProperties();
@@ -100,10 +114,10 @@ public class TestWithKafka {  // Disse testene er veldig vaklete, virker ca anne
 		Thread.sleep(1000);
 		System.out.println("################################### slept after ready");
 		
-		producer.send(new ProducerRecord<Integer, LoggMelding>(TOPIC, 0, lagLoggMelding("person1","org1","data1"))).get();		
-		producer.send(new ProducerRecord<Integer, LoggMelding>(TOPIC, 1, lagLoggMelding("person2","org2","data2"))).get();		
-		producer.send(new ProducerRecord<Integer, LoggMelding>(TOPIC, 2, lagLoggMelding("person3","org3","data3"))).get();		
-		producer.send(new ProducerRecord<Integer, LoggMelding>(TOPIC, 3, lagLoggMelding("person4","org4","data4"))).get();		
+		producer.send(new ProducerRecord<Integer, String>(TOPIC, 0, lagLoggMelding("person1","org1","data1"))).get();		
+		producer.send(new ProducerRecord<Integer, String>(TOPIC, 1, lagLoggMelding("person2","org2","data2"))).get();		
+		producer.send(new ProducerRecord<Integer, String>(TOPIC, 2, lagLoggMelding("person3","org3","data3"))).get();		
+		producer.send(new ProducerRecord<Integer, String>(TOPIC, 3, lagLoggMelding("person4","org4","data4"))).get();		
 		System.out.println("################################### sent");
 		
 		Thread.sleep(1000);		
@@ -115,12 +129,23 @@ public class TestWithKafka {  // Disse testene er veldig vaklete, virker ca anne
 		assertTrue("r4", received.contains(concatString("person4","org4","data4")));
 	}
 
-	private LoggMelding lagLoggMelding(String p, String o, String d) {
+	private String lagLoggMelding(String p, String o, String d) {
 		LoggMelding l = new LoggMelding();
 		l.setPerson(p);
 		l.setMottaker(o);
 		l.setLeverteData(d);
-		return l;
+		l.setBehandlingsGrunnlag("behGrunnlag");
+		l.setId("ID");
+		l.setSamtykkeToken("tokenet");
+		l.setTema("XYZ");
+		l.setUthentingsTidspunkt(LocalDateTime.now());
+	    Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new JsonSerializer<LocalDateTime>() {		
+		    @Override
+			public JsonElement serialize(LocalDateTime src, Type typeOfSrc, JsonSerializationContext context) {
+		    	return new JsonPrimitive(src.format(DateTimeFormatter.ISO_DATE_TIME));
+			}
+		}).create();
+		return gson.toJson(l);
 	}
 
 	static String concatString(String person, String org, String data) {
@@ -138,6 +163,7 @@ public class TestWithKafka {  // Disse testene er veldig vaklete, virker ca anne
 		@Override
 		public Long lagreLoggInnslag(LoggInnslag l) {
 			received.add(concatString(l.getPerson(), l.getMottaker(), l.getLeverteData()));
+			System.out.println(l);
 			return null;
 		}
 	}

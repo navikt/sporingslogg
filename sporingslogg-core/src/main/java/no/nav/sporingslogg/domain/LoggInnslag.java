@@ -94,4 +94,11 @@ public class LoggInnslag {                // Logger en uthenting av data om en p
 	public String getSamtykkeToken() {
 		return samtykkeToken;
 	}
+
+	@Override
+	public String toString() {
+		return "LoggInnslag [id=" + id + ", person=" + person + ", mottaker=" + mottaker + ", tema=" + tema
+				+ ", hjemmel=" + hjemmel + ", uthentingsTidspunkt=" + uthentingsTidspunkt + ", leverteData="
+				+ leverteData + ", samtykkeToken=" + samtykkeToken + "]";
+	}
 }

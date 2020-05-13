@@ -81,14 +81,10 @@ public class ManualKafkaSender { // Send melding(er) til kafka startet via Embed
 //			producer.send(lagKafkaRecord(counter++, topic)).get();
 			producer.send(lagKafkaRecord(counter++, topic)).get();
 			
-			// Uten try/catch ender alle disse med at serveren stopper/henger, men meldingen ligger igjen (på embedded kafka)
-			//producer.send(hardcodedRecord(counter, topic, "Ikke JSON i det hele tatt")); // JsonParseException
-			//producer.send(hardcodedRecord(counter, topic, "{ ugyldig json }")); // JsonParseException
-			//producer.send(hardcodedRecord(counter, topic, "{ \"bareEnUnknown\":\"property\" }")); // UnrecognizedPropertyException
-			// Denne blir spist fra køen, og gir logging
+			//producer.send(hardcodedRecord(counter, topic, "Ikke JSON i det hele tatt")); // JsonSyntaxException
+			//producer.send(hardcodedRecord(counter, topic, "{ ugyldig json }")); // JsonSyntaxException
 			//producer.send(hardcodedRecord(counter, topic, "{ \"person\":\"mye_mangler\" }")); // IllegalArgumentException fra ValideringsTjeneste
 			
-//			producer.send(lagTestKafkaRecord(counter++, "srvABACPEP", topic)).get();
 		} catch (Exception e) {
 			throw new RuntimeException("Kunne ikke sende melding", e);
 		} finally {
@@ -96,9 +92,6 @@ public class ManualKafkaSender { // Send melding(er) til kafka startet via Embed
 		}
 		System.out.println("################################### "+(counter-1)+" melding(er) sendt, avslutter");	
 
-	}
-	private ProducerRecord<Integer, String> lagTestKafkaRecord(int c, String person, String topic) {
-		return new ProducerRecord<Integer, String>(topic, c, lagLoggMelding(person,"mott.Org","ABC","hjemmelbeskrivelsen",LocalDateTime.now(),"encoded leverte data","samtykket"));
 	}
 
 	private ProducerRecord<Integer, String> hardcodedRecord(int c, String topic, String melding) {
@@ -110,7 +103,14 @@ public class ManualKafkaSender { // Send melding(er) til kafka startet via Embed
 		String dataEsc = "{ 'prop1':'value1', 'prop2':'value2', 'prop3': {'innerProp':5} }";
 		String data = "something";
 //		return new ProducerRecord<Integer, String>(topic, c, lagLoggMelding("person"+c,"org"+c,"tm"+c,"hjemmel"+c,LocalDateTime.now(),"{\\\"prop1\\\":\\\"verdi1\\\"}"));
-		return new ProducerRecord<Integer, String>(topic, c, lagLoggMelding("person"+c,"org"+c,"tm"+c,"hjemmel"+c,LocalDateTime.now(),data,"token"+c));
+		// OK melding
+//		return new ProducerRecord<Integer, String>(topic, c, lagLoggMelding("person"+c,"org"+c,"tm"+c,"hjemmel"+c,LocalDateTime.now(),data,"token"+c));
+		// serialiseringsfeil
+//		return new ProducerRecord<Integer, String>(topic, c, "tullball");
+		// valideringsfeil
+//		return new ProducerRecord<Integer, String>(topic, c, lagLoggMelding("person"+c,"","tm"+c,"hjemmel"+c,LocalDateTime.now(),data,"token"+c));
+		// simulert DB-exception (må kodes inn i KafkaLoggConsumer: exception kastes for person = "skalFeile")
+		return new ProducerRecord<Integer, String>(topic, c, lagLoggMelding("skalFeile","org"+c,"tm"+c,"hjemmel"+c,LocalDateTime.now(),data,"token"+c));
 	}
 /*
  *     private String person;                       // Fnr/dnr for personen dataene gjelder

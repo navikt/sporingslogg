@@ -3,13 +3,13 @@
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-        <charset>UTF-8</charset>
+            <charset>UTF-8</charset>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
     
     <appender name="stdout_json" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
     </appender>
     
     <logger name="no.nav.sporingslogg" level="${log.level.no.nav:-DEBUG}" />
