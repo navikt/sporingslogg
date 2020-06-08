@@ -4,6 +4,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import no.nav.sporingslogg.kafka.rerun.RerunUFOwithOrgnrPrefix;
 import no.nav.sporingslogg.ldap.LdapGroupService;
 import no.nav.sporingslogg.tjeneste.LoggTjeneste;
 
@@ -29,6 +31,9 @@ public class LoggController {
     @Autowired
     private LdapGroupService ldapGroupService;
 
+    @Autowired
+    private RerunUFOwithOrgnrPrefix rerunUFOwithOrgnrPrefix;
+    
     @Path("")
     @POST
     public Response logg(@Context SecurityContext securityContext, LoggMelding loggMelding) {
@@ -45,6 +50,27 @@ public class LoggController {
 //        log.debug("Lagret logg med ny id " + loggId);
         LoggMeldingResponse response = new LoggMeldingResponse();
         response.setId(""+loggId);
+        return Response.status(Response.Status.OK).entity(response).build();
+    }
+    
+    // Midlertidig tjeneste for å rette opp i feil UFO-meldinger som havnet på topic 2/6-5/6 2020.
+    // Kan gjenbrukes til andre feiltilfeller ved å reimplementere rerunUFOwithOrgnrPrefix og oppdatere app-context, 
+    // har bare effekt så lenge feilede meldinger finnes på topic (normalt 1 uke etter innsending).
+    @Path("manualrerun")
+    @POST
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response manualRerun(@Context SecurityContext securityContext, @QueryParam("dryrun") String dryRunParam) {
+    	
+        boolean dryrun = true; // skal eksplisitt settes false for å kjøre "real"
+        if (dryRunParam != null) {
+        	try {
+        		dryrun = Boolean.valueOf(dryRunParam);
+        	} catch (Exception ignore) {
+        	}
+        }
+        
+        log.debug("ManualRerun kalt, med dryrun: " + dryrun);        
+        String response = rerunUFOwithOrgnrPrefix.performPollAndProcessing(dryrun);
         return Response.status(Response.Status.OK).entity(response).build();
     }
     

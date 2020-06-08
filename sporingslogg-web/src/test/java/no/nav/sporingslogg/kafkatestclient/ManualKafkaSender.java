@@ -26,12 +26,12 @@ public class ManualKafkaSender { // Send melding(er) til kafka startet via Embed
 	private static final KafkaProperties PREPROD_PROPERTIES = StandaloneTestJettyMain.getKafkaPreprodProperties();
 
 	public static void main(String[] args) {
-//		Map<String, Object> senderProps = getSenderPropsForTest();		
-//		new ManualKafkaSender().sendMessages(senderProps, TEST_PROPERTIES.getBootstrapServers(), TEST_PROPERTIES.getTopic());
+		Map<String, Object> senderProps = getSenderPropsForTest();		
+		new ManualKafkaSender().sendMessages(senderProps, TEST_PROPERTIES.getBootstrapServers(), TEST_PROPERTIES.getTopic());
 //		Map<String, Object> senderProps = getSenderPropsForPreprod();		
 //		new ManualKafkaSender().sendMessages(senderProps, PREPROD_PROPERTIES.getBootstrapServers(), PREPROD_PROPERTIES.getTopic());
-		Map<String, Object> senderProps = getSenderPropsForEmbeddedKafka();		
-		new ManualKafkaSender().sendMessages(senderProps, EMBEDDED_PROPERTIES.getBootstrapServers(), EMBEDDED_PROPERTIES.getTopic());
+//		Map<String, Object> senderProps = getSenderPropsForEmbeddedKafka();		
+//		new ManualKafkaSender().sendMessages(senderProps, EMBEDDED_PROPERTIES.getBootstrapServers(), EMBEDDED_PROPERTIES.getTopic());
 	}
 	
 	public static Map<String, Object> getSenderPropsForEmbeddedKafka() {
@@ -105,12 +105,13 @@ public class ManualKafkaSender { // Send melding(er) til kafka startet via Embed
 //		return new ProducerRecord<Integer, String>(topic, c, lagLoggMelding("person"+c,"org"+c,"tm"+c,"hjemmel"+c,LocalDateTime.now(),"{\\\"prop1\\\":\\\"verdi1\\\"}"));
 		// OK melding
 //		return new ProducerRecord<Integer, String>(topic, c, lagLoggMelding("person"+c,"org"+c,"tm"+c,"hjemmel"+c,LocalDateTime.now(),data,"token"+c));
+		return new ProducerRecord<Integer, String>(topic, c, lagLoggMelding("person"+c,"0192:987654321","UFO","hjemmel"+c,LocalDateTime.now(),data,"token"+c));
 		// serialiseringsfeil
 //		return new ProducerRecord<Integer, String>(topic, c, "tullball");
 		// valideringsfeil
 //		return new ProducerRecord<Integer, String>(topic, c, lagLoggMelding("person"+c,"","tm"+c,"hjemmel"+c,LocalDateTime.now(),data,"token"+c));
 		// simulert DB-exception (må kodes inn i KafkaLoggConsumer: exception kastes for person = "skalFeile")
-		return new ProducerRecord<Integer, String>(topic, c, lagLoggMelding("skalFeile","org"+c,"tm"+c,"hjemmel"+c,LocalDateTime.now(),data,"token"+c));
+//		return new ProducerRecord<Integer, String>(topic, c, lagLoggMelding("skalFeile","org"+c,"tm"+c,"hjemmel"+c,LocalDateTime.now(),data,"token"+c));
 	}
 /*
  *     private String person;                       // Fnr/dnr for personen dataene gjelder
