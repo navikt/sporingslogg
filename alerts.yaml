@@ -1,0 +1,23 @@
+apiVersion: nais.io/v1
+kind: Alert
+metadata:
+  name: sporingslogg-alerts
+  namespace: default
+  labels:
+    team: integrasjon
+spec:
+  receivers: # receivers for all alerts below
+    slack:
+      channel: '#sporingslogg-alerts'
+      prependText: '<!channel> | ' # varsle alle/passive i kanalen inntil vi har et team, saa det oppdages lettere ved innlogging/sjekk etter at alerten er sendt
+  alerts:
+    - alert: sporingslogg-nede
+      expr: up{app="sporingslogg", job="kubernetes-pods"} == 0
+      for: 2m
+      description: "App {{ $labels.log_app }} er nede i {{ $labels.log_namespace }}"
+      action: "`kubectl describe pod {{ $labels.log_pod_name }} -n {{ $labels.log_namespace }}` for events, og `kubectl logs {{ $labels.log_pod_name }} -n {{ $labels.log_namespace }}` for logger"
+    - alert: sporingslogg-errorlogging
+      expr: increase(logd_messages_total{log_app="sporingslogg",log_level="Error"}[2m]) > 0
+      for: 0m
+      description: "App {{ $labels.log_app }} rapporterer error/warning i {{ $labels.log_namespace }}"
+      action: "Sjekk loggene til {{ $labels.log_app }} i {{ $labels.log_namespace }}, `kubectl logs {{ $labels.log_pod_name }} -n {{ $labels.log_namespace }}`"
