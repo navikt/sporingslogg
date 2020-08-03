@@ -97,7 +97,7 @@ public class ValideringTest {
     @Test
     public void forLangDataGirValideringsFeil() {
         try {
-            loggTjeneste.lagreLoggInnslag(l("id", "org", string(100001)));
+            loggTjeneste.lagreLoggInnslag(l("id", "org", string(1000001)));
             fail("Forventet exception");
         } catch (Exception e) {
             // OK
@@ -105,7 +105,7 @@ public class ValideringTest {
     }
     @Test
     public void langDataErOk() {
-        loggTjeneste.lagreLoggInnslag(l("id", "org", string(100000)));
+        loggTjeneste.lagreLoggInnslag(l("id", "org", string(1000000)));
     }
 	private String string(int l) {
 		StringBuffer sb = new StringBuffer();
