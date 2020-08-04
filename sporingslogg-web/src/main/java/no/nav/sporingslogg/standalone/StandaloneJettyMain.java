@@ -1,6 +1,7 @@
 package no.nav.sporingslogg.standalone;
 
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -38,9 +39,14 @@ public class StandaloneJettyMain {
     	
 		String passwordFile = System.getenv("PASSWORD_FILE");
 		Properties passwords = readFromSecretsPropertyFile(passwordFile);
-		
+		String dbPw = passwords.getProperty("SPORINGSLOGGDB_PASSWORD");
+		if (dbPw == null) {
+			log.info("Henter DB PW fra vault");
+			String dbPasswordVaultFile = System.getenv("DB_PASSWORD_FILE");
+			dbPw = readContentsOfSecretsFile(dbPasswordVaultFile);
+		}
 		System.setProperty(PropertyNames.PROPERTY_LDAP_PASSWORD, passwords.getProperty("LDAP_PASSWORD"));
-		System.setProperty(PropertyNames.PROPERTY_DB_PASSWORD, passwords.getProperty("SPORINGSLOGGDB_PASSWORD"));
+		System.setProperty(PropertyNames.PROPERTY_DB_PASSWORD, dbPw);
 		System.setProperty(PropertyNames.PROPERTY_KAFKA_PASSWORD, passwords.getProperty("NO_NAV_SPORINGSLOGG_KAFKA_PASSWORD"));
 		
     	System.setProperty(PropertyNames.PROPERTY_DB_DIALECT, "org.hibernate.dialect.Oracle10gDialect");
@@ -92,6 +98,16 @@ public class StandaloneJettyMain {
 		}
 	}
 
+	private static String readContentsOfSecretsFile(String filename) {
+		try (FileReader f = new FileReader(filename)) {
+			char[] buffer = new char[1024];
+			f.read(buffer);
+			return new String(buffer).trim();
+		} catch (IOException e) {
+			throw new RuntimeException("Kan ikke lese secrets fil "+filename+" fra vault", e);
+		}
+	}
+	
     public static DataSource createOracleDatasource() { 
     	
         String url = PropertyUtil.getProperty(PropertyNames.PROPERTY_DB_URL);

@@ -54,9 +54,9 @@
     <bean id="kafkaConsumer" class="no.nav.sporingslogg.kafka.KafkaLoggConsumer">
         <constructor-arg><ref bean="kafkaProperties"/></constructor-arg>
     </bean>
-    <bean id="manualRerunKafkaConsumer" class="no.nav.sporingslogg.kafka.rerun.RerunUFOwithOrgnrPrefix">
+    <!--bean id="manualRerunKafkaConsumer" class="no.nav.sporingslogg.kafka.rerun.RerunPENwithMessageLongerThan100K">
         <constructor-arg><ref bean="kafkaProperties"/></constructor-arg>
-    </bean>
+    </bean-->
     
     <!-- Tjeneste-API'er, splitter fordi alle har forskjellig aksess-kontroll -->
     <bean id="loggController" class="no.nav.sporingslogg.restapi.LoggController"/>

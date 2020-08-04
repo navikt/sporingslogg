@@ -41,19 +41,25 @@ spec:
       memory: 512Mi
   vault: 
     enabled: true
+    # erstatter kun pw for now, tar evt med user, url og evt srvuser senere. Fordel: endringer gjort av drift havner i vault
+    paths:
+      - kvPath: oracle/data/dev/creds/sporingslogg_t4-user
+        mountPath: /secrets/database/credentials
   env:
     - name: LDAP_URL
       value: "ldaps://ldapgw.test.local"
     - name: LDAP_BASEDN
       value: "DC=test,DC=local"
+    - name: DB_PASSWORD_FILE
+      value: "/secrets/database/credentials/password"
     - name: LDAP_USER_BASEDN
       value: "ou=NAV,ou=BusinessUnits,dc=test,dc=local"
     - name: LDAP_SERVICEUSER_BASEDN
       value: "ou=ServiceAccounts,dc=test,dc=local"
     - name: SPORINGSLOGGDB_URL
-      value: "jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=d26dbfl021.test.local)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=SPORINGSLOGGT4)(INSTANCE_NAME=cctf02)(UR=A)(SERVER=DEDICATED)))"
+      value: "jdbc:oracle:thin:@d26dbfl029.test.local:1521/sporingslogg_t4"
     - name: SPORINGSLOGGDB_USERNAME
-      value: "SPORINGSLOGG_T4"
+      value: "SPORINGSLOGG"
     - name: NO_NAV_SPORINGSLOGG_KAFKA_SERVERS
       value: "d26apvl00159.test.local:8443,d26apvl00160.test.local:8443,d26apvl00161.test.local:8443"
 # OIDC-ressursene er annerledes for idporten/openam

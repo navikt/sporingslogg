@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import no.nav.sporingslogg.kafka.rerun.RerunUFOwithOrgnrPrefix;
 import no.nav.sporingslogg.ldap.LdapGroupService;
 import no.nav.sporingslogg.tjeneste.LoggTjeneste;
 
@@ -31,8 +30,8 @@ public class LoggController {
     @Autowired
     private LdapGroupService ldapGroupService;
 
-    @Autowired
-    private RerunUFOwithOrgnrPrefix rerunUFOwithOrgnrPrefix;
+//    @Autowired
+//    private RerunPENwithMessageLongerThan100K rerunPENwithMessageLongerThan100K;
     
     @Path("")
     @POST
@@ -56,6 +55,7 @@ public class LoggController {
     // Midlertidig tjeneste for å rette opp i feil UFO-meldinger som havnet på topic 2/6-5/6 2020.
     // Kan gjenbrukes til andre feiltilfeller ved å reimplementere rerunUFOwithOrgnrPrefix og oppdatere app-context, 
     // har bare effekt så lenge feilede meldinger finnes på topic (normalt 1 uke etter innsending).
+    // Gjenbrukt for PEN-meldinger 1/8-3/8 2020 med lengde over 100.000 bytes.
     @Path("manualrerun")
     @POST
     @Produces(MediaType.TEXT_PLAIN)
@@ -70,7 +70,8 @@ public class LoggController {
         }
         
         log.debug("ManualRerun kalt, med dryrun: " + dryrun);        
-        String response = rerunUFOwithOrgnrPrefix.performPollAndProcessing(dryrun);
+//        String response = rerunPENwithMessageLongerThan100K.performPollAndProcessing(dryrun);
+        String response = "Not set up with any rerun functionality";
         return Response.status(Response.Status.OK).entity(response).build();
     }
     
