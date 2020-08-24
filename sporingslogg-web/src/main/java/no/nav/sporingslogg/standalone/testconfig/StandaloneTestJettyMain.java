@@ -139,7 +139,7 @@ public class StandaloneTestJettyMain {
 			System.setProperty("loginContextOverrides", "/WEB-INF/local-jetty/noContextOverrides.xml");
 	        System.setProperty(PropertyNames.PROPERTY_LDAP_URL, "ldap://ldapgw.test.local:389");
 	        System.setProperty(PropertyNames.PROPERTY_LDAP_USERNAME, "srvSSOLinux");
-	        System.setProperty(PropertyNames.PROPERTY_LDAP_PASSWORD, "khFKL0GCusWe72");
+	        System.setProperty(PropertyNames.PROPERTY_LDAP_PASSWORD, "SETT_DETTE_MANUELT");
 	        System.setProperty(PropertyNames.PROPERTY_LDAP_BASEDN, "dc=test,dc=local");
 	        System.setProperty(PropertyNames.PROPERTY_LDAP_USER_BASEDN, "ou=NAV,ou=BusinessUnits,dc=test,dc=local");
 	        System.setProperty(PropertyNames.PROPERTY_LDAP_SERVICEUSER_BASEDN, "ou=ServiceAccounts,dc=test,dc=local");
