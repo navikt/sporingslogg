@@ -30,15 +30,10 @@
     <bean id="timestampTjeneste" class="no.nav.sporingslogg.tjeneste.TimestampTjeneste"/>
   	
     <!-- OIDC-autentisering av lesing -->
-    <bean id="jwks" class="org.jose4j.jwk.HttpsJwks">
-        <constructor-arg><value>${no.nav.sporingslogg.oidc.jwks}</value></constructor-arg>
-    </bean>
-    <bean id="oidcKeyResolver" class="org.jose4j.keys.resolvers.HttpsJwksVerificationKeyResolver">
-        <constructor-arg><ref bean="jwks"/></constructor-arg>
-    </bean>    
+    <!-- endret til kommaseparerte lister, listene må ha samme antall parametre, issuer[0] har jwks[0] etc -->
     <bean id="oidcAuthenticate" class="no.nav.sporingslogg.oidc.OidcAuthenticate">
-        <constructor-arg><ref bean="oidcKeyResolver"/></constructor-arg>
-        <constructor-arg><value>${no.nav.sporingslogg.oidc.issuer}</value></constructor-arg>
+        <constructor-arg><value>${no.nav.sporingslogg.oidc.issuerList}</value></constructor-arg>
+        <constructor-arg><value>${no.nav.sporingslogg.oidc.jwksList}</value></constructor-arg>
     </bean>
 
     <!-- Kafka som inputkilde for logging -->

@@ -74,10 +74,12 @@ spec:
 #   https://security-token-service-t4.nais.preprod.local
 #   https://security-token-service-t4.nais.preprod.local/rest/v1/sts/jwks
 #
-    - name: NO_NAV_SPORINGSLOGG_OIDC_ISSUER
-      value: "https://security-token-service-t4.nais.preprod.local"
-    - name: NO_NAV_SPORINGSLOGG_OIDC_JWKS
-      value: "https://security-token-service-t4.nais.preprod.local/rest/v1/sts/jwks"
+# Issuerlist og jwkslist skal være kommaseparert med like mange, korresponderende elementer.
+# Testet med fitnessetester, funker hvis issuer er først og sist i lista, nekter hvis den ikke er i lista
+    - name: NO_NAV_SPORINGSLOGG_OIDC_ISSUERLIST
+      value: "https://dummy.nav.no/issuer,https://security-token-service-t4.nais.preprod.local"
+    - name: NO_NAV_SPORINGSLOGG_OIDC_JWKSLIST
+      value: "https://dummy.nav.no/jwks,https://security-token-service-t4.nais.preprod.local/rest/v1/sts/jwks"
 # Skal være satt til 4 (Bank-ID) når man går mot ID-porten, 0 ellers
     - name: SPORINGSLOGG_CHECK_AUTHLEVEL
       value: "0"

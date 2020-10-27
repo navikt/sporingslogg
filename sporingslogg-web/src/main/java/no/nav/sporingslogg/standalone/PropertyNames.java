@@ -5,8 +5,8 @@ public class PropertyNames {
 	// Definerer de properties som må være satt for at standalone Jetty kan fungere.
 	// Må settes ved nais-deploy/Fasit eller i main.
 	
-    public static final String PROPERTY_OIDC_JWKS = "no.nav.sporingslogg.oidc.jwks";
-    public static final String PROPERTY_OIDC_ISSUER = "no.nav.sporingslogg.oidc.issuer";
+    public static final String PROPERTY_OIDC_JWKS = "no.nav.sporingslogg.oidc.jwksList";
+    public static final String PROPERTY_OIDC_ISSUER = "no.nav.sporingslogg.oidc.issuerList";
     public static final String PROPERTY_OIDC_AUTHLEVEL = "SPORINGSLOGG_CHECK_AUTHLEVEL";
     // Disse brukes hvis JWKS-URLen må aksesseres via web proxy
     public static final String PROPERTY_PROXYHOST = "https.proxyHost";

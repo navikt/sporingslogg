@@ -53,23 +53,22 @@ spec:
       value: "SPORINGSLOGG"
     - name: NO_NAV_SPORINGSLOGG_KAFKA_SERVERS
       value: "b27apvl00045.preprod.local:8443,b27apvl00046.preprod.local:8443,b27apvl00047.preprod.local:8443"
-# OIDC-ressursene er annerledes for idporten/openam
-#Issuer:
-#  https://stub-oidc-provider.azurewebsites.net
-#Jwks: 
-#  https://stub-oidc-provider.azurewebsites.net/certs
 #
-# Azure:
+# Azure fram til høst 2020:
 #   https://login.microsoftonline.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/
 #   https://login.microsoftonline.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1
+# Azure ETTER høst 2020:
+#   https://navtestb2c.b2clogin.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/
+#   https://navtestb2c.b2clogin.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1
 # NAV STS i Q
 #   https://security-token-service.nais.preprod.local
 #   https://security-token-service.nais.preprod.local/rest/v1/sts/jwks
+# Issuerlist og jwkslist skal være kommaseparert med like mange, korresponderende elementer.
 
-    - name: NO_NAV_SPORINGSLOGG_OIDC_ISSUER
-      value: "https://login.microsoftonline.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/"
-    - name: NO_NAV_SPORINGSLOGG_OIDC_JWKS
-      value: "https://login.microsoftonline.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1"
+    - name: NO_NAV_SPORINGSLOGG_OIDC_ISSUERLIST
+      value: "https://login.microsoftonline.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/,https://navtestb2c.b2clogin.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/"
+    - name: NO_NAV_SPORINGSLOGG_OIDC_JWKSLIST
+      value: "https://login.microsoftonline.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1,https://navtestb2c.b2clogin.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1"
 # Skal være satt til 4 (Bank-ID) når man går mot ID-porten, 0 ellers
     - name: SPORINGSLOGG_CHECK_AUTHLEVEL
       value: "4"

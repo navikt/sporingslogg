@@ -2,12 +2,16 @@ package no.nav.sporingslogg.oidc;
 
 import java.io.IOException;
 import java.security.Key;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.jose4j.jwk.HttpsJwks;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
 import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
+import org.jose4j.keys.resolvers.HttpsJwksVerificationKeyResolver;
 import org.jose4j.keys.resolvers.VerificationKeyResolver;
 import org.jose4j.lang.UnresolvableKeyException;
 import org.slf4j.Logger;
@@ -29,24 +33,42 @@ public class OidcAuthenticate {
 	// Godta slingringsmonn pga unøyaktige klokker
 	private static final int AKSEPTERT_TIDSFORSKJELL_SEKUNDER = 30;
 
-	private final Key publicKey;
-	private final VerificationKeyResolver keyResolver;
-	private final String issuer;
+	private final Key publicKey; // kun til testbruk
+	private final String publicIssuer;
+	private final Map<String, VerificationKeyResolver> resolverByIssuer = new HashMap<>();
 	private final String requiredAuthLevel;
 	
 	// Brukes bare av test
-	public OidcAuthenticate(Key publicKey, String issuer, String requiredAuthLevel) {
+	public OidcAuthenticate(Key publicKey, String publicIssuer, String requiredAuthLevel) {
 		this.publicKey = publicKey;
-		this.keyResolver = null;
-		this.issuer = issuer;
+		this.publicIssuer = publicIssuer;
 		this.requiredAuthLevel = requiredAuthLevel;
-
+		log.info("OIDC authentication set up with DUMMY key and issuer, authlevel: " + requiredAuthLevel);
 	}
 
+	// Brukes bare av test
 	public OidcAuthenticate(VerificationKeyResolver keyResolver, String issuer) {
 		this.publicKey = null;
-		this.keyResolver = keyResolver;
-		this.issuer = issuer;
+		this.publicIssuer = null;
+		resolverByIssuer.put(issuer, keyResolver);
+		requiredAuthLevel = getRequiredAuthLevel();
+		log.info("OIDC authentication set up with DUMMY resolver and issuer, authlevel: " + requiredAuthLevel);
+	}
+
+	// Endret til å ta inn lister som kommaseparerte strenger, for å dekke at Miccemus skifter adresser. Greit å tolerere flere issuere uansett.
+	public OidcAuthenticate(String issuerListCS, String jwksListCS) {
+		this.publicKey = null;
+		this.publicIssuer = null;
+		String[] issuerList = issuerListCS.split(",");
+		String[] jwksList = jwksListCS.split(",");
+		int i = 0;
+		for (String issuer : issuerList) {
+			HttpsJwks jwks = new HttpsJwks(jwksList[i]);
+			HttpsJwksVerificationKeyResolver keyResolver = new HttpsJwksVerificationKeyResolver(jwks);
+			resolverByIssuer.put(issuer, keyResolver);
+			log.info("OIDC authentication set up with issuer and jwks: " + issuer + " " + jwksList[i]);
+			i++;
+		}
 		requiredAuthLevel = getRequiredAuthLevel();
 	}
 
@@ -76,7 +98,8 @@ public class OidcAuthenticate {
 	private final int FEIL_TOKEN_FORMAT = 17;
 
 	public String getVerifiedSubject(String bearerToken)  { 
-		JwtConsumer jwtConsumer = buildJwtConsumer(); 
+		String issuer = getUnverifiedIssuer(bearerToken);
+		JwtConsumer jwtConsumer = buildJwtConsumer(issuer); 
 		try {
 			JwtClaims jwtClaims = jwtConsumer.processToClaims(bearerToken);
 			if (requiredAuthLevel != null) {
@@ -138,17 +161,36 @@ public class OidcAuthenticate {
 		}
 	}
 	
-	private JwtConsumer buildJwtConsumer() {
+	private String getUnverifiedIssuer(String bearerToken)  {  
+		JwtConsumer jwtConsumer = buildAcceptAnythingJwtConsumer(); 
+		try {
+			JwtClaims jwtClaims = jwtConsumer.processToClaims(bearerToken);
+	        return jwtClaims.getIssuer();
+	        
+		} catch (InvalidJwtException e) {
+			throw new RuntimeException("OIDC-token er ikke gyldig", e);
+			
+		} catch (MalformedClaimException e) {
+			throw new RuntimeException("Kan ikke hente ut issuer fra OIDC-token", e);
+		}
+	}
+	
+	private JwtConsumer buildJwtConsumer(String issuer) {
 		JwtConsumerBuilder builder = new JwtConsumerBuilder()
 	            .setRequireExpirationTime() 
 	            .setMaxFutureValidityInMinutes(MAX_VALIDITY_SECONDS) 
 	            .setAllowedClockSkewInSeconds(AKSEPTERT_TIDSFORSKJELL_SEKUNDER) 
-	            .setSkipDefaultAudienceValidation()
-	            .setExpectedIssuer(issuer);
+	            .setSkipDefaultAudienceValidation();
 		
 		if (publicKey != null) {
             builder.setVerificationKey(publicKey);
+            builder.setExpectedIssuer(publicIssuer);
 		} else {
+			VerificationKeyResolver keyResolver = resolverByIssuer.get(issuer);
+			if (keyResolver == null) {
+				throw new RuntimeException("OIDC-token inneholder ukjent issuer: " + issuer);
+			}
+            builder.setExpectedIssuer(issuer);
 			builder.setVerificationKeyResolver(keyResolver);
 		}
 		

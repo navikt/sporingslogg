@@ -31,7 +31,7 @@ spec:
     failureThreshold: 60
   resources:
     limits:
-      cpu: 800m
+      cpu: 1
       memory: 1024Mi
     requests:
       cpu: 400m
@@ -53,11 +53,11 @@ spec:
       value: "SPORINGSLOGG"
     - name: NO_NAV_SPORINGSLOGG_KAFKA_SERVERS
       value: "a01apvl00145.adeo.no:8443,a01apvl00146.adeo.no:8443,a01apvl00147.adeo.no:8443,a01apvl00148.adeo.no:8443,a01apvl00149.adeo.no:8443,a01apvl00150.adeo.no:8443"
-# OIDC-ressursene er annerledes for idporten/openam
-    - name: NO_NAV_SPORINGSLOGG_OIDC_ISSUER
-      value: "https://login.microsoftonline.com/8b7dfc8b-b52e-4741-bde4-d83ea366f94f/v2.0/"
-    - name: NO_NAV_SPORINGSLOGG_OIDC_JWKS
-      value: "https://login.microsoftonline.com/navnob2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten"
+# Issuerlist og jwkslist skal være kommaseparert med like mange, korresponderende elementer.
+    - name: NO_NAV_SPORINGSLOGG_OIDC_ISSUERLIST
+      value: "https://login.microsoftonline.com/8b7dfc8b-b52e-4741-bde4-d83ea366f94f/v2.0/,https://navnob2c.b2clogin.com/8b7dfc8b-b52e-4741-bde4-d83ea366f94f/v2.0/"
+    - name: NO_NAV_SPORINGSLOGG_OIDC_JWKSLIST
+      value: "https://login.microsoftonline.com/navnob2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten,https://navnob2c.b2clogin.com/navnob2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten"
 # Skal være satt til 4 (Bank-ID) når man går mot ID-porten, 0 ellers
     - name: SPORINGSLOGG_CHECK_AUTHLEVEL
       value: "4"

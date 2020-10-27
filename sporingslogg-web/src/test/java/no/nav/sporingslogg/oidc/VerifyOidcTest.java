@@ -59,7 +59,7 @@ public class VerifyOidcTest {
 			oidcAuthenticate.getVerifiedSubject("tull_og_tøys");
 			fail("fikk ikke forventet exception");
 		} catch (Exception e) {
-			assertTrue("Forventer feil format", e.getMessage().contains("feil format"));
+			assertTrue("Forventer feil format", e.getMessage().contains("ikke gyldig"));
 		}
 	}
 
