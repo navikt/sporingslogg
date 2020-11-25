@@ -14,12 +14,15 @@ public class LoggConverter {
 		loggMelding.setUthentingsTidspunkt(loggInnslag.getUthentingsTidspunkt());
 		loggMelding.setLeverteData(loggInnslag.getLeverteData());
 		loggMelding.setSamtykkeToken(loggInnslag.getSamtykkeToken());
+		loggMelding.setRequest(loggInnslag.getRequest());
+		loggMelding.setAvtalePartner(loggInnslag.getAvtalePartner());
 		return loggMelding;
 	}
 
     public static LoggInnslag fromJsonObject(LoggMelding loggMelding) {
     	return new LoggInnslag(loggMelding.getPerson(), loggMelding.getMottaker(), loggMelding.getTema(),
-    			loggMelding.getBehandlingsGrunnlag(), loggMelding.getUthentingsTidspunkt(), loggMelding.getLeverteData(), loggMelding.getSamtykkeToken());
+    			loggMelding.getBehandlingsGrunnlag(), loggMelding.getUthentingsTidspunkt(), loggMelding.getLeverteData(), loggMelding.getSamtykkeToken(), 
+    			loggMelding.getRequest(), loggMelding.getAvtalePartner());
 	}
 
 }

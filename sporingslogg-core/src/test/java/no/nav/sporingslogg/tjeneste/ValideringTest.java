@@ -29,7 +29,7 @@ public class ValideringTest {
         }
     }
     private LoggInnslag l(String p, String m, String d) {
-		return new LoggInnslag(p, m, "xxx", "hhh", null, d, null);
+		return new LoggInnslag(p, m, "xxx", "hhh", null, d, null, null, null);
 	}
 	@Test
     public void tomPersonGirValideringsFeil() {

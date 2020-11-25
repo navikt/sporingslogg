@@ -2,8 +2,6 @@ package no.nav.sporingslogg.restapi;
 
 import java.time.LocalDateTime;
 
-import no.nav.sporingslogg.tjeneste.LoggTjeneste;
-
 public class LoggMelding { // JSON-melding ved logging av datautlevering
 
 	private String id;                           // Unik ID (brukes kun ved les/uthenting)
@@ -14,6 +12,8 @@ public class LoggMelding { // JSON-melding ved logging av datautlevering
     private LocalDateTime uthentingsTidspunkt;   // Tidspunkt for utlevering, ISO-format uten tidssone
     private String leverteData;                  // Utleverte data, B64-encodet JSON
     private String samtykkeToken;                // JWT fra Altinn, encoded som i https://altinn.github.io/docs/guides/samtykke/datakilde/bruk-av-token/
+    private String request;                      // Brukes av noen (aareg) til å lagre requesten som resulterte i dataene som leveres
+    private String avtalePartner;                // Brukes av noen (aareg) til å lagre at mottaker har annet orgnr enn den avtalen er registrert på
 
     public String getId() {
 		return id;
@@ -63,9 +63,23 @@ public class LoggMelding { // JSON-melding ved logging av datautlevering
 	public void setSamtykkeToken(String samtykkeToken) {
 		this.samtykkeToken = samtykkeToken;
 	}
+	public String getRequest() {
+		return request;
+	}
+	public void setRequest(String request) {
+		this.request = request;
+	}
+	public String getAvtalePartner() {
+		return avtalePartner;
+	}
+	public void setAvtalePartner(String avtalePartner) {
+		this.avtalePartner = avtalePartner;
+	}
 	@Override
 	public String toString() {
-		return "LoggMelding [id=" + id + ", person=" + LoggTjeneste.scrambleFnr(person) + ", mottaker=" + mottaker + ", tema=" + tema + ", behandlingsGrunnlag=" + behandlingsGrunnlag
-				+ ", uthentingsTidspunkt=" + uthentingsTidspunkt + ", leverteData=" + leverteData + ", samtykkeToken=" + samtykkeToken + "]";
+		return "LoggMelding [id=" + id + ", person=" + person + ", mottaker=" + mottaker + ", tema=" + tema
+				+ ", behandlingsGrunnlag=" + behandlingsGrunnlag + ", uthentingsTidspunkt=" + uthentingsTidspunkt
+				+ ", leverteData=" + leverteData + ", samtykkeToken=" + samtykkeToken + ", request=" + request
+				+ ", avtalePartner=" + avtalePartner + "]";
 	}
 }

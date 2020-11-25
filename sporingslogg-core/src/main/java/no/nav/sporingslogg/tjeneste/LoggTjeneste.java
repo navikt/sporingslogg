@@ -45,6 +45,8 @@ public class LoggTjeneste {
         valideringTjeneste.validerIkkeBlank(loggInnslag.getLeverteData(), "data");
         valideringTjeneste.validerMaxLengde(loggInnslag.getLeverteData(), 1000000, "data"); 
         valideringTjeneste.validerMaxLengde(loggInnslag.getSamtykkeToken(), 1000, "samtykketoken"); 
+        valideringTjeneste.validerMaxLengde(loggInnslag.getRequest(), 2000, "request"); 
+        valideringTjeneste.validerMaxLengde(loggInnslag.getAvtalePartner(), 9, "avtalepartner"); 
         
         if (loggInnslag.getUthentingsTidspunkt() == null) {
         	loggInnslag.setUthentingsTidspunkt(timestampTjeneste.now());

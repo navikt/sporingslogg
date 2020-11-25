@@ -75,6 +75,8 @@ public class DatabaseDefinisjoner {
 		loggMeldinger.setType("TIDSPUNKT", VerdiType.TIMESTAMP);
 		loggMeldinger.setType("LEVERTE_DATA", VerdiType.STRING);
 		loggMeldinger.setType("SAMTYKKE_TOKEN", VerdiType.STRING);
+		loggMeldinger.setType("REQUEST", VerdiType.STRING);
+		loggMeldinger.setType("AVTALE_PARTNER", VerdiType.STRING);
 		return result;
 	}
 }

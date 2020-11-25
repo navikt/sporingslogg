@@ -45,11 +45,17 @@ public class LoggInnslag {                // Logger en uthenting av data om en p
     @Column(name = "SAMTYKKE_TOKEN", nullable = true)
     private String samtykkeToken;  // JWT hvis hjemmel er 'samtykke'
     
+    @Column(name = "REQUEST", nullable = true)
+    private String request;  // Noen trenger å lagre requesten som ble brukt til å hente data som ble levert ut
+    
+    @Column(name = "AVTALE_PARTNER", nullable = true)
+    private String avtalePartner;  // Noen trenger å registrere at mottaker (orgnr) ikke er den som man har avtale med
+    
     LoggInnslag() {
         // brukes av JPA
     }
 
-	public LoggInnslag(String person, String mottaker, String tema, String hjemmel, LocalDateTime uthentingsTidspunkt, String leverteData, String samtykkeToken) {
+	public LoggInnslag(String person, String mottaker, String tema, String hjemmel, LocalDateTime uthentingsTidspunkt, String leverteData, String samtykkeToken, String request, String avtalePartner) {
 		this.person = person;
 		this.mottaker = mottaker;
 		this.tema = tema;
@@ -57,6 +63,8 @@ public class LoggInnslag {                // Logger en uthenting av data om en p
 		this.uthentingsTidspunkt = uthentingsTidspunkt;
 		this.leverteData = leverteData;
 		this.samtykkeToken = samtykkeToken;
+		this.request = request;
+		this.avtalePartner = avtalePartner;
 	}
 
 	public Long getId() {
@@ -95,10 +103,23 @@ public class LoggInnslag {                // Logger en uthenting av data om en p
 		return samtykkeToken;
 	}
 
+	public String getRequest() {
+		return request;
+	}
+
+	public String getAvtalePartner() {
+		return avtalePartner;
+	}
+
 	@Override
 	public String toString() {
 		return "LoggInnslag [id=" + id + ", person=" + person + ", mottaker=" + mottaker + ", tema=" + tema
 				+ ", hjemmel=" + hjemmel + ", uthentingsTidspunkt=" + uthentingsTidspunkt + ", leverteData="
-				+ leverteData + ", samtykkeToken=" + samtykkeToken + "]";
+				+ leverteData + ", samtykkeToken=" + samtykkeToken + ", request=" + request + ", avtalePartner="
+				+ avtalePartner + "]";
+	}
+
+	public void setId(Long l) {
+		id = l;
 	}
 }

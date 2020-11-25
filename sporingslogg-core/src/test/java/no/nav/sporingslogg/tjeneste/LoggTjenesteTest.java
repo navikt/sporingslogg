@@ -37,7 +37,7 @@ public class LoggTjenesteTest {
     public void lagreOgGjenfinnLogg() {
         
         HardCodedTimestampTjeneste.NOW = NOW;
-        LoggInnslag l = new LoggInnslag("12345678901", "123456789", "QQQ", "har lov", null, "tull1", null);
+        LoggInnslag l = new LoggInnslag("12345678901", "123456789", "QQQ", "har lov", null, "tull1", null, null, null);
         Long id = loggTjeneste.lagreLoggInnslag(l);
         List<LoggInnslag> alleLoggInnslagForPerson = loggTjeneste.finnAlleLoggInnslagForPerson("12345678901");
         assertEquals("Gjenfunnet logginnslag", 1, alleLoggInnslagForPerson.size());
