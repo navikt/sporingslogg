@@ -13,6 +13,8 @@
     </modules>
 
     <properties>
+        <!-- Nødvendig for å kunne ha java-navn med norske tegn -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>1.8</jdk.version>
         <jee.version>7</jee.version>
         <javax.jee.version>7.0</javax.jee.version>

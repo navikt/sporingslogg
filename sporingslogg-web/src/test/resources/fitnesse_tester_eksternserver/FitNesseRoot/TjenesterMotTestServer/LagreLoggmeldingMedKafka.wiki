@@ -17,7 +17,7 @@ Test
 !3 2. Legg den B64-encodede loggmeldingen på angitt Kafka topic
 
 | script | no.nav.sporingslogg.web.fitnesse.ExternKafkaProducerFixture  | aapen-sporingslogg-loggmeldingMottatt |
-| produce | !- {"person":"12345678901", "mottaker":"123456789", "tema":"ABC", "behandlingsGrunnlag":"hjemmel1", "uthentingsTidspunkt":"2019-08-16T12:24:21.675", "leverteData":"$encoded"} -! |
+| produce | !- {"person":"srvABACPEP", "mottaker":"123456789", "tema":"ABC", "behandlingsGrunnlag":"hjemmel1", "uthentingsTidspunkt":"2019-08-16T12:24:21.675", "leverteData":"$encoded", "dataForespørsel":"jeg vil se alt", "leverandør":"333222111"} -! |
 
 
 !3 3. Vent litt så meldingen blir tatt og prosessert
@@ -33,4 +33,4 @@ For ID vet vi ikke hvilken verdi vi forventer, bare at det er lagret en verdi
 
 | !- Query:no.nav.sporingslogg.web.fitnesse.LesDatabaseTabell_T4 -! | SPORINGS_LOGG | !- WHERE PERSON = '12345678901' AND DBMS_LOB.substr(LEVERTE_DATA, 300) = '$encoded' -!|
 | ID            | PERSON      | MOTTAKER  | TEMA | HJEMMEL  | TIDSPUNKT               | LEVERTE_DATA             |
-| ${ikke_blank} | 12345678901 | 123456789 | ABC  | hjemmel1 | 2019-08-16 12:24:21.675 | $encoded |
+| ${ikke_blank} | srvABACPEP | 123456789 | ABC  | hjemmel1 | 2019-08-16 12:24:21.675 | $encoded |
