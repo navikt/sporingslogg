@@ -17,7 +17,7 @@ Test
 !3 2. Legg den B64-encodede loggmeldingen på angitt Kafka topic
 
 | script | no.nav.sporingslogg.web.fitnesse.ExternKafkaProducerFixture  | aapen-sporingslogg-loggmeldingMottatt |
-| produce | !- {"person":"srvABACPEP", "mottaker":"123456789", "tema":"ABC", "behandlingsGrunnlag":"hjemmel1", "uthentingsTidspunkt":"2019-08-16T12:24:21.675", "leverteData":"$encoded", "dataForespørsel":"jeg vil se alt", "leverandør":"333222111"} -! |
+| produce | !- {"person":"srvABACPEP", "mottaker":"123456789", "tema":"ABC", "behandlingsGrunnlag":"hjemmel1", "uthentingsTidspunkt":"2019-08-16T12:24:21.675", "leverteData":"$encoded", "dataForespoersel":"jeg vil se alt", "leverandoer":"333222111"} -! |
 
 
 !3 3. Vent litt så meldingen blir tatt og prosessert

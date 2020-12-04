@@ -139,8 +139,8 @@ public class TestWithKafka {  // Disse testene er veldig vaklete, virker ca anne
 		l.setSamtykkeToken("tokenet");
 		l.setTema("XYZ");
 		l.setUthentingsTidspunkt(LocalDateTime.now());
-		l.setDataForespørsel("my request");
-		l.setLeverandør("987654321");
+		l.setDataForespoersel("my request");
+		l.setLeverandoer("987654321");
 	    Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new JsonSerializer<LocalDateTime>() {		
 		    @Override
 			public JsonElement serialize(LocalDateTime src, Type typeOfSrc, JsonSerializationContext context) {

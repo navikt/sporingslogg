@@ -14,15 +14,15 @@ public class LoggConverter {
 		loggMelding.setUthentingsTidspunkt(loggInnslag.getUthentingsTidspunkt());
 		loggMelding.setLeverteData(loggInnslag.getLeverteData());
 		loggMelding.setSamtykkeToken(loggInnslag.getSamtykkeToken());
-		loggMelding.setDataForespørsel(loggInnslag.getForesporsel());
-		loggMelding.setLeverandør(loggInnslag.getLeverandor());
+		loggMelding.setDataForespoersel(loggInnslag.getForesporsel());
+		loggMelding.setLeverandoer(loggInnslag.getLeverandor());
 		return loggMelding;
 	}
 
     public static LoggInnslag fromJsonObject(LoggMelding loggMelding) {
     	return new LoggInnslag(loggMelding.getPerson(), loggMelding.getMottaker(), loggMelding.getTema(),
     			loggMelding.getBehandlingsGrunnlag(), loggMelding.getUthentingsTidspunkt(), loggMelding.getLeverteData(), loggMelding.getSamtykkeToken(), 
-    			loggMelding.getDataForespørsel(), loggMelding.getLeverandør());
+    			loggMelding.getDataForespoersel(), loggMelding.getLeverandoer());
 	}
 
 }
