@@ -26,25 +26,23 @@
         <slf4j.version>1.7.25</slf4j.version>
         <net.logback.version>5.1</net.logback.version>
         <commons-io.version>2.4</commons-io.version>
-
-		<oracle.version>12.1.0.2</oracle.version>
-		
+		<oracle.version>19.14.0.0</oracle.version>
 		<junit.version>4.11</junit.version>
     </properties>
 
-    <distributionManagement>
-		<repository>
-			<id>m2internal</id>
-			<name>NAV Maven2 Internal Repository</name>
-			<url>http://maven.adeo.no/nexus/content/repositories/m2internal</url>
-		</repository>
-		<snapshotRepository>
-			<id>m2snapshot</id>
-			<name>NAV Maven2 Snapshot Repository</name>
-			<url>http://maven.adeo.no/nexus/content/repositories/m2snapshot</url>
-			<uniqueVersion>false</uniqueVersion>
-		</snapshotRepository>
-    </distributionManagement>
+<!--    <distributionManagement>-->
+<!--		<repository>-->
+<!--			<id>m2internal</id>-->
+<!--			<name>NAV Maven2 Internal Repository</name>-->
+<!--			<url>http://maven.adeo.no/nexus/content/repositories/m2internal</url>-->
+<!--		</repository>-->
+<!--		<snapshotRepository>-->
+<!--			<id>m2snapshot</id>-->
+<!--			<name>NAV Maven2 Snapshot Repository</name>-->
+<!--			<url>http://maven.adeo.no/nexus/content/repositories/m2snapshot</url>-->
+<!--			<uniqueVersion>false</uniqueVersion>-->
+<!--		</snapshotRepository>-->
+<!--    </distributionManagement>-->
 
 	<build>
 		<pluginManagement>
@@ -70,21 +68,21 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.5.3</version>
 			</plugin>				
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<skip>true</skip>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin> 
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-javadoc-plugin</artifactId>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>attach-javadocs</id>-->
+<!--						<goals>-->
+<!--							<goal>jar</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<skip>true</skip>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin> -->
 		</plugins>
 	</build>
 
@@ -139,10 +137,10 @@
 		</dependency>
 	</dependencies>
 	
-	<scm>
-		<developerConnection>scm:git:ssh://git@stash.devillo.no:7999/kes/sporingslogg.git</developerConnection>
-		<url>http://stash.devillo.no/projects/KES/repos/sporingslogg</url>
-		<tag>HEAD</tag>
-	</scm>
+<!--	<scm>-->
+<!--		<developerConnection>scm:git:ssh://git@stash.devillo.no:7999/kes/sporingslogg.git</developerConnection>-->
+<!--		<url>http://stash.devillo.no/projects/KES/repos/sporingslogg</url>-->
+<!--		<tag>HEAD</tag>-->
+<!--	</scm>-->
 
 </project>

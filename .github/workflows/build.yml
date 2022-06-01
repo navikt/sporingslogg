@@ -1,0 +1,107 @@
+name: "Build"
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "adopt"
+          java-version: 11
+
+      - name: Build
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.PCMOEN_PACKAGE_PAT }}
+        run: |
+          mvn package --no-transfer-progress --batch-mode --settings maven-settings-github.xml
+
+      - name: Login to GHCR
+        uses: docker/login-action@v1.14.1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+#      - name: Integration tests
+#        run: |
+#          echo "Start tp, tp-ejb-adapter and dependencies"
+#
+#          set -e
+#
+#          dump_docker_compose_logs() {
+#            docker-compose -f docker-compose.yml -f docker-compose.it.yml logs
+#          }
+#
+#          # Dump logs on error
+#          trap "dump_docker_compose_logs" ERR
+#
+#          docker-compose -f docker-compose.yml -f docker-compose.it.yml up -d --build
+#
+#          echo "Wait until tp-ejb-adapter is ready"
+#          timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:9080/tp-ejb-adapter/internal/selftest)" != "200" ]]; do sleep 5; done' || false
+#
+#          echo "Run integration tests"
+#          # The Docker images runs in Europe/Oslo timezone. Need to use the same time zone for integration tests
+#          mvn "-Duser.timezone=Europe/Oslo" failsafe:integration-test failsafe:verify
+#
+#      - name: Publish Test Report
+#        if: ${{ always() && github.actor != 'dependabot[bot]' }}
+#        uses: scacap/action-surefire-report@v1
+#        with:
+#          fail_if_no_tests: true
+#          report_paths: "**/*-reports/TEST*.xml"
+
+      - name: Create tag
+        if: github.ref == 'refs/heads/main'
+        id: tag
+        run: |
+          TAG=$(date "+%Y.%m.%d")-$(git rev-parse --short HEAD)
+          echo "TAG=$TAG" >> $GITHUB_ENV
+          echo "::set-output name=tag::$TAG"
+
+      - name: Build and push tp-api Docker  image
+        if: github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v2
+        with:
+          context: ./tp-api
+          push: true
+          tags: ghcr.io/navikt/tp/tp-nais:${{ env.TAG }}
+
+  deploy:
+    name: "Deploy With Parameters"
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - envclass: q
+            environment: q2
+            maskinporten_enabled: false
+            vault_serviceuser_folder: dev
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy to dev-fss
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-fss
+          RESOURCE: nais/dev_q2.yaml
+          IMAGE: ghcr.io/navikt/tp/tp-nais:${{ needs.build.outputs.tag }}
+          TEAM: pensjonsamhandling
+          VAR: envclass=${{ matrix.envclass }},environment=${{ matrix.environment }},maskinporten_enabled=${{ matrix.maskinporten_enabled }},vault_serviceuser_folder=${{ matrix.vault_serviceuser_folder }}
