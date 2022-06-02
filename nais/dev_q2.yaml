@@ -4,12 +4,12 @@
 apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
-  name: sporingslogg
-  namespace: q2
+  name: sporingslogg-q2
+  namespace: pensjonsamhandling
   labels:
-    team: integrasjon
+    team: pensjonsamhandling
 spec:
-  image: _IMAGE_FULLNAME_
+  image: {{ image }}
   port: 8088
   ingresses:
     - "https://sporingslogg-q2.nais.preprod.local"

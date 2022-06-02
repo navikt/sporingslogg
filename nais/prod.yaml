@@ -5,11 +5,11 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
   name: sporingslogg
-  namespace: default
+  namespace: pensjonsamhandling
   labels:
-    team: integrasjon
+    team: pensjonsamhandling
 spec:
-  image: _IMAGE_FULLNAME_
+  image: {{ image }}
   port: 8088
   ingresses:
     - "https://sporingslogg.nais.adeo.no"

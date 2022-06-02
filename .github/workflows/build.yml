@@ -9,7 +9,6 @@ jobs:
       tag: ${{ steps.tag.outputs.tag }}
     steps:
       - uses: actions/checkout@v3
-
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
@@ -21,7 +20,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: "adopt"
-          java-version: 11
+          java-version: 8
 
       - name: Build
         shell: bash
@@ -74,13 +73,13 @@ jobs:
           echo "TAG=$TAG" >> $GITHUB_ENV
           echo "::set-output name=tag::$TAG"
 
-      - name: Build and push tp-api Docker  image
+      - name: Build and push sporingslogg Docker  image
         if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v2
         with:
-          context: ./tp-api
+          context: .
           push: true
-          tags: ghcr.io/navikt/tp/tp-nais:${{ env.TAG }}
+          tags: ghcr.io/navikt/sporingslogg/sporingslogg-nais:${{ env.TAG }}
 
   deploy:
     name: "Deploy With Parameters"
@@ -102,6 +101,6 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-fss
           RESOURCE: nais/dev_q2.yaml
-          IMAGE: ghcr.io/navikt/tp/tp-nais:${{ needs.build.outputs.tag }}
+          IMAGE: ghcr.io/navikt/sporingslogg/sporingslogg-nais:${{ needs.build.outputs.tag }}
           TEAM: pensjonsamhandling
           VAR: envclass=${{ matrix.envclass }},environment=${{ matrix.environment }},maskinporten_enabled=${{ matrix.maskinporten_enabled }},vault_serviceuser_folder=${{ matrix.vault_serviceuser_folder }}
