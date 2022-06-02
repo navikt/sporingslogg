@@ -16,8 +16,8 @@ spec:
   secureLogs:
     enabled: false
   replicas:
-    min: 2
-    max: 4
+    min: 1
+    max: 2
     cpuThresholdPercentage: 80
   liveness:
     path: /sporingslogg/api/ping
@@ -38,6 +38,12 @@ spec:
       memory: 512Mi
   vault: 
     enabled: true
+    paths:
+      - kvPath: /oracle/data/dev/creds/sporingslogg_q2-user
+        mountPath: /secrets/oracle_creds
+      - kvPath: /serviceuser/data/dev/srvsporingslogg
+        mountPath: /secrets/serviceuser
+
   env:
     - name: LDAP_URL
       value: "ldaps://ldapgw.preprod.local"
