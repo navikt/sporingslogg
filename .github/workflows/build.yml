@@ -25,7 +25,7 @@ jobs:
       - name: Build
         shell: bash
         env:
-          GITHUB_TOKEN: ${{ secrets.PCMOEN_PACKAGE_PAT }}
+          GITHUB_TOKEN: ${{ secrets.READER_TOKEN }}
         run: |
           mvn package --no-transfer-progress --batch-mode --settings maven-settings-github.xml
 
