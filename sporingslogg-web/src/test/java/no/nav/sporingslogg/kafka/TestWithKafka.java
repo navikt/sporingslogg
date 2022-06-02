@@ -24,8 +24,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.kafka.test.EmbeddedKafkaBroker;
-import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
+import org.springframework.kafka.test.rule.KafkaEmbedded;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 
 import com.google.gson.Gson;
@@ -48,8 +47,7 @@ public class TestWithKafka {  // Disse testene er veldig vaklete, virker ca anne
 	private static final String TOPIC = "messages";
 	
 	@ClassRule
-//	public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, TOPIC);
-	public static EmbeddedKafkaBroker embeddedKafka = new EmbeddedKafkaBroker(1, true, TOPIC);
+	public static KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, TOPIC);
 
 	@Test
 	@Ignore
