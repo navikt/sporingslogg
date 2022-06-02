@@ -48,7 +48,7 @@ public class TestWithKafka {  // Disse testene er veldig vaklete, virker ca anne
 	
 	@ClassRule
 	public static KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, TOPIC);
-	
+
 	@Test
 	@Ignore
 	public void produceAndConsumeWithPlainKafkaConsumer() throws Exception {

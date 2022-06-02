@@ -117,11 +117,6 @@
         </dependency>
         <dependency>
           <groupId>org.eclipse.jetty</groupId>
-          <artifactId>jetty-servlet</artifactId>
-          <version>${jetty.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-util</artifactId>
           <version>${jetty.version}</version>
         </dependency> 
@@ -164,7 +159,7 @@
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka-test</artifactId>
-            <version>2.2.0.M3</version>
+            <version>2.2.15.RELEASE</version>
             <scope>test</scope>
         </dependency>
         <dependency>

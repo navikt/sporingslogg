@@ -66,8 +66,8 @@ public class KafkaEmbedded {
   private  Properties effectiveConfigFrom(Properties initialConfig) throws IOException {
     Properties effectiveConfig = new Properties();
     effectiveConfig.put(KafkaConfig.BrokerIdProp(), 0);
-    effectiveConfig.put(KafkaConfig.HostNameProp(), KAFKA_BROKER_HOST);
-    effectiveConfig.put(KafkaConfig.PortProp(), KAFKA_BROKER_PORT);
+    effectiveConfig.put("HostName", KAFKA_BROKER_HOST);
+    effectiveConfig.put("Port", KAFKA_BROKER_PORT);
     effectiveConfig.put(KafkaConfig.NumPartitionsProp(), 1);
     effectiveConfig.put(KafkaConfig.AutoCreateTopicsEnableProp(), true);
     effectiveConfig.put(KafkaConfig.MessageMaxBytesProp(), 1000000);
@@ -84,7 +84,7 @@ public class KafkaEmbedded {
    * You can use this to tell Kafka producers and consumers how to connect to this instance.
    */
   public  String brokerList() {
-    return kafka.config().hostName()+ ":"+Integer.toString(kafka.boundPort(ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT)));
+    return kafka.config() + ":"+Integer.toString(kafka.boundPort(ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT)));
   }
 
 
