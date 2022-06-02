@@ -36,35 +36,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-#      - name: Integration tests
-#        run: |
-#          echo "Start tp, tp-ejb-adapter and dependencies"
-#
-#          set -e
-#
-#          dump_docker_compose_logs() {
-#            docker-compose -f docker-compose.yml -f docker-compose.it.yml logs
-#          }
-#
-#          # Dump logs on error
-#          trap "dump_docker_compose_logs" ERR
-#
-#          docker-compose -f docker-compose.yml -f docker-compose.it.yml up -d --build
-#
-#          echo "Wait until tp-ejb-adapter is ready"
-#          timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:9080/tp-ejb-adapter/internal/selftest)" != "200" ]]; do sleep 5; done' || false
-#
-#          echo "Run integration tests"
-#          # The Docker images runs in Europe/Oslo timezone. Need to use the same time zone for integration tests
-#          mvn "-Duser.timezone=Europe/Oslo" failsafe:integration-test failsafe:verify
-#
-#      - name: Publish Test Report
-#        if: ${{ always() && github.actor != 'dependabot[bot]' }}
-#        uses: scacap/action-surefire-report@v1
-#        with:
-#          fail_if_no_tests: true
-#          report_paths: "**/*-reports/TEST*.xml"
-
       - name: Create tag
         if: github.ref == 'refs/heads/main'
         id: tag
