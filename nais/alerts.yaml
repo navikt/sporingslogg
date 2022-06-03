@@ -2,9 +2,9 @@ apiVersion: nais.io/v1
 kind: Alert
 metadata:
   name: sporingslogg-alerts
-  namespace: default
+  namespace: pensjonsamhandling
   labels:
-    team: integrasjon
+    team: pensjonsamhandling
 spec:
   receivers: # receivers for all alerts below
     slack:

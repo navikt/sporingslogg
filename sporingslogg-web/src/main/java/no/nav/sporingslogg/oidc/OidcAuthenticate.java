@@ -108,8 +108,18 @@ public class OidcAuthenticate {
 					throw new RuntimeException("OIDC-token har ikke tilstrekkelig autentiseringsnivå ("+requiredAuthLevel+"): "+authLevelClaim);
 				}
 			}
-	        return jwtClaims.getSubject();
-	        
+			//return jwtClaims.getSubject();
+			if (jwtClaims.hasClaim("pid")) {
+				log.info("Henter pid fra token");
+				return jwtClaims.getClaimValue("pid").toString();
+			} else if(jwtClaims.hasClaim("sub")) {
+				log.info("Henter sub fra token");
+				return jwtClaims.getSubject();
+			} else {
+				log.warn("Token mangler pid");
+				throw new RuntimeException("OIDC-token mangler pid");
+			}
+
 		} catch (InvalidJwtException e) {
 			if (e.hasErrorCode(MISSING_ISSUER)) {
 				throw new RuntimeException("OIDC-token er ikke gyldig, mangler issuer", e);
@@ -162,7 +172,7 @@ public class OidcAuthenticate {
 	}
 	
 	private String getUnverifiedIssuer(String bearerToken)  {  
-		JwtConsumer jwtConsumer = buildAcceptAnythingJwtConsumer(); 
+		JwtConsumer jwtConsumer = buildAcceptAnythingJwtConsumer();
 		try {
 			JwtClaims jwtClaims = jwtConsumer.processToClaims(bearerToken);
 	        return jwtClaims.getIssuer();
