@@ -41,7 +41,7 @@ public class StandaloneJettyMain {
 		String SRVSECRET_FILE = "/secrets/serviceuser";
 
 		String passwordFile = System.getenv("DBSECRET_FILE");
-		Properties passwords = readFromSecretsPropertyFile(passwordFile);
+		Properties passwords = readFromSecretsPropertyFile(DBSECRET_FILE);
 //		String dbPw = passwords.getProperty("SPORINGSLOGGDB_PASSWORD");
 		String dbPw = passwords.getProperty("password");
 		if (dbPw == null) {
@@ -51,8 +51,7 @@ public class StandaloneJettyMain {
 		}
 		System.setProperty(PropertyNames.PROPERTY_DB_PASSWORD, dbPw);
 
-		String srvpasswordFile = System.getenv("SRVSECRET_FILE");
-		Properties srvpasswords = readFromSecretsPropertyFile(srvpasswordFile);
+		Properties srvpasswords = readFromSecretsPropertyFile(SRVSECRET_FILE);
 
 //		System.setProperty(PropertyNames.PROPERTY_LDAP_PASSWORD, srvpasswords.getProperty("LDAP_PASSWORD"));
 //		System.setProperty(PropertyNames.PROPERTY_KAFKA_PASSWORD, srvpasswords.getProperty("NO_NAV_SPORINGSLOGG_KAFKA_PASSWORD"));
@@ -88,7 +87,8 @@ public class StandaloneJettyMain {
     	}
 
     	// Start serveren
-    	
+		log.info("Starter StandaloneJettyServer");
+
     	try {
         	StandaloneJettyServer jettyServer = new StandaloneJettyServer(WEB_XML);
         	jettyServer.createContextHandler(createOracleDatasource());
@@ -99,6 +99,7 @@ public class StandaloneJettyMain {
     }
 	
 	private static Properties readFromSecretsPropertyFile(String filename) {
+		log.info("Leser inn secret file for properties : " + filename);
 		try (FileInputStream f = new FileInputStream(filename)) {
 			Properties secrets = new Properties();
 			secrets.load(f);
@@ -119,10 +120,10 @@ public class StandaloneJettyMain {
 	}
 	
     public static DataSource createOracleDatasource() { 
-    	
         String url = PropertyUtil.getProperty(PropertyNames.PROPERTY_DB_URL);
         String username = PropertyUtil.getProperty(PropertyNames.PROPERTY_DB_USERNAME);
         String pw = PropertyUtil.getProperty(PropertyNames.PROPERTY_DB_PASSWORD);
+		log.info("Returnerer DataSource");
         return createOracleDatasource(url, username, pw);
     }
     

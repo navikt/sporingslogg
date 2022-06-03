@@ -43,7 +43,6 @@ spec:
         mountPath: /secrets/oracle_creds
       - kvPath: /serviceuser/data/dev/srvsporingslogg
         mountPath: /secrets/serviceuser
-
   env:
     - name: LDAP_URL
       value: "ldaps://ldapgw.preprod.local"
