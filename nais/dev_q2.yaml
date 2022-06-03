@@ -13,6 +13,7 @@ spec:
   port: 8088
   ingresses:
     - "https://sporingslogg-q2.nais.preprod.local"
+    - "https://sporingslogg-q2.dev.intern.nav.no"
   secureLogs:
     enabled: false
   replicas:
