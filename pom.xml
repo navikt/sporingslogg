@@ -23,7 +23,7 @@
 
         <spring.version>4.1.7.RELEASE</spring.version>
         <logback.version>1.2.3</logback.version>
-        <slf4j.version>1.7.25</slf4j.version>
+        <slf4j.version>2.0.0-alpha7</slf4j.version>
         <net.logback.version>5.1</net.logback.version>
         <commons-io.version>2.4</commons-io.version>
 		<oracle.version>19.14.0.0</oracle.version>
@@ -59,10 +59,10 @@
 			</plugins>
 		</pluginManagement>	
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-			</plugin>			
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-compiler-plugin</artifactId>-->
+<!--			</plugin>			-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>

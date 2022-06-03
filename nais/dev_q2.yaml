@@ -84,6 +84,11 @@ spec:
 #      value: "https://login.microsoftonline.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/,https://navtestb2c.b2clogin.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/"
 #    - name: NO_NAV_SPORINGSLOGG_OIDC_JWKSLIST
 #      value: "https://login.microsoftonline.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1,https://navtestb2c.b2clogin.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1"
+#
+#    "https://isso-q.adeo.no:443/isso/oauth2/.well-known/openid-configuration"
+#    "https://isso-q.adeo.no/isso/oauth2/connect/jwk_uri"
+#    "https://isso-q.adeo.no:443/isso/oauth2"
+#
 
     - name: NO_NAV_SPORINGSLOGG_OIDC_ISSUERLIST
       value: "https://oidc-ver2.difi.no/idporten-oidc-provider/,https://isso-q.adeo.no:443/isso/oauth2"

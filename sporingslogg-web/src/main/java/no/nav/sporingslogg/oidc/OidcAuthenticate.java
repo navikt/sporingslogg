@@ -100,14 +100,19 @@ public class OidcAuthenticate {
 	public String getVerifiedSubject(String bearerToken)  { 
 		String issuer = getUnverifiedIssuer(bearerToken);
 		JwtConsumer jwtConsumer = buildJwtConsumer(issuer); 
+		log.info("requiredAuthLevel : " + requiredAuthLevel);
+		log.debug("Bearer Token: " + bearerToken);
+
 		try {
 			JwtClaims jwtClaims = jwtConsumer.processToClaims(bearerToken);
+
 			if (requiredAuthLevel != null) {
 				String authLevelClaim = jwtClaims.getStringClaimValue(AUTH_LEVEL_CLAIM);
 				if (!requiredAuthLevel.equals(authLevelClaim)) {
 					throw new RuntimeException("OIDC-token har ikke tilstrekkelig autentiseringsnivå ("+requiredAuthLevel+"): "+authLevelClaim);
 				}
 			}
+
 			//return jwtClaims.getSubject();
 			if (jwtClaims.hasClaim("pid")) {
 				log.info("Henter pid fra token");
