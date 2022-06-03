@@ -17,8 +17,8 @@
         <jackson.datamodules.version>2.9.0.pr2</jackson.datamodules.version>
         <jetty.version>9.4.4.v20170414</jetty.version>
         <dbcp.version>2.2.0</dbcp.version>
-        <jose4j.version>0.7.12</jose4j.version>
-        <josejwt.version>9.23</josejwt.version>
+        <jose4j.version>0.7.3</jose4j.version>
+        <josejwt.version>9.3</josejwt.version>
         <kafkaclient.version>2.0.0</kafkaclient.version>        
         
         <hsqldb.version>2.3.4</hsqldb.version>

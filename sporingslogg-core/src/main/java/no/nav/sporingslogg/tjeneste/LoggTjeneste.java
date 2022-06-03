@@ -68,11 +68,11 @@ public class LoggTjeneste {
     }
 
     public boolean isReady() {
-		// Brukes til ping/selftest
-		//return entityManager != null && valideringTjeneste != null && timestampTjeneste != null;
-    	// er ent av og til null?
-		return true;
-	}  
+        // Brukes til ping/selftest
+        //return entityManager != null && valideringTjeneste != null && timestampTjeneste != null;
+        // er ent av og til null?
+        return entityManager != null && valideringTjeneste != null;
+    }
     
     public static String scrambleFnr(String fnr) { // Bytt ut de 5 siste tegnene av et reelt fnr med xxxxx
     	if (fnr == null || fnr.length() < 6) {
