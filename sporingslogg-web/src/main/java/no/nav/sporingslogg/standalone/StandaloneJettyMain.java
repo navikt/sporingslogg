@@ -128,6 +128,9 @@ public class StandaloneJettyMain {
         String url = PropertyUtil.getProperty(PropertyNames.PROPERTY_DB_URL);
         String username = PropertyUtil.getProperty(PropertyNames.PROPERTY_DB_USERNAME);
         String pw = PropertyUtil.getProperty(PropertyNames.PROPERTY_DB_PASSWORD);
+		log.info("DataSource: URL " + url);
+		log.info("DataSource: username " + username);
+		log.info("DataSource: pw " + pw);
 		log.info("Returnerer DataSource");
         return createOracleDatasource(url, username, pw);
     }
