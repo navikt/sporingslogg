@@ -86,9 +86,9 @@ spec:
 #      value: "https://login.microsoftonline.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1,https://navtestb2c.b2clogin.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1"
 
     - name: NO_NAV_SPORINGSLOGG_OIDC_ISSUERLIST
-      value: "https://oidc-ver2.difi.no/idporten-oidc-provider/"
+      value: "https://oidc-ver2.difi.no/idporten-oidc-provider/,https://isso-q.adeo.no:443/isso/oauth2"
     - name: NO_NAV_SPORINGSLOGG_OIDC_JWKSLIST
-      value: "https://oidc-ver2.difi.no/idporten-oidc-provider/jwk"
+      value: "https://oidc-ver2.difi.no/idporten-oidc-provider/jwk,https://isso-q.adeo.no:443/isso/oauth2/connect/jwk_uri"
 
 # Skal være satt til 4 (Bank-ID) når man går mot ID-porten, 0 ellers
     - name: SPORINGSLOGG_CHECK_AUTHLEVEL
