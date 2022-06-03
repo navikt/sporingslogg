@@ -38,8 +38,13 @@
         </dependency>
 		<dependency>
             <groupId>com.oracle.database.jdbc</groupId>
-            <artifactId>ojdbc10</artifactId>
-		    <version>${oracle.version}</version>
+            <artifactId>ojdbc8</artifactId>
+            <version>19.14.0.0</version>
+<!--            <groupId>com.oracle</groupId>-->
+<!--            <artifactId>ojdbc7</artifactId>-->
+<!--            <groupId>com.oracle.database.jdbc</groupId>-->
+<!--            <artifactId>ojdbc10</artifactId>-->
+<!--		    <version>${oracle.version}</version>-->
 		</dependency> 
 		       
         <!-- Metrics -->
