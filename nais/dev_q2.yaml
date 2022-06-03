@@ -74,10 +74,22 @@ spec:
 #
 # "https://login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851/v2.0,https://oidc-ver2.difi.no/idporten-oidc-provider/"
 #
+#  "oauth2.idporten.issuer=https://oidc-ver2.difi.no/idporten-oidc-provider/"
+#  "oauth2.idporten.jwkSetUri=https://oidc-ver2.difi.no/idporten-oidc-provider/jwk"
+#  "oauth2.idporten.issuer=https://oidc.difi.no/idporten-oidc-provider/"
+#  "oauth2.idporten.jwkSetUri=https://oidc.difi.no/idporten-oidc-provider/jwk"
+#
+#
+#    - name: NO_NAV_SPORINGSLOGG_OIDC_ISSUERLIST
+#      value: "https://login.microsoftonline.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/,https://navtestb2c.b2clogin.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/"
+#    - name: NO_NAV_SPORINGSLOGG_OIDC_JWKSLIST
+#      value: "https://login.microsoftonline.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1,https://navtestb2c.b2clogin.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1"
+
     - name: NO_NAV_SPORINGSLOGG_OIDC_ISSUERLIST
-      value: "https://login.microsoftonline.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/,https://navtestb2c.b2clogin.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/"
+      value: "https://oidc-ver2.difi.no/idporten-oidc-provider/"
     - name: NO_NAV_SPORINGSLOGG_OIDC_JWKSLIST
-      value: "https://login.microsoftonline.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1,https://navtestb2c.b2clogin.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1"
+      value: "https://oidc-ver2.difi.no/idporten-oidc-provider/jwk"
+
 # Skal være satt til 4 (Bank-ID) når man går mot ID-porten, 0 ellers
     - name: SPORINGSLOGG_CHECK_AUTHLEVEL
       value: "4"
