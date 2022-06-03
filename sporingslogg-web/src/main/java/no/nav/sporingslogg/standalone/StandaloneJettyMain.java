@@ -37,26 +37,30 @@ public class StandaloneJettyMain {
     	// - har navn som ikke Docker/Nais fikser, eller 
     	// - hentes fra vault
 
-		String DBSECRET_FILE = "/secrets/oracle_creds";
-		String SRVSECRET_FILE = "/secrets/serviceuser";
+		String DBSECRET_PASSWORD_FILE = "/secrets/oracle_creds/password";
+		String SRVSECRET_PASSWORD_FILE = "/secrets/serviceuser/password";
 
-		String passwordFile = System.getenv("DBSECRET_FILE");
-		Properties passwords = readFromSecretsPropertyFile(DBSECRET_FILE);
+//		String passwordFile = System.getenv("DBSECRET_FILE");
+//		Properties passwords = readFromSecretsPropertyFile(DBSECRET_FILE);
 //		String dbPw = passwords.getProperty("SPORINGSLOGGDB_PASSWORD");
-		String dbPw = passwords.getProperty("password");
-		if (dbPw == null) {
-			log.info("Henter DB PW fra vault");
-			String dbPasswordVaultFile = System.getenv("DB_PASSWORD_FILE");
-			dbPw = readContentsOfSecretsFile(dbPasswordVaultFile);
-		}
-		System.setProperty(PropertyNames.PROPERTY_DB_PASSWORD, dbPw);
+//		String dbPw = passwords.getProperty("password");
 
-		Properties srvpasswords = readFromSecretsPropertyFile(SRVSECRET_FILE);
+		String dbPw = readContentsOfSecretsFile(DBSECRET_PASSWORD_FILE);
+//		if (dbPw == null) {
+//			log.info("Henter DB PW fra vault");
+//			String dbPasswordVaultFile = System.getenv("DB_PASSWORD_FILE");
+//			dbPw = readContentsOfSecretsFile(dbPasswordVaultFile);
+//		}
+		System.setProperty(PropertyNames.PROPERTY_DB_PASSWORD, dbPw);
+		log.info("Lest inn db password");
+
+		String srvpasswords = readContentsOfSecretsFile(SRVSECRET_PASSWORD_FILE);
 
 //		System.setProperty(PropertyNames.PROPERTY_LDAP_PASSWORD, srvpasswords.getProperty("LDAP_PASSWORD"));
 //		System.setProperty(PropertyNames.PROPERTY_KAFKA_PASSWORD, srvpasswords.getProperty("NO_NAV_SPORINGSLOGG_KAFKA_PASSWORD"));
-		System.setProperty(PropertyNames.PROPERTY_LDAP_PASSWORD, srvpasswords.getProperty("password"));
-		System.setProperty(PropertyNames.PROPERTY_KAFKA_PASSWORD, srvpasswords.getProperty("password"));
+		System.setProperty(PropertyNames.PROPERTY_LDAP_PASSWORD, srvpasswords);
+		System.setProperty(PropertyNames.PROPERTY_KAFKA_PASSWORD, srvpasswords);
+		log.info("Lest inn srvsporingslogg password");
 
     	System.setProperty(PropertyNames.PROPERTY_DB_DIALECT, "org.hibernate.dialect.Oracle10gDialect");
     	System.setProperty(PropertyNames.PROPERTY_DB_SHOWSQL, "false");
@@ -110,6 +114,7 @@ public class StandaloneJettyMain {
 	}
 
 	private static String readContentsOfSecretsFile(String filename) {
+		log.info("Leser inn secret file : " + filename);
 		try (FileReader f = new FileReader(filename)) {
 			char[] buffer = new char[1024];
 			f.read(buffer);
