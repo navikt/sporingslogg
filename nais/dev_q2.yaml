@@ -44,6 +44,7 @@ spec:
         mountPath: /secrets/oracle_creds
       - kvPath: /serviceuser/data/dev/srvsporingslogg
         mountPath: /secrets/serviceuser
+  webproxy: true
   env:
     - name: LDAP_URL
       value: "ldaps://ldapgw.preprod.local"
@@ -98,8 +99,4 @@ spec:
 # Skal være satt til 4 (Bank-ID) når man går mot ID-porten, 0 ellers
     - name: SPORINGSLOGG_CHECK_AUTHLEVEL
       value: "4"
-# Må sette opp web proxy hvis JWKS-URL er ekstern
-    - name: NO_NAV_SPORINGSLOGG_OIDC_PROVIDER_PROXYHOST
-      value: "webproxy-nais.nav.no"
-    - name: NO_NAV_SPORINGSLOGG_OIDC_PROVIDER_PROXYPORT
-      value: "8088"
+

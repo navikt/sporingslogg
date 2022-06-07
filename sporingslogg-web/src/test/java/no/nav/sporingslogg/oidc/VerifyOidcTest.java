@@ -252,8 +252,8 @@ public class VerifyOidcTest {
 	@Test
 	public void manualTestWithAzureResolver() throws Exception {
 		// Funnet i miljøvariable, uten disse blir det "connection refused"
-		System.setProperty("https.proxyHost", "webproxy-utvikler.nav.no");
-		System.setProperty("https.proxyPort", "8088");
+//		System.setProperty("https.proxyHost", "webproxy-utvikler.nav.no");
+//		System.setProperty("https.proxyPort", "8088");
 	    HttpsJwks httpsJkws = new HttpsJwks("https://login.microsoftonline.com/common/discovery/keys");
 	    HttpsJwksVerificationKeyResolver httpsJwksKeyResolver = new HttpsJwksVerificationKeyResolver(httpsJkws);
 		JwtConsumer jwtConsumer = new JwtConsumerBuilder()
