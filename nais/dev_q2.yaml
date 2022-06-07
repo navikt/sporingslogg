@@ -18,7 +18,7 @@ spec:
     enabled: false
   replicas:
     min: 1
-    max: 2
+    max: 1
     cpuThresholdPercentage: 80
   liveness:
     path: /sporingslogg/api/ping
@@ -60,42 +60,10 @@ spec:
       value: "SPORINGSLOGG"
     - name: NO_NAV_SPORINGSLOGG_KAFKA_SERVERS
       value: "b27apvl00045.preprod.local:8443,b27apvl00046.preprod.local:8443,b27apvl00047.preprod.local:8443"
-#
-# Azure fram til høst 2020:
-#   https://login.microsoftonline.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/
-#   https://login.microsoftonline.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1
-# Azure ETTER høst 2020:
-#   https://navtestb2c.b2clogin.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/
-#   https://navtestb2c.b2clogin.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1
-# NAV STS i Q
-#   https://security-token-service.nais.preprod.local
-#   https://security-token-service.nais.preprod.local/rest/v1/sts/jwks
-# Issuerlist og jwkslist skal være kommaseparert med like mange, korresponderende elementer.
-
-#
-# "https://login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851/v2.0,https://oidc-ver2.difi.no/idporten-oidc-provider/"
-#
-#  "oauth2.idporten.issuer=https://oidc-ver2.difi.no/idporten-oidc-provider/"
-#  "oauth2.idporten.jwkSetUri=https://oidc-ver2.difi.no/idporten-oidc-provider/jwk"
-#  "oauth2.idporten.issuer=https://oidc.difi.no/idporten-oidc-provider/"
-#  "oauth2.idporten.jwkSetUri=https://oidc.difi.no/idporten-oidc-provider/jwk"
-#
-#
-#    - name: NO_NAV_SPORINGSLOGG_OIDC_ISSUERLIST
-#      value: "https://login.microsoftonline.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/,https://navtestb2c.b2clogin.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/"
-#    - name: NO_NAV_SPORINGSLOGG_OIDC_JWKSLIST
-#      value: "https://login.microsoftonline.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1,https://navtestb2c.b2clogin.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1"
-#
-#    "https://isso-q.adeo.no:443/isso/oauth2/.well-known/openid-configuration"
-#    "https://isso-q.adeo.no/isso/oauth2/connect/jwk_uri"
-#    "https://isso-q.adeo.no:443/isso/oauth2"
-#
-
     - name: NO_NAV_SPORINGSLOGG_OIDC_ISSUERLIST
       value: "https://oidc-ver2.difi.no/idporten-oidc-provider/,https://isso-q.adeo.no:443/isso/oauth2"
     - name: NO_NAV_SPORINGSLOGG_OIDC_JWKSLIST
       value: "https://oidc-ver2.difi.no/idporten-oidc-provider/jwk,https://isso-q.adeo.no:443/isso/oauth2/connect/jwk_uri"
-
 # Skal være satt til 4 (Bank-ID) når man går mot ID-porten, 0 ellers
     - name: SPORINGSLOGG_CHECK_AUTHLEVEL
       value: "4"
