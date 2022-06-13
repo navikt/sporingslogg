@@ -1,6 +1,10 @@
 package no.nav.sporingslogg.tjeneste;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -65,6 +69,22 @@ public class LoggTjeneste {
         return entityManager.createQuery("from LoggInnslag where person = :p", LoggInnslag.class)
         		.setParameter("p", person)
         		.getResultList();
+    }
+
+    public List<String> finnAllePersonStarterMed(String ident) {
+        loggOppslag.inc();
+        List<LoggInnslag> list = entityManager.createQuery("select person from LoggInnslag where person like :p", LoggInnslag.class)
+                .setParameter("p",'%' + ident + '%')
+                .getResultList();
+
+        Set<String> sets = new HashSet<String>();
+        for (int i = 0; i < list.size() ; i++) {
+            String person = list.get(i).getPerson();
+            if (person != null) {
+                sets.add(person);
+            }
+        }
+        return sets.stream().collect(Collectors.toList());
     }
 
     public boolean isReady() {

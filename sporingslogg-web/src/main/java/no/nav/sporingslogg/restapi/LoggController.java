@@ -38,10 +38,6 @@ public class LoggController {
     @Autowired
     private LdapGroupService ldapGroupService;
 
-//    @Value("${NAIS_CLUSTER_NAME}")
-//    private String clustername;
-
-
 //    @Autowired
 //    private RerunPENwithMessageLongerThan100K rerunPENwithMessageLongerThan100K;
     
@@ -69,11 +65,11 @@ public class LoggController {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response leser(@Context SecurityContext securityContext, String ident) {
-        log.debug("nais_cluster_name env: " + System.getenv("NAIS_CLUSTER_NAME"));
-        //if (clustername != "dev-fss") return Response.status(Response.Status.UNAUTHORIZED).build();
+        String clustername = System.getenv("NAIS_CLUSTER_NAME");
+        if (clustername != "dev-fss") return Response.status(Response.Status.UNAUTHORIZED).build();
 
         String userName = getUserName(securityContext);
-        log.debug("Lagrer logg, user: " + userName);
+        log.debug("Henter logg, user: " + userName);
         boolean brukerErIGruppe = ldapGroupService.brukerErIGruppe(userName);
         if (!brukerErIGruppe) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -87,19 +83,44 @@ public class LoggController {
         return Response.status(Response.Status.OK).entity(convertDatalist(list)).build();
     }
 
+    @Path("Personer")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response leserPersoner(@Context SecurityContext securityContext, String ident) {
+        String clustername = System.getenv("NAIS_CLUSTER_NAME");
+        if (clustername != "dev-fss") return Response.status(Response.Status.UNAUTHORIZED).build();
+
+        String userName = getUserName(securityContext);
+        log.debug("Lagrer logg, user: " + userName);
+        boolean brukerErIGruppe = ldapGroupService.brukerErIGruppe(userName);
+        if (!brukerErIGruppe) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+        List<String> list = loggTjeneste.finnAllePersonStarterMed(ident);
+        return Response.status(Response.Status.OK).entity(convertStringlist(list)).build();
+    }
+
     private String convertDatalist(List<LoggInnslag> list) {
+        String jsonOut = getGson().toJson(list);
+        //log.debug("Json: " + jsonOut);
+        return jsonOut;
+    }
+
+    private String convertStringlist(List<String> list) {
+        String jsonOut = getGson().toJson(list);
+        return jsonOut;
+    }
+
+    private Gson getGson() {
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new JsonSerializer<LocalDateTime>() {
             @Override
             public JsonElement serialize(LocalDateTime src, Type typeOfSrc, JsonSerializationContext context) {
                 return new JsonPrimitive(src.format(DateTimeFormatter.ISO_DATE_TIME));
             }
         }).create();
-
-        String jsonOut = gson.toJson(list);
-        //log.debug("Json: " + jsonOut);
-        return jsonOut;
+        return gson;
     }
-
 
 
     // Midlertidig tjeneste for å rette opp i feil UFO-meldinger som havnet på topic 2/6-5/6 2020.
