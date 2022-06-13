@@ -101,7 +101,7 @@ public class OidcAuthenticate {
 		String issuer = getUnverifiedIssuer(bearerToken);
 		JwtConsumer jwtConsumer = buildJwtConsumer(issuer); 
 		log.info("requiredAuthLevel : " + requiredAuthLevel);
-		log.debug("Bearer Token: " + bearerToken);
+		//log.debug("Bearer Token: " + bearerToken);
 
 		try {
 			JwtClaims jwtClaims = jwtConsumer.processToClaims(bearerToken);

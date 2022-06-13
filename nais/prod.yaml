@@ -20,6 +20,9 @@ spec:
     min: 1
     max: 2
     cpuThresholdPercentage: 80
+  prometheus:
+    enabled: true
+    path: /sporingslogg/prometheus
   liveness:
     path: /sporingslogg/api/ping
     initialDelay: 20
