@@ -147,7 +147,18 @@ public class TestWithKafka {  // Disse testene er veldig vaklete, virker ca anne
 		    	return new JsonPrimitive(src.format(DateTimeFormatter.ISO_DATE_TIME));
 			}
 		}).create();
-		return gson.toJson(l);
+		String result = gson.toJson(l);
+		System.out.println("***********************************");
+		System.out.println("Gson json: " + result);
+		System.out.println("***********************************");
+		return result;
+	}
+
+	@Test
+	public void testMelding() {
+		lagLoggMelding("Person", "Mottakeren", "Leveretdataenenen");
+
+
 	}
 
 	static String concatString(String person, String org, String data) {
