@@ -73,18 +73,19 @@ public class LoggTjeneste {
 
     public List<String> finnAllePersonStarterMed(String ident) {
         loggOppslag.inc();
-        List<LoggInnslag> list = entityManager.createQuery("select person from LoggInnslag where person like :p", LoggInnslag.class)
-                .setParameter("p",'%' + ident + '%')
+        List<String> list = entityManager.createQuery("select person from LoggInnslag where person like :p", String.class)
+                .setParameter("p", ident + '%')
                 .getResultList();
 
-        Set<String> sets = new HashSet<String>();
-        for (int i = 0; i < list.size() ; i++) {
-            String person = list.get(i).getPerson();
-            if (person != null) {
-                sets.add(person);
-            }
-        }
-        return sets.stream().collect(Collectors.toList());
+//        Set<String> sets = new HashSet<String>();
+//        for (int i = 0; i < list.size() ; i++) {
+//            String person = list.get(i).getPerson();
+//            if (person != null) {
+//                sets.add(person);
+//            }
+//        }
+//        return sets.stream().collect(Collectors.toList());
+        return list;
     }
 
     public boolean isReady() {
