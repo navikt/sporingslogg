@@ -66,7 +66,8 @@ public class LoggController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response leser(@Context SecurityContext securityContext, String ident) {
         String clustername = System.getenv("NAIS_CLUSTER_NAME");
-        if (clustername != "dev-fss") return Response.status(Response.Status.UNAUTHORIZED).build();
+        log.debug("env NAIS_CLUSTER_NAME: " + clustername);
+        //if (clustername != "dev-fss") return Response.status(Response.Status.UNAUTHORIZED).build();
 
         String userName = getUserName(securityContext);
         log.debug("Henter logg, user: " + userName);
@@ -88,10 +89,10 @@ public class LoggController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response leserPersoner(@Context SecurityContext securityContext, String ident) {
         String clustername = System.getenv("NAIS_CLUSTER_NAME");
-        if (clustername != "dev-fss") return Response.status(Response.Status.UNAUTHORIZED).build();
+        log.debug("env NAIS_CLUSTER_NAME: " + clustername);
+        //if (clustername != "dev-fss") return Response.status(Response.Status.UNAUTHORIZED).build();
 
         String userName = getUserName(securityContext);
-        log.debug("Lagrer logg, user: " + userName);
         boolean brukerErIGruppe = ldapGroupService.brukerErIGruppe(userName);
         if (!brukerErIGruppe) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
