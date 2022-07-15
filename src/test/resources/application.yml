@@ -1,0 +1,21 @@
+ENV: 'local-test'
+
+spring:
+  profiles:
+    active: 'local-test'
+
+VER2_DIFI_TOKEN_CONFIGURATION_URL: "http://localhost"
+SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL: "http://localhost"
+
+DBURL: 'jdbc:h2:mem:mydbsporingslogg'
+DBUSERNAME: 'sa'
+DBPASSWORD: ''
+
+SRVUSERNAME: "srvsporingslogg"
+SRVPASSWORD: "password"
+
+kafka:
+  sporingslogg:
+    topic: "aapen-sporingslogg-loggmeldingMottatt"
+    groupid: "KC-aapen-sporingslogg-loggmeldingMottatt"
+
