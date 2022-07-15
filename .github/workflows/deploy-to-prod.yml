@@ -19,5 +19,4 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-fss
           RESOURCE: nais/prod.yaml
-          IMAGE: "ghcr.io/navikt/sporingslogg/sporingslogg-nais:${{ github.event.inputs.version }}"
-          TEAM: pensjonsamhandling
+          IMAGE: "ghcr.io/navikt/sporingslogg/sporingslogg:${{ github.event.inputs.version }}"
