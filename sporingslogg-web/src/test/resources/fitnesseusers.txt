@@ -1,6 +1,0 @@
-testuser=password
-# T
-srvsporingslogg=EbLAPrQYvY1JrLS
-# Q
-#srvsporingslogg=cZ0KeUiRCXkT9Y9
-#srvPDP=f72kdIje(kd-ey5
