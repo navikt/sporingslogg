@@ -1,6 +1,8 @@
 package no.nav.pensjon.controller
 
 import no.nav.pensjon.domain.LoggMelding
+import org.springframework.http.HttpStatus
+import org.springframework.web.server.ResponseStatusException
 import java.time.LocalDateTime
 
 object LoggMeldingValidator {
@@ -21,6 +23,14 @@ object LoggMeldingValidator {
         levertDataValidation(sporingsloggRequest)
         uthentingsTidspunktValidation(sporingsloggRequest.uthentingsTidspunkt)
         samtykkeTokenValidation(sporingsloggRequest.samtykkeToken)
+    }
+
+    fun validateRequestAsResponseRequestExcption(sporingsloggRequest: LoggMelding) {
+        try {
+            validateRequest(sporingsloggRequest)
+        } catch (sve: SporingsloggValidationException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, sve.message)
+        }
     }
 
     private fun personNrValidation(sporingsloggRequest: LoggMelding) {

@@ -1,7 +1,7 @@
 package no.nav.pensjon.controller
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
-import no.nav.pensjon.controller.LoggMeldingValidator.validateRequest
+import no.nav.pensjon.controller.LoggMeldingValidator.validateRequestAsResponseRequestExcption
 import no.nav.pensjon.domain.LoggInnslag
 import no.nav.pensjon.domain.LoggMelding
 import no.nav.pensjon.metrics.MetricsHelper
@@ -39,7 +39,7 @@ class PostController(
         log.debug("Request: $request")
 
         return postController.measure {
-            validateRequest(request) //viktig må være først
+            validateRequestAsResponseRequestExcption(request) //viktig må være først
 
             log.debug("LoggMelding Base64? = ${LoggMelding.checkForEncode(request)}")
             val loggMelding = LoggMelding.checkForAndEncode(request) //Check for base64 encode if plain text

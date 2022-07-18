@@ -32,8 +32,6 @@ data class LoggMelding(
     companion object {
         fun base64Encode(loggMelding: LoggMelding) : LoggMelding = loggMelding.copy(leverteData = Base64.getEncoder().encodeToString(loggMelding.leverteData!!.toByteArray()))
 
-        fun base64Decode(loggMelding: LoggMelding) : LoggMelding = loggMelding.copy(leverteData = String(Base64.getDecoder().decode(loggMelding.leverteData)))
-
         fun checkForAndEncode(loggMelding: LoggMelding): LoggMelding {
             return if (checkForEncode(loggMelding)) {
                 loggMelding // request LoggMelding er alt base64

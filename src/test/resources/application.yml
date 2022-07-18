@@ -4,6 +4,10 @@ spring:
   profiles:
     active: 'local-test'
 
+server:
+  error:
+    include-message: always
+
 VER2_DIFI_TOKEN_CONFIGURATION_URL: "http://localhost"
 SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL: "http://localhost"
 

@@ -24,12 +24,12 @@ object TestHelper {
         )
     }
 
-    fun mockLoggMelding(ident: String = "11886512234", levertBase64: Boolean = false): LoggMelding {
+    fun mockLoggMelding(ident: String = "11886512234", mottaker: String = "938908909", levertBase64: Boolean = false): LoggMelding {
         val tidspunkt  = LocalDateTime.of(2021, 10, 9, 10, 10)
         return LoggMelding(
             id = null,
             person = ident,
-            mottaker = "938908909",
+            mottaker = mottaker,
             tema = "PEN",
             behandlingsGrunnlag = "Lovhjemmel samordningsloven § 27 (samordningsloven paragraf 27)",
             uthentingsTidspunkt = tidspunkt,
@@ -39,6 +39,9 @@ object TestHelper {
             dataForespoersel = null
         )
     }
+
+    fun mockLoggMeldingAsJson(ident: String = "11886512234", mottaker: String = "938908909", levertBase64: Boolean = false) = mapAnyToJson(mockLoggMelding(ident, mottaker, levertBase64))
+
 
     fun mockNoneValidLoggMeldingJson() : String {
         return """
@@ -54,7 +57,6 @@ object TestHelper {
         """.trimIndent()
     }
 
-    fun mockLoggMeldingAsJson(ident: String = "11886512234", levertBase64: Boolean = false) = mapAnyToJson(mockLoggMelding(ident, levertBase64))
 
     fun base64LevertData(): String = "TGV2ZXJ0ZURhdGEgZXIga3VuIGZvciBkdW1teVRlc3RpbmcgYXYgc3BvcmluZ3Nsb2dnIFRlc3Q="
 
