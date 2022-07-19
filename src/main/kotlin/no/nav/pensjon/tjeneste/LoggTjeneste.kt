@@ -8,7 +8,6 @@ import no.nav.pensjon.tjeneste.ValideringTjeneste.validerMaxLengde
 import no.nav.pensjon.util.scrable
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import javax.annotation.PostConstruct
@@ -80,14 +79,6 @@ class LoggTjeneste(
         return finnLoggInnslag.measure {
             return@measure loggRepository.finnAllePersonStarterMed(ident).mapNotNull { innslag -> innslag.person }
         }
-    }
-
-    @Transactional
-    @Profile("unsecured-webmvctest")
-    fun deleteAll() {
-        log.warn("Deleting all data in test: ${loggRepository.count()}")
-        loggRepository.deleteAll()
-        log.debug("Repository empty. Nr of entities: ${loggRepository.count()}")
     }
 
 }

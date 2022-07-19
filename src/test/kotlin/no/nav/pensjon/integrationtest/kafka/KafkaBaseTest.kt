@@ -50,7 +50,6 @@ abstract class KafkaListenerTest {
     @AfterEach
     fun after() {
         println("************************* CLEANING UP AFTER CLASS*****************************")
-        //loggTjeneste.deleteAll()
         clearAllMocks()
         embeddedKafka.kafkaServers.forEach { it.shutdown() }
         listAppender.stop()

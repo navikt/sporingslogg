@@ -34,7 +34,6 @@ abstract class BaseTest {
     @Autowired
     protected lateinit var mockMvc: MockMvc
 
-
     @AfterEach
     fun takeDown() {
         clearAllMocks()
