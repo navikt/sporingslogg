@@ -1,9 +1,10 @@
 
 val kotlin_version="1.7.0"
-val prometeus_version="1.8.1"
+val prometeus_version="1.9.1"
 val springboot_version="2.7.1"
 val springkafka_version="2.8.7"
 val springwebmvcpac4j_version = "6.0.3"
+val springframeworkbom_version = "5.3.22"
 val jacksonkotlin_version="2.13.2"
 val slf4j_version="1.7.36"
 val logstashlogback_version="7.2"
@@ -21,8 +22,8 @@ plugins {
     kotlin("plugin.spring") version "1.7.0"
     kotlin("plugin.jpa") version "1.7.0"
     id("org.springframework.boot") version "2.7.1"
-//    id("org.jetbrains.kotlin.plugin.spring") version "1.7.10"
-//    id("org.springframework.boot") version "2.7.1"
+    id("io.spring.dependency-management") version "1.0.12.RELEASE"
+    id("org.owasp.dependencycheck") version "7.1.1"
 }
 
 group = "no.nav.pensjon"
@@ -32,14 +33,18 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web:$springboot_version")
-    implementation("org.springframework.boot:spring-boot-starter-aop:$springboot_version")
-    implementation("org.springframework.boot:spring-boot-starter-actuator:$springboot_version")
-    implementation("org.springframework.boot:spring-boot-actuator:$springboot_version")
-    implementation("org.springframework.boot:spring-boot-starter-jdbc:$springboot_version")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springboot_version") {
+
+    // Spring Boot & Framework
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:$springboot_version"))
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-aop")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa") {
         exclude(group = "com.zaxxer", module = "HikariCP")
     }
+    implementation(platform("org.springframework:spring-framework-bom:$springframeworkbom_version"))
 
     // Kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonkotlin_version")
@@ -47,9 +52,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
 
-    //kafka
+    // Kafka
     implementation("org.springframework.kafka:spring-kafka:$springkafka_version")
-    //kafka-test/mock
+    // kafka-test/mock
     testImplementation("org.springframework.kafka:spring-kafka-test:$springkafka_version")
 
 
@@ -71,7 +76,6 @@ dependencies {
     implementation("io.micrometer:micrometer-registry-prometheus:$prometeus_version")
 
     // DB
-    //implementation("org.hibernate.validator:hibernate-validator:$hibernatrevalidator_version")
     implementation("javax.persistence:javax.persistence-api:2.2")
     implementation("com.oracle.database.jdbc:ojdbc11:21.6.0.0.1")
 
@@ -79,7 +83,7 @@ dependencies {
     testImplementation("com.ninja-squad:springmockk:$springmockk_version")
     testImplementation("org.pac4j:spring-webmvc-pac4j:$springwebmvcpac4j_version")
 
-    //mock - test
+    // mock - test
     testImplementation("com.h2database:h2:2.1.214")
     testImplementation("io.mockk:mockk:$mockk_version")
     testImplementation("org.junit.platform:junit-platform-suite-api:$junitplatform_version")

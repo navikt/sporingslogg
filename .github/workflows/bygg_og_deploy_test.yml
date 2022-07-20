@@ -40,7 +40,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # DEPLOYER TIL NAIS Q2 team namespace
-      - name: 'Deploy to NAIS q2 gcp'
+      - name: 'Deploy to NAIS q2'
         uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
