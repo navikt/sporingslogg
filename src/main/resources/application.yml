@@ -17,8 +17,11 @@ server:
 
 management:
   endpoints:
-    metrics:
+    health:
+      show-details: always
+    prometheus:
       enabled: true
     web:
       exposure:
         include: health, info, prometheus
+
