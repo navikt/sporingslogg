@@ -1,6 +1,6 @@
 
 val kotlin_version="1.7.0"
-val prometeus_version="1.9.1"
+val prometeus_version="1.9.2"
 val springboot_version="2.7.1"
 val springkafka_version="2.8.7"
 val springwebmvcpac4j_version = "6.0.3"
