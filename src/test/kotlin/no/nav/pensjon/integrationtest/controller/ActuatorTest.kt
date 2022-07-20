@@ -23,7 +23,7 @@ internal class ActuatorTest: BaseTest() {
     }
 
     @Test
-    fun `sjekk for postcontroller gyldig loggmelding for post og lagring db`() {
+    fun `sjekk for actuator er klar`() {
 
         repeat(3) {
             metric.measure {
@@ -42,5 +42,16 @@ internal class ActuatorTest: BaseTest() {
         val result = response.response.getContentAsString(charset("UTF-8"))
         assertEquals("{\"status\":\"UP\"}", result)
     }
+
+    @Test
+    fun `sjekk for isalive`() {
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/internal/isalive/"))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+    }
+
 
 }
