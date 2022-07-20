@@ -31,6 +31,7 @@ class LoggTjeneste(
         hentLoggInnslag = metricsHelper.init("hent")
         finnLoggInnslag = metricsHelper.init("finn")
         validerOgLagre = metricsHelper.init("validerOgLagre")
+        log.info("LoggTjeneste klar..")
     }
 
     fun lagreLoggInnslag(loggInnslag: LoggInnslag): Long {

@@ -21,13 +21,13 @@ spec:
     enabled: true
     path: actuator/prometheus
   liveness:
-    path: actuator/health/liveness
+    path: /internal/isalive
     initialDelay: 30
   readiness:
-    path: actuator/health/readiness
+    path: /internal/isready
     initialDelay: 30
   startup:
-    path: actuator/health/readiness
+    path: /internal/isready
     initialDelay: 30
     failureThreshold: 30
     periodSeconds: 5
