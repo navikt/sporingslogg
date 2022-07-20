@@ -7,7 +7,7 @@ metadata:
     team: pensjonsamhandling
 spec:
   image: {{ image }}
-  port: 8088
+  port: 8080
   ingresses:
     - "https://sporingslogg-q2.nais.preprod.local"
     - "https://sporingslogg-q2.dev.intern.nav.no"
