@@ -32,11 +32,11 @@ spec:
     failureThreshold: 60
   resources:
     limits:
-      cpu: 1000m
-      memory: 2024Mi
+      cpu: "4"
+      memory: 8096Mi
     requests:
       cpu: 800m
-      memory: 1012Mi
+      memory: 4024Mi
   vault:
     enabled: true
     paths:
