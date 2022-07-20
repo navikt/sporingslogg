@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Profile
 
-@EnableJwtTokenValidation(ignore = ["org.springframework"])
+@EnableJwtTokenValidation(ignore = ["org.springframework","no.nav.eessi.pensjon.health.DiagnosticsController"])
 @SpringBootApplication
 @Profile("!unsecured-webmvctest")
 class Application

@@ -9,7 +9,7 @@ import javax.sql.DataSource
 
 
 @Configuration
-@Profile("!unsecured-webmvctest")
+@Profile("prod", "test")
 class DataSourceConfig(
     @param:Value("\${DBURL}") private val dburl: String,
     @param:Value("\${DBUSERNAME}") private val dbusername: String,
