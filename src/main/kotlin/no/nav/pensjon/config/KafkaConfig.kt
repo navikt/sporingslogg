@@ -26,7 +26,7 @@ class KafkaConfig(
     @param:Value("\${kafka.credstore.password}") private val credstorePassword: String,
     @param:Value("\${kafka.truststore.path}") private val truststorePath: String,
     @param:Value("\${kafka.brokers}") private val aivenBootstrapServers: String,
-    @param:Value("\${kafka.security.protocol}") private val securityProtocol: String,
+    //@param:Value("\${kafka.security.protocol}") private val securityProtocol: String,
     @param:Value("\${ONPREM_KAFKA_BOOTSTRAP_SERVERS_URL}") private val onpremBootstrapServers: String,
     @param:Value("\${SRVUSERNAME}") private val srvusername: String,
     @param:Value("\${SRVPASSWORD}") private val srvpassword: String
@@ -89,11 +89,11 @@ class KafkaConfig(
         configMap[SslConfigs.SSL_TRUSTSTORE_TYPE_CONFIG] = "JKS"
         configMap[SslConfigs.SSL_KEYSTORE_TYPE_CONFIG] = "PKCS12"
         configMap[SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG] = truststorePath
-        configMap[CommonClientConfigs.SECURITY_PROTOCOL_CONFIG] = securityProtocol
+        configMap[CommonClientConfigs.SECURITY_PROTOCOL_CONFIG] = "SSL" // securityProtocol
     }
 
     private fun onpremCommonConfig(configMap: MutableMap<String, Any>) {
-        configMap[CommonClientConfigs.SECURITY_PROTOCOL_CONFIG] = "SASL_SSL"
+        //configMap[CommonClientConfigs.SECURITY_PROTOCOL_CONFIG] = "SASL_SSL"
         configMap[SaslConfigs.SASL_MECHANISM] = "PLAIN"
         configMap[SaslConfigs.SASL_JAAS_CONFIG] = "org.apache.kafka.common.security.plain.PlainLoginModule required username='${srvusername}' password='${srvpassword}';"
     }
