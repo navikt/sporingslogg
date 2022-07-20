@@ -19,17 +19,18 @@ spec:
     cpuThresholdPercentage: 80
   prometheus:
     enabled: true
-    path: /actuator/prometheus
+    path: actuator/prometheus
   liveness:
-    path: /actuator/health/liveness
-    initialDelay: 20
-    periodSeconds: 5
-    failureThreshold: 60
+    path: actuator/health/liveness
+    initialDelay: 30
   readiness:
-    path: /actuator/health/readiness
-    initialDelay: 20
+    path: actuator/health/readiness
+    initialDelay: 30
+  startup:
+    path: actuator/health/readiness
+    initialDelay: 30
+    failureThreshold: 30
     periodSeconds: 5
-    failureThreshold: 60
   resources:
     limits:
       cpu: "4"
