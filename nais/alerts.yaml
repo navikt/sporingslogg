@@ -8,7 +8,7 @@ metadata:
 spec:
   receivers: # receivers for all alerts below
     slack:
-      channel: '#sporingslogg-alerts'
+      channel: '#samhandling-alerts'
       prependText: '<!channel> | ' # varsle alle/passive i kanalen inntil vi har et team, saa det oppdages lettere ved innlogging/sjekk etter at alerten er sendt
   alerts:
     - alert: sporingslogg-nede

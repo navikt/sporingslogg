@@ -1,5 +1,0 @@
-|TesterMedLokalJetty||09:49:17 on, okt 25, 2017|
-|FrontPage||09:10:19 on, okt 25, 2017|
-|FrontPage.TesterMedLokalJetty||09:01:32 on, okt 25, 2017|
-|MyTests.MyTest1||12:27:29 ti, sep 05, 2017|
-|MyTests||12:01:25 ti, sep 05, 2017|

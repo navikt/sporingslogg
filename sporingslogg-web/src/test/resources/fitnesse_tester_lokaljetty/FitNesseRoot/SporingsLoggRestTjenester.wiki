@@ -1,9 +1,0 @@
----
-Suite
----
-
-!3 Test suite for Sporingslogg REST-tjenester mot lokal Jetty og HSQL DB (kan kjøres automatisk)
-
-!contents -R2 -g -p -f -h
-!define TEST_SYSTEM {slim}
-!path ${java.class.path}

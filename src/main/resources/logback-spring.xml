@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <springProfile name="prod">
+        <appender name="stdout_json" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%level %logger %msg %n</pattern>
+            </encoder>
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+                <includeCallerData>true</includeCallerData>
+            </encoder>
+        </appender>
+
+        <logger name="io" level="ERROR"/>
+        <logger name="org" level="ERROR"/>
+        <logger name="com" level="ERROR"/>
+        <logger name="kafka" level="ERROR"/>
+        <logger name="org.apache.zookeeper" level="ERROR"/>
+        <logger name="no.nav" level="INFO"/>
+        <logger name="no.nav.security" level="ERROR"/>
+        <logger name="no.nav.pensjon" level="INFO"/>
+        <root level="info">
+            <appender-ref ref="stdout_json"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="test">
+        <appender name="stdout_json" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%level %logger %msg %n</pattern>
+            </encoder>
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+                <includeCallerData>true</includeCallerData>
+            </encoder>
+        </appender>
+
+        <logger name="io" level="ERROR"/>
+        <logger name="org" level="ERROR"/>
+        <logger name="com" level="ERROR"/>
+        <logger name="kafka" level="WARN"/>
+        <logger name="org.apache.zookeeper" level="WARN"/>
+        <logger name="no.nav" level="DEBUG"/>
+        <logger name="no.nav.security" level="WARN"/>
+        <logger name="no.nav.pensjon" level="DEBUG"/>
+
+        <root level="info">
+            <appender-ref ref="stdout_json"/>
+        </root>
+
+    </springProfile>
+
+</configuration>

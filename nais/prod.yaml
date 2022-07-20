@@ -1,6 +1,3 @@
-# Miljøspesifikke verdier: metadata.namespace, spec.ingresses, og spec.env-verdiene
-# image-navnet injiseres med riktig versjon
-#
 apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
@@ -18,29 +15,29 @@ spec:
     enabled: false
   replicas:
     min: 1
-    max: 2
+    max: 1
     cpuThresholdPercentage: 80
   prometheus:
     enabled: true
     path: /sporingslogg/prometheus
   liveness:
-    path: /sporingslogg/api/ping
+    path: /actuator/health/liveness
     initialDelay: 20
     periodSeconds: 5
     failureThreshold: 60
   readiness:
-    path: /sporingslogg/api/ping
+    path: /actuator/health/readiness
     initialDelay: 20
     periodSeconds: 5
     failureThreshold: 60
   resources:
     limits:
-      cpu: 800m
-      memory: 1024Mi
+      cpu: 1000m
+      memory: 2024Mi
     requests:
-      cpu: 400m
-      memory: 512Mi
-  vault: 
+      cpu: 800m
+      memory: 1012Mi
+  vault:
     enabled: true
     paths:
       - kvPath: /oracle/data/prod/creds/sporingslogg_p-user
@@ -48,25 +45,22 @@ spec:
       - kvPath: /serviceuser/data/prod/srvsporingslogg
         mountPath: /secrets/serviceuser
   webproxy: true
+#  kafka:
+#    pool: nav-prod
   env:
-    - name: LDAP_URL
-      value: "ldaps://ldapgw.adeo.no"
-    - name: LDAP_BASEDN
-      value: "dc=adeo,dc=no"
-    - name: LDAP_USER_BASEDN
-      value: "ou=NAV,ou=BusinessUnits,dc=adeo,dc=no"
-    - name: LDAP_SERVICEUSER_BASEDN
-      value: "ou=ServiceAccounts,dc=adeo,dc=no"
-    - name: SPORINGSLOGGDB_URL
-      value: "jdbc:oracle:thin:@a01dbfl043.adeo.no:1521/SPORINGSLOGG_P_HA"
-    - name: SPORINGSLOGGDB_USERNAME
-      value: "SPORINGSLOGG"
-    - name: NO_NAV_SPORINGSLOGG_KAFKA_SERVERS
-      value: "a01apvl00145.adeo.no:8443,a01apvl00146.adeo.no:8443,a01apvl00147.adeo.no:8443,a01apvl00148.adeo.no:8443,a01apvl00149.adeo.no:8443,a01apvl00150.adeo.no:8443"
-    - name: NO_NAV_SPORINGSLOGG_OIDC_ISSUERLIST
-      value: "https://oidc.difi.no/idporten-oidc-provider/"
-    - name: NO_NAV_SPORINGSLOGG_OIDC_JWKSLIST
-      value: "https://oidc.difi.no/idporten-oidc-provider/jwk"
-# Skal være satt til 4 (Bank-ID) når man går mot ID-porten, 0 ellers
-    - name: SPORINGSLOGG_CHECK_AUTHLEVEL
-      value: "4"
+    - name: SPRING_PROFILES_ACTIVE
+      value: prod
+    - name: ENV
+      value: p
+    - name: DBURL
+      value: jdbc:oracle:thin:@a01dbfl043.adeo.no:1521/SPORINGSLOGG_P_HA
+    - name: SPORINGSLOGG_KAFKA_TOPIC
+      value: aapen-sporingslogg-loggmeldingMottatt
+    - name: SPORINGSLOGG_AIVEN_KAFKA_TOPIC
+      value: public-sporingslogg-loggmeldingMottatt
+    - name: ONPREM_KAFKA_BOOTSTRAP_SERVERS_URL
+      value: SASL_SSL://a01apvl00145.adeo.no:8443,a01apvl00146.adeo.no:8443,a01apvl00147.adeo.no:8443,a01apvl00148.adeo.no:8443,a01apvl00149.adeo.no:8443,a01apvl00150.adeo.no:8443
+    - name: VER2_DIFI_TOKEN_CONFIGURATION_URL
+      value: https://oidc.difi.no/idporten-oidc-provider/.well-known/openid-configuration
+    - name: SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL
+      value: https://security-token-service.nais.adeo.no/rest/v1/sts/.well-known/openid-configuration

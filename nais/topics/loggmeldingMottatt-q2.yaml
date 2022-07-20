@@ -1,0 +1,26 @@
+apiVersion: kafka.nais.io/v1
+kind: Topic
+metadata:
+  name: public-sporingslogg-loggmeldingMottatt-q2
+  namespace: pensjonsamhandling
+  labels:
+    team: pensjonsamhandling
+spec:
+  pool: nav-dev
+  config:  # optional; all fields are optional too; defaults shown
+    cleanupPolicy: delete  # delete, compact, compact,delete
+    minimumInSyncReplicas: 1
+    partitions: 2
+    replication: 3  # see min/max requirements
+    retentionBytes: -1  # -1 means unlimited
+    retentionHours: -1  # -1 means unlimited
+  acl:
+    - team: pensjonsamhandling
+      application: sporingslogg-q2
+      access: readwrite   # read, write, readwrite
+#    - team: pensjon
+#      application: pensjon-q2
+#      access: write   #write
+#    - team: andre
+#      application: team-andre
+#      access: write
