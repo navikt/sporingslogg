@@ -57,7 +57,7 @@ spec:
       value: jdbc:oracle:thin:@a01dbfl043.adeo.no:1521/SPORINGSLOGG_P_HA
     - name: SPORINGSLOGG_KAFKA_TOPIC
       value: aapen-sporingslogg-loggmeldingMottatt
-      name: SPORINGSLOGG_KAFKA_GROUP
+    - name: SPORINGSLOGG_KAFKA_GROUP
       value: KC-aapen-sporingslogg-loggmeldingMottatt
     - name: SPORINGSLOGG_AIVEN_KAFKA_TOPIC
       value: public-sporingslogg-loggmeldingmottatt
