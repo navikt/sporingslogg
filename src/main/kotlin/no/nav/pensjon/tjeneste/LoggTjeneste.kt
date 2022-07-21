@@ -35,7 +35,7 @@ class LoggTjeneste(
     }
 
     fun lagreLoggInnslag(loggInnslag: LoggInnslag): Long {
-        log.info("Lagrer for person " + loggInnslag.person.scrable() + ", mottaker: " + loggInnslag.mottaker + ", tema: " + loggInnslag.tema)
+        log.debug("Lagrer for person " + loggInnslag.person.scrable() + ", mottaker: " + loggInnslag.mottaker + ", tema: " + loggInnslag.tema)
 
         return validerOgLagre.measure {
 

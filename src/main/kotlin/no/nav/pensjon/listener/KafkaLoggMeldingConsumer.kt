@@ -57,7 +57,7 @@ class KafkaLoggMeldingConsumer(
                 val loggMelding: LoggMelding = try {
                     LoggMelding.fromJson(hendelse)
                 } catch (e: Exception) {
-                    log.error("Mottatt sporingsmelding kan ikke deserialiseres, må evt rettes og sendes inn på nytt Hendelse", e)
+                    log.error("Mottatt sporingsmelding kan ikke deserialiseres, må evt rettes og sendes inn på nytt.", e)
                     acknowledgment.acknowledge()
                     return@measure
                 }
@@ -65,7 +65,7 @@ class KafkaLoggMeldingConsumer(
                 try {
                     validateRequest(loggMelding)
                 } catch (sve: SporingsloggValidationException) {
-                    log.error("Mottatt sporingsmelding kan ikke valideres, må evt rettes og sendes inn på nytt Hendelse", sve)
+                    log.error("Mottatt sporingsmelding kan ikke valideres, må evt rettes og sendes inn på nytt.", sve)
                     acknowledgment.acknowledge()
                     return@measure
                 }
@@ -75,7 +75,7 @@ class KafkaLoggMeldingConsumer(
                     val loggId = loggTjeneste.lagreLoggInnslag(loggInnslag)
                     val melding = "ID: $loggId, person: ${loggMelding.person.scrable()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
 
-                    log.info("Lagret melding: $melding")
+                    log.info("Lagret melding med unik: $melding")
                     acknowledgment.acknowledge()
 
                 } catch (e: Exception) {

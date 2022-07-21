@@ -21,23 +21,23 @@ spec:
     enabled: true
     path: actuator/prometheus
   liveness:
-    path: /internal/isalive
+    path: actuator/health/liveness
     initialDelay: 30
   readiness:
-    path: /internal/isready
+    path: actuator/health/readiness
     initialDelay: 30
   startup:
-    path: /internal/isready
+    path: actuator/health/readiness
     initialDelay: 30
     failureThreshold: 30
     periodSeconds: 5
   resources:
     limits:
-      cpu: "4"
-      memory: 8096Mi
+      cpu: "2"
+      memory: 4096Mi
     requests:
       cpu: 800m
-      memory: 4024Mi
+      memory: 2024Mi
   vault:
     enabled: true
     paths:
@@ -57,8 +57,10 @@ spec:
       value: jdbc:oracle:thin:@a01dbfl042.adeo.no:1521/SPORINGSLOGG_Q2
     - name: SPORINGSLOGG_KAFKA_TOPIC
       value: aapen-sporingslogg-loggmeldingMottatt
+      name: SPORINGSLOGG_KAFKA_GROUP
+      value: KC-aapen-sporingslogg-loggmeldingMottatt
     - name: SPORINGSLOGG_AIVEN_KAFKA_TOPIC
-      value: public-sporingslogg-loggmeldingMottatt-q2
+      value: public-sporingslogg-loggmeldingmottatt-q2
     - name: ONPREM_KAFKA_BOOTSTRAP_SERVERS_URL
       value: SSL://b27apvl00045.preprod.local:8443,SSL://b27apvl00046.preprod.local:8443,SSL://b27apvl00047.preprod.local:8443
     - name: VER2_DIFI_TOKEN_CONFIGURATION_URL

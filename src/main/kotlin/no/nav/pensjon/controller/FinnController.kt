@@ -20,7 +20,7 @@ class FinnController( private val loggTjeneste: LoggTjeneste ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
     @GetMapping("/sporingslogg/test/finn/{ident}", produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    @ProtectedWithClaims(issuer = "difi", claimMap = [ "acr=Level4" ])
+    @ProtectedWithClaims(issuer = "servicebruker")
     fun finnLoggMelding(@PathVariable(value = "ident", required = true) ident: String) : List<String> {
         log.debug("søker innslag på : $ident")
 
@@ -31,7 +31,7 @@ class FinnController( private val loggTjeneste: LoggTjeneste ) {
     }
 
     @GetMapping("/sporingslogg/test/hent/{ident}", produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    @ProtectedWithClaims(issuer = "difi", claimMap = [ "acr=Level4" ])
+    @ProtectedWithClaims(issuer = "servicebruker")
     fun hentLoggMelding(@PathVariable(value = "ident", required = true) ident: String) : List<LoggMelding> {
         if (ident.length != 11) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Ugyldig ident")
         log.debug("Henter ut pid : $ident")

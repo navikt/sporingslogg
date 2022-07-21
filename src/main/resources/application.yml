@@ -9,7 +9,7 @@ no.nav.security.jwt:
 kafka:
   sporingslogg:
     topic: ${SPORINGSLOGG_KAFKA_TOPIC}
-    groupid: KC-${SPORINGSLOGG_KAFKA_TOPIC}
+    groupid: ${SPORINGSLOGG_KAFKA_GROUP}
 
 server:
   error:

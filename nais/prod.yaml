@@ -7,7 +7,7 @@ metadata:
     team: pensjonsamhandling
 spec:
   image: {{ image }}
-  port: 8088
+  port: 8080
   ingresses:
     - "https://sporingslogg.nais.adeo.no"
     - "https://sporingslogg.intern.nav.no"
@@ -19,24 +19,25 @@ spec:
     cpuThresholdPercentage: 80
   prometheus:
     enabled: true
-    path: /sporingslogg/prometheus
+    path: actuator/prometheus
   liveness:
-    path: /actuator/health/liveness
-    initialDelay: 20
-    periodSeconds: 5
-    failureThreshold: 60
+    path: actuator/health/liveness
+    initialDelay: 30
   readiness:
-    path: /actuator/health/readiness
-    initialDelay: 20
+    path: actuator/health/readiness
+    initialDelay: 30
+  startup:
+    path: actuator/health/readiness
+    initialDelay: 30
+    failureThreshold: 30
     periodSeconds: 5
-    failureThreshold: 60
   resources:
     limits:
-      cpu: 1000m
-      memory: 2024Mi
+      cpu: "4"
+      memory: 8096Mi
     requests:
       cpu: 800m
-      memory: 1012Mi
+      memory: 4024Mi
   vault:
     enabled: true
     paths:
@@ -56,8 +57,10 @@ spec:
       value: jdbc:oracle:thin:@a01dbfl043.adeo.no:1521/SPORINGSLOGG_P_HA
     - name: SPORINGSLOGG_KAFKA_TOPIC
       value: aapen-sporingslogg-loggmeldingMottatt
+      name: SPORINGSLOGG_KAFKA_GROUP
+      value: KC-aapen-sporingslogg-loggmeldingMottatt
     - name: SPORINGSLOGG_AIVEN_KAFKA_TOPIC
-      value: public-sporingslogg-loggmeldingMottatt
+      value: public-sporingslogg-loggmeldingmottatt
     - name: ONPREM_KAFKA_BOOTSTRAP_SERVERS_URL
       value: SASL_SSL://a01apvl00145.adeo.no:8443,a01apvl00146.adeo.no:8443,a01apvl00147.adeo.no:8443,a01apvl00148.adeo.no:8443,a01apvl00149.adeo.no:8443,a01apvl00150.adeo.no:8443
     - name: VER2_DIFI_TOKEN_CONFIGURATION_URL

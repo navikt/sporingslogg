@@ -35,7 +35,7 @@ class KafkaInnkommendeUGydligHendelseTest: KafkaListenerTest() {
 
         debugPrintLogging()
 
-        assertTrue(sjekkLoggingFinnes("Mottatt sporingsmelding kan ikke deserialiseres, må evt rettes og sendes inn på nytt Hendelse"))
+        assertTrue(sjekkLoggingFinnes("Mottatt sporingsmelding kan ikke deserialiseres, må evt rettes og sendes inn på nytt."))
         assertEquals(0, loggTjeneste.hentAlleLoggInnslagForPerson(personIdent).size)
 
     }

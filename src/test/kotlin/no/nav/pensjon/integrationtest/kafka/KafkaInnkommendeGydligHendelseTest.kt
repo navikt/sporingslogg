@@ -34,7 +34,7 @@ class KafkaInnkommendeGydligHendelseTest: KafkaListenerTest() {
         }
 
         Assertions.assertEquals(1, loggTjeneste.hentAlleLoggInnslagForPerson(personIdent).size)
-        assertTrue(sjekkLoggingFinnes("Lagret melding: ID: 1, person: 209033xxxxx, tema: PEN, mottaker: 938908909"))
+        assertTrue(sjekkLoggingFinnes("Lagret melding med unik: ID: 1, person: 209033xxxxx, tema: PEN, mottaker: 938908909"))
 
     }
 

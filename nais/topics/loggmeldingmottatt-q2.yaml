@@ -1,7 +1,7 @@
 apiVersion: kafka.nais.io/v1
 kind: Topic
 metadata:
-  name: public-sporingslogg-loggmeldingMottatt-q2
+  name: public-sporingslogg-loggmeldingmottatt-q2
   namespace: pensjonsamhandling
   labels:
     team: pensjonsamhandling

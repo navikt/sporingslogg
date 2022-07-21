@@ -42,10 +42,10 @@ class KafkaInnkommendeFlereHendelserTest: KafkaListenerTest() {
             runTest.waitForlatch(kafkaLoggMeldingConsumer)
         }
 
-        assertTrue(sjekkLoggingFinnes("Lagret melding: ID: 1, person: 209033xxxxx, tema: PEN, mottaker: 938908909"))
-        assertTrue(sjekkLoggingFinnes("Lagret melding: ID: 2, person: 209033xxxxx, tema: PEN, mottaker: 123456789"))
-        assertTrue(sjekkLoggingFinnes("Mottatt sporingsmelding kan ikke deserialiseres, må evt rettes og sendes inn på nytt Hendelse"))
-        assertTrue(sjekkLoggingFinnes("Mottatt sporingsmelding kan ikke valideres, må evt rettes og sendes inn på nytt Hendelse"))
+        assertTrue(sjekkLoggingFinnes("Lagret melding med unik: ID: 1, person: 209033xxxxx, tema: PEN, mottaker: 938908909"))
+        assertTrue(sjekkLoggingFinnes("Lagret melding med unik: ID: 2, person: 209033xxxxx, tema: PEN, mottaker: 123456789"))
+        assertTrue(sjekkLoggingFinnes("Mottatt sporingsmelding kan ikke deserialiseres, må evt rettes og sendes inn på nytt."))
+        assertTrue(sjekkLoggingFinnes("Mottatt sporingsmelding kan ikke valideres, må evt rettes og sendes inn på nytt."))
         assertEquals(2, loggTjeneste.hentAlleLoggInnslagForPerson(personIdent).size)
     }
 
