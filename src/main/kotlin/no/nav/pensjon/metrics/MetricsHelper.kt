@@ -57,7 +57,7 @@ class MetricsHelper(val registry: MeterRegistry) {
                 throw throwable
             } finally {
                 try {
-                    io.micrometer.core.instrument.Counter.builder(meterName)
+                    Counter.builder(meterName)
                         .tag(configuration.methodTag, method)
                         .tag(configuration.typeTag, typeTag)
                         .register(registry)

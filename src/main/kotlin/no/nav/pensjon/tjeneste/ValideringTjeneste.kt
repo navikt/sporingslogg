@@ -4,7 +4,7 @@ package no.nav.pensjon.tjeneste
 object ValideringTjeneste {
 
     fun validerIkkeBlank(s: String?, label: String) {
-        require(!(s == null || s.trim { it <= ' ' }.length == 0)) { "Kan ikke ta imot tom verdi for $label" }
+        require(!(s == null || s.trim { it <= ' ' }.isEmpty())) { "Kan ikke ta imot tom verdi for $label" }
     }
 
     fun validerMaxLengde(s: String?, max: Int, label: String) {
