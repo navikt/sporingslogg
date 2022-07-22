@@ -4,6 +4,7 @@ import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.common.config.SaslConfigs
 import org.apache.kafka.common.config.SslConfigs
+import org.apache.kafka.common.security.auth.SecurityProtocol
 import org.apache.kafka.common.serialization.IntegerDeserializer
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.slf4j.LoggerFactory
@@ -41,13 +42,13 @@ class KafkaConfig(
     fun initConfig() {
         val initconf = """
             *** KAFKA CONFIG ***
-            *** Kafka topic: $topic \n
-            *** Kafka group: $groupid \n
-            *** Kafka broker: $onpremBootstrapServers \n
-            *** Securitu Prot: ${onpremKafkaConsumerFactory().configurationProperties[CommonClientConfigs.SECURITY_PROTOCOL_CONFIG]} \n
-            *** Error handler: $kafkaErrorHandler \n
+            *** Kafka topic: $topic
+            *** Kafka group: $groupid
+            *** Kafka broker: $onpremBootstrapServers
+            *** Securitu Prot: ${onpremKafkaConsumerFactory().configurationProperties[CommonClientConfigs.SECURITY_PROTOCOL_CONFIG]}
+            *** Error handler: $kafkaErrorHandler
             ***************************************
-        """.trimIndent()
+        """
         log.debug(initconf)
     }
 
@@ -112,7 +113,7 @@ class KafkaConfig(
     }
 
     private fun onpremCommonConfig(configMap: MutableMap<String, Any>) {
-        configMap[CommonClientConfigs.SECURITY_PROTOCOL_CONFIG] = if (springProfile == "test") "SSL" else "SASL_SSL"
+        configMap[CommonClientConfigs.SECURITY_PROTOCOL_CONFIG] = SecurityProtocol.SASL_SSL.name    // if (springProfile == "test") "SSL" else "SASL_SSL"
         configMap[SaslConfigs.SASL_MECHANISM] = "PLAIN"
         configMap[SaslConfigs.SASL_JAAS_CONFIG] = "org.apache.kafka.common.security.plain.PlainLoginModule required username='${srvusername}' password='${srvpassword}';"
     }

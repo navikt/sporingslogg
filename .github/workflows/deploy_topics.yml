@@ -20,7 +20,7 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          RESOURCE: nais/topics/loggmeldingMottatt-q2.yaml
+          RESOURCE: nais/topics/loggmeldingmottatt-q2.yaml
 
 #      - name: 'Deploy public-sporingslogg-loggmeldingMottatt to pensjonsamhandling namespace'
 #        uses: nais/deploy/actions/deploy@v1

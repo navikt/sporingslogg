@@ -62,7 +62,7 @@ spec:
     - name: SPORINGSLOGG_AIVEN_KAFKA_TOPIC
       value: public-sporingslogg-loggmeldingmottatt-q2
     - name: ONPREM_KAFKA_BOOTSTRAP_SERVERS_URL
-      value: SSL://b27apvl00045.preprod.local:8443,SSL://b27apvl00046.preprod.local:8443,SSL://b27apvl00047.preprod.local:8443
+      value: b27apvl00045.preprod.local:8443,b27apvl00046.preprod.local:8443,b27apvl00047.preprod.local:8443
     - name: VER2_DIFI_TOKEN_CONFIGURATION_URL
       value: https://oidc-ver2.difi.no/idporten-oidc-provider/.well-known/openid-configuration
     - name: SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL
