@@ -8,6 +8,7 @@ import no.nav.pensjon.domain.LoggMelding
 import no.nav.pensjon.metrics.MetricsHelper
 import no.nav.pensjon.tjeneste.LoggTjeneste
 import no.nav.pensjon.util.scrable
+import no.nav.pensjon.util.trunc
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -41,7 +42,7 @@ class KafkaLoggMeldingConsumer(
     )
     fun sporingsloggConsumer(hendelse: String, cr: ConsumerRecord<Int, String>, acknowledgment: Acknowledgment) {
         kafkaCounter.measure {
-            log.info("*** Innkommende hendelse. Offset: ${cr.offset()}, Partition: ${cr.partition()}, Key: ${cr.key()} ${ if (log.isDebugEnabled) ", hendelse: $hendelse" else "" } ")
+            log.info("*** Innkommende hendelse. Offset: ${cr.offset()}, Partition: ${cr.partition()}, Key: ${cr.key()} ${ if (log.isDebugEnabled) ", hendelse: ${hendelse.trunc()}" else "" } ")
 
             val loggMelding: LoggMelding = try {
                 LoggMelding.fromJson(hendelse)
@@ -66,6 +67,7 @@ class KafkaLoggMeldingConsumer(
 
                 log.info("Lagret melding med unik: $melding")
                 acknowledgment.acknowledge()
+                log.info("*** Acket, klar for neste loggmelding.. .")
 
             } catch (e: Exception) {
                 log.error("Feilet ved lagre LoggInnslag", e)
