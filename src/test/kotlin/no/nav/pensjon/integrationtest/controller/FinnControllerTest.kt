@@ -64,5 +64,20 @@ internal class FinnControllerTest: BaseTest() {
 
     }
 
+    @Test
+    fun `sjekk finnController for hentAntall`() {
+        loggTjeneste.lagreLoggInnslag(mockLoggInnslag("01053212288"))
+        loggTjeneste.lagreLoggInnslag(mockLoggInnslag("01053212288"))
+
+        val response = mockMvc.perform(
+            MockMvcRequestBuilders.get("/sporingslogg/test/hentAntall/01053212288")
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        assertEquals("2", response.response.getContentAsString(charset("UTF-8")))
+
+    }
+
 
 }

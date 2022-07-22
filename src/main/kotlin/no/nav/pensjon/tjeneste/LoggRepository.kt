@@ -13,13 +13,13 @@ interface LoggRepository: JpaRepository<LoggInnslag, Long> {
         value = "from LoggInnslag as l " +
                 " where l.person = :personIdent"
     )
-    fun hantAlleLoggInnslagForPerson(@Param("personIdent") personIdent: String): Set<LoggInnslag>
+    fun hantAlleLoggInnslagForPerson(@Param("personIdent") personIdent: String): List<LoggInnslag>
 
 
     @Query(
         value = "from LoggInnslag as l " +
                 " where l.person like :personIdent%"
     )
-    fun finnAllePersonStarterMed(@Param("personIdent") personIdent: String): Set<LoggInnslag>
+    fun finnAllePersonStarterMed(@Param("personIdent") personIdent: String): List<LoggInnslag>
 
 }

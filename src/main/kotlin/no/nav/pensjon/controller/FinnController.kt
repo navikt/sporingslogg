@@ -35,11 +35,24 @@ class FinnController( private val loggTjeneste: LoggTjeneste ) {
         log.debug("Henter ut pid : $ident")
 
         val result = loggTjeneste.hentAlleLoggInnslagForPerson(ident)
+        log.debug("Hentat antall: ${result.size}")
+
         val loggmeldinger = result.map { logginnslag ->
             LoggMelding.fromLoggInnslag(logginnslag)
         }
 
         return loggmeldinger
+    }
+
+    @GetMapping("/sporingslogg/test/hentAntall/{ident}", produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @ProtectedWithClaims(issuer = "servicebruker")
+    fun hentLoggMeldingAntall(@PathVariable(value = "ident", required = true) ident: String) : String {
+        if (ident.length != 11) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Ugyldig ident")
+        log.debug("Henter ut pid : $ident")
+
+        val result = loggTjeneste.hentAlleLoggInnslagForPerson(ident)
+        log.debug("Hentat antall: ${result.size}")
+        return result.size.toString()
     }
 
 }

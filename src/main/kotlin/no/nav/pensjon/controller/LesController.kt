@@ -28,7 +28,7 @@ class LesController(
 
     @PostConstruct
     fun initMetrics() {
-        lesController = metricsHelper.init("gslogg_les")
+        lesController = metricsHelper.init("logg_les")
     }
 
     @GetMapping("/sporingslogg/les", produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
@@ -40,7 +40,7 @@ class LesController(
             log.debug("Henter ut pid : $ident")
 
             val result = loggTjeneste.hentAlleLoggInnslagForPerson(ident)
-            log.debug("resultat = $result")
+            log.debug("resultat size: ${result.size}")
 
             val loggmeldinger = result.map { logginnslag ->
                 LoggMelding.fromLoggInnslag(logginnslag)

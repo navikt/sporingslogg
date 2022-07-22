@@ -69,7 +69,7 @@ class LoggTjeneste(
    }
 
     @Transactional
-    fun hentAlleLoggInnslagForPerson(person: String): Set<LoggInnslag> {
+    fun hentAlleLoggInnslagForPerson(person: String): List<LoggInnslag> {
         return hentLoggInnslag.measure {
             return@measure loggRepository.hantAlleLoggInnslagForPerson(person)
         }

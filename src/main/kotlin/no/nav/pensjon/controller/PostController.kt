@@ -29,7 +29,7 @@ class PostController(
 
     @PostConstruct
     fun initMetrics() {
-        postController = metricsHelper.init("sporingslogg_post")
+        postController = metricsHelper.init("logg_post")
     }
 
     @PostMapping("sporingslogg/post", produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
