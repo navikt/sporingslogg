@@ -43,15 +43,4 @@ internal class ActuatorTest: BaseTest() {
         assertEquals("{\"status\":\"UP\"}", result)
     }
 
-    @Test
-    fun `sjekk for isalive`() {
-
-        mockMvc.perform(
-            MockMvcRequestBuilders.get("/internal/isalive/"))
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andReturn()
-
-    }
-
-
 }

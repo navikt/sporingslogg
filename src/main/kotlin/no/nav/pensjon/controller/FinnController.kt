@@ -24,10 +24,8 @@ class FinnController( private val loggTjeneste: LoggTjeneste ) {
     fun finnLoggMelding(@PathVariable(value = "ident", required = true) ident: String) : List<String> {
         log.debug("søker innslag på : $ident")
 
-        val result = loggTjeneste.finnAllePersonerStarterMed(ident)
-        log.debug("resultat = $result")
+        return loggTjeneste.finnAllePersonerStarterMed(ident)
 
-        return result
     }
 
     @GetMapping("/sporingslogg/test/hent/{ident}", produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])

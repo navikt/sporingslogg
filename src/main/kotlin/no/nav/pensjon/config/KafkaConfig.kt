@@ -4,6 +4,7 @@ import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.common.config.SaslConfigs
 import org.apache.kafka.common.config.SslConfigs
+import org.apache.kafka.common.serialization.IntegerDeserializer
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -38,30 +39,29 @@ class KafkaConfig(
 
     @PostConstruct
     fun initConfig() {
-        log.debug("*** Kafka topic: $topic ***")
-        log.debug("*** Kafka group: $groupid ***")
-        log.debug("*** Kafka broker: $onpremBootstrapServers")
+        val initconf = """
+            *** KAFKA CONFIG ***
+            *** Kafka topic: $topic \n
+            *** Kafka group: $groupid \n
+            *** Kafka broker: $onpremBootstrapServers \n
+            *** Securitu Prot: ${onpremKafkaConsumerFactory().configurationProperties[CommonClientConfigs.SECURITY_PROTOCOL_CONFIG]} \n
+            *** Error handler: $kafkaErrorHandler \n
+            ***************************************
+        """.trimIndent()
+        log.debug(initconf)
     }
 
-    fun aivenKafkaConsumerFactory(): ConsumerFactory<String, String> {
+    fun aivenKafkaConsumerFactory(): ConsumerFactory<Int, String> {
         val configMap: MutableMap<String, Any> = HashMap()
         aivenCommonConfig(configMap)
         commonConfig(aivenBootstrapServers, configMap)
 
-        return DefaultKafkaConsumerFactory(configMap, StringDeserializer(), StringDeserializer())
-    }
-
-    fun onpremKafkaConsumerFactory(): ConsumerFactory<String, String> {
-        val configMap: MutableMap<String, Any> = HashMap()
-        onpremCommonConfig(configMap)
-        commonConfig(onpremBootstrapServers, configMap)
-
-        return DefaultKafkaConsumerFactory(configMap, StringDeserializer(), StringDeserializer())
+        return DefaultKafkaConsumerFactory(configMap, IntegerDeserializer(), StringDeserializer())
     }
 
     @Bean
-    fun aivenKafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, String> {
-        val factory = ConcurrentKafkaListenerContainerFactory<String, String>()
+    fun aivenKafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<Int, String> {
+        val factory = ConcurrentKafkaListenerContainerFactory<Int, String>()
         factory.consumerFactory = aivenKafkaConsumerFactory()
         factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL
         factory.containerProperties.setAuthExceptionRetryInterval( Duration.ofSeconds(4L))
@@ -71,9 +71,17 @@ class KafkaConfig(
         return factory
     }
 
+    fun onpremKafkaConsumerFactory(): ConsumerFactory<Int, String> {
+        val configMap: MutableMap<String, Any> = HashMap()
+        onpremCommonConfig(configMap)
+        commonConfig(onpremBootstrapServers, configMap)
+
+        return DefaultKafkaConsumerFactory(configMap, IntegerDeserializer(), StringDeserializer())
+    }
+
     @Bean
-    fun onpremKafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, String>? {
-        val factory = ConcurrentKafkaListenerContainerFactory<String, String>()
+    fun onpremKafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<Int, String>? {
+        val factory = ConcurrentKafkaListenerContainerFactory<Int, String>()
         factory.consumerFactory = onpremKafkaConsumerFactory()
         factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL
         factory.containerProperties.setAuthExceptionRetryInterval( Duration.ofSeconds(4L) )
@@ -84,7 +92,7 @@ class KafkaConfig(
     }
 
     private fun commonConfig(bootstrapServer: String, configMap: MutableMap<String, Any>) {
-        configMap[ConsumerConfig.CLIENT_ID_CONFIG] = "sporingslogg"
+        configMap[ConsumerConfig.CLIENT_ID_CONFIG] = groupid //"sporingslogg"
         configMap[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = bootstrapServer
         configMap[ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG] = false
         configMap[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest"
