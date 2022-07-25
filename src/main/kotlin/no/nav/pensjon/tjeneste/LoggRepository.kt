@@ -15,6 +15,12 @@ interface LoggRepository: JpaRepository<LoggInnslag, Long> {
     )
     fun hantAlleLoggInnslagForPerson(@Param("personIdent") personIdent: String): List<LoggInnslag>
 
+    @Query(
+        value = "SELECT count(l) from LoggInnslag as l " +
+                " where l.person = :personIdent"
+    )
+    fun countAlleLoggInnslagForPerson(@Param("personIdent") personIdent: String): Int
+
 
     @Query(
         value = "from LoggInnslag as l " +

@@ -50,9 +50,9 @@ class FinnController( private val loggTjeneste: LoggTjeneste ) {
         if (ident.length != 11) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Ugyldig ident")
         log.debug("Henter ut pid : $ident")
 
-        val result = loggTjeneste.hentAlleLoggInnslagForPerson(ident)
-        log.debug("Hentat antall: ${result.size}")
-        return result.size.toString()
+        val result = loggTjeneste.countAlleLoggInnslagForPerson(ident)
+        log.debug("Hentat antall: $result")
+        return result.toString()
     }
 
 }
