@@ -15,7 +15,7 @@ import org.springframework.web.server.ResponseStatusException
 
 @RestController
 @Profile("!prod")
-class FinnController( private val loggTjeneste: LoggTjeneste ) {
+class FinnController( private val loggTjeneste: LoggTjeneste, private val tokenHelper: TokenHelper) {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
@@ -48,7 +48,7 @@ class FinnController( private val loggTjeneste: LoggTjeneste ) {
     @ProtectedWithClaims(issuer = "servicebruker")
     fun hentLoggMeldingAntall(@PathVariable(value = "ident", required = true) ident: String) : String {
         if (ident.length != 11) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Ugyldig ident")
-        log.debug("Henter ut pid : $ident")
+        log.debug("Henter ut pid : $ident, for systembruker: ${tokenHelper.getSystemUserId()}")
 
         val result = loggTjeneste.countAlleLoggInnslagForPerson(ident)
         log.debug("Hentat antall: $result")
