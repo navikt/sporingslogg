@@ -8,7 +8,7 @@ server:
   error:
     include-message: always
 
-VER2_DIFI_TOKEN_CONFIGURATION_URL: "http://localhost"
+DIFI_TOKEN_CONFIGURATION_URL: "http://localhost"
 SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL: "http://localhost"
 
 DBURL: 'jdbc:h2:mem:mydbsporingslogg'

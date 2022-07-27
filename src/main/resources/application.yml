@@ -1,10 +1,10 @@
 no.nav.security.jwt:
   issuer.difi:
-    discoveryurl: '${VER2_DIFI_TOKEN_CONFIGURATION_URL}'
-    accepted_audience: 'nav.no, dev.nav.no'
+    discoveryurl: '${DIFI_TOKEN_CONFIGURATION_URL}'
+    accepted_audience: 'https://nav.no,https://dev.nav.no,nav.no,dev.nav.no'
   issuer.servicebruker:
     discoveryurl: '${SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL}'
-    accepted_audience: 'srvpensjon, srvsporingslogg'
+    accepted_audience: 'srvpensjon,srvsporingslogg'
 
 kafka:
   sporingslogg:
