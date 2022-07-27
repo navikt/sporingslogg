@@ -1,16 +1,23 @@
 package no.nav.pensjon.integrationtest.controller
 
+import io.mockk.every
 import no.nav.pensjon.TestHelper.mockLoggInnslag
 import no.nav.pensjon.domain.LoggMelding
 import no.nav.pensjon.util.fromJson2Any
 import no.nav.pensjon.util.typeRefs
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 internal class FinnControllerTest: BaseTest() {
+
+    @BeforeEach
+    fun before() {
+        every { tokenHelper.getSystemUserId() } returns "srvsporingslogg"
+    }
 
 
     @Test
