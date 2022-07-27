@@ -26,7 +26,7 @@ internal class PostControllerTest: BaseTest() {
         val jsondata = mockLoggMeldingAsJson(brukerpid)
 
         val response = mockMvc.perform(
-                MockMvcRequestBuilders.post("/sporingslogg/post")
+                MockMvcRequestBuilders.post("/sporingslogg/api/post")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content( jsondata ))
                 .andExpect(MockMvcResultMatchers.status().isOk)
@@ -51,7 +51,7 @@ internal class PostControllerTest: BaseTest() {
         val jsondata = mockLoggMeldingAsJson(brukerpid, levertBase64 = true)
 
         val response = mockMvc.perform(
-            MockMvcRequestBuilders.post("/sporingslogg/post")
+            MockMvcRequestBuilders.post("/sporingslogg/api/post")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content( jsondata ))
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -71,7 +71,7 @@ internal class PostControllerTest: BaseTest() {
         val jsondata = mockLoggMeldingAsJson(brukerpid, mottaker = "123123")
 
         val response = mockMvc.perform(
-            MockMvcRequestBuilders.post("/sporingslogg/post")
+            MockMvcRequestBuilders.post("/sporingslogg/api/post")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content( jsondata ))
             .andExpect(MockMvcResultMatchers.status().is4xxClientError)

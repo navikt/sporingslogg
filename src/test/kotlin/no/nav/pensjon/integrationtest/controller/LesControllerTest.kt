@@ -23,7 +23,7 @@ internal class LesControllerTest: BaseTest() {
         assertEquals(1, preChecklist.size)
 
         val response = mockMvc.perform(
-            MockMvcRequestBuilders.get("/sporingslogg/les")
+            MockMvcRequestBuilders.get("/sporingslogg/api/les")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
@@ -47,7 +47,7 @@ internal class LesControllerTest: BaseTest() {
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("1188651431"))
 
         val response = mockMvc.perform(
-            MockMvcRequestBuilders.get("/sporingslogg/les")
+            MockMvcRequestBuilders.get("/sporingslogg/api/les")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()

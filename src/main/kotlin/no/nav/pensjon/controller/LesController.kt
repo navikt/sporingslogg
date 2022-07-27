@@ -31,7 +31,7 @@ class LesController(
         lesController = metricsHelper.init("logg_les")
     }
 
-    @GetMapping("/sporingslogg/les", produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/sporingslogg/api/les", produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     @ProtectedWithClaims(issuer = "difi", claimMap = [ "acr=Level4" ])
     fun lesLoggMelding() : List<LoggMelding> {
         return lesController.measure {

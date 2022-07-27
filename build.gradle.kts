@@ -15,18 +15,26 @@ val mockkVersion = "1.12.4"
 val springmockkVersion = "3.1.1"
 val junitplatformVersion = "1.8.2"
 
-java.sourceCompatibility = JavaVersion.VERSION_17
-
 plugins {
     kotlin("jvm") version "1.7.0"
     kotlin("plugin.spring") version "1.7.0"
     kotlin("plugin.jpa") version "1.7.0"
+    id("base")
     id("org.springframework.boot") version "2.7.1"
     id("io.spring.dependency-management") version "1.0.12.RELEASE"
     id("org.owasp.dependencycheck") version "7.1.1"
 }
 
 group = "no.nav.pensjon"
+
+java.sourceCompatibility = JavaVersion.VERSION_17
+
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17)) // 17
+    }
+}
 
 repositories {
     mavenCentral()

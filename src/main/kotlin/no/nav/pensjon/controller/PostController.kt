@@ -32,7 +32,7 @@ class PostController(
         postController = metricsHelper.init("logg_post")
     }
 
-    @PostMapping("sporingslogg/post", produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("sporingslogg/api/post", produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     @ProtectedWithClaims(issuer = "servicebruker")
     fun postLoggMelding(@RequestBody request: LoggMelding) : Long {
 

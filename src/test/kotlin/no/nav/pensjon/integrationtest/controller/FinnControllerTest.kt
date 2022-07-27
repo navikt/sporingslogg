@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 internal class FinnControllerTest: BaseTest() {
 
+
     @Test
     fun `sjekk finnController for søk etter person`() {
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("13055212250"))
@@ -19,7 +20,7 @@ internal class FinnControllerTest: BaseTest() {
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("17024101234"))
 
         val response = mockMvc.perform(
-            MockMvcRequestBuilders.get("/sporingslogg/test/finn/130552")
+            MockMvcRequestBuilders.get("/sporingslogg/api/test/finn/130552")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
@@ -33,7 +34,7 @@ internal class FinnControllerTest: BaseTest() {
     fun `sjekk finnController for søk etter person med ingen resultat`() {
 
         val response = mockMvc.perform(
-            MockMvcRequestBuilders.get("/sporingslogg/test/finn/010203404")
+            MockMvcRequestBuilders.get("/sporingslogg/api/test/finn/010203404")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
@@ -48,7 +49,7 @@ internal class FinnControllerTest: BaseTest() {
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("03055212288"))
 
         val response = mockMvc.perform(
-            MockMvcRequestBuilders.get("/sporingslogg/test/hent/03055212288")
+            MockMvcRequestBuilders.get("/sporingslogg/api/test/hent/03055212288")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
@@ -70,7 +71,7 @@ internal class FinnControllerTest: BaseTest() {
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("01053212288"))
 
         val response = mockMvc.perform(
-            MockMvcRequestBuilders.get("/sporingslogg/test/hentAntall/01053212288")
+            MockMvcRequestBuilders.get("/sporingslogg/api/test/antall/01053212288")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
