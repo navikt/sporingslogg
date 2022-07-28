@@ -40,7 +40,7 @@
         <logger name="kafka" level="WARN"/>
         <logger name="org.apache.zookeeper" level="WARN"/>
         <logger name="no.nav" level="DEBUG"/>
-        <logger name="no.nav.security" level="DEBUG"/>
+        <logger name="no.nav.security" level="ERROR"/>
         <logger name="no.nav.pensjon" level="DEBUG"/>
 
         <root level="info">
