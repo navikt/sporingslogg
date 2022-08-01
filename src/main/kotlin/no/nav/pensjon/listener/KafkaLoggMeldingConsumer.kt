@@ -86,7 +86,6 @@ class KafkaLoggMeldingConsumer(
         }
         latch.countDown()
     }
-
-    fun sjekkForIkkeGydldige(loggMelding: LoggMelding): Boolean = if (loggMelding.person == "01075534600") true else false
+    fun sjekkForIkkeGydldige(loggMelding: LoggMelding): Boolean = if (loggMelding.person == "01015443495") true else false
 
 }

@@ -80,7 +80,7 @@ internal class KafkaLoggMeldingConsumerTest {
     @Test
     fun testingIkkeGyldigMelding() {
 
-        val mockLoggMelding = mockLoggMelding("01075534600")
+        val mockLoggMelding = mockLoggMelding("01015443495")
         val json = mapAnyToJson(mockLoggMelding)
 
         val acknowledgment: Acknowledgment = mockk(relaxed = true)
