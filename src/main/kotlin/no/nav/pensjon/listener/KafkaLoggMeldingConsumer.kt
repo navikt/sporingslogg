@@ -60,6 +60,14 @@ class KafkaLoggMeldingConsumer(
                 return@measure
             }
 
+            if (sjekkForIkkeGydldige(loggMelding)) {
+                log.warn(
+                    "Melding acket grunnet ikke gydlig, vi skipper denne." +
+                    "Oracle.jdbc.OracleDatabaseException: ORA-01691: kan ikke utvide LOB-segment SPORINGSLOGG.SYS_LOB0000077564C00007$$ med 1024 i tabellområde SPORINGSLOGG")
+                acknowledgment.acknowledge()
+                return@measure
+            }
+
             try {
                 val loggInnslag = LoggInnslag.fromLoggMelding(LoggMelding.checkForAndEncode(loggMelding))
                 val loggId = loggTjeneste.lagreLoggInnslag(loggInnslag)
@@ -79,5 +87,6 @@ class KafkaLoggMeldingConsumer(
         latch.countDown()
     }
 
+    fun sjekkForIkkeGydldige(loggMelding: LoggMelding): Boolean = if (loggMelding.person == "01075534600") true else false
 
 }

@@ -75,4 +75,20 @@ internal class KafkaLoggMeldingConsumerTest {
 
     }
 
+
+
+    @Test
+    fun testingIkkeGyldigMelding() {
+
+        val mockLoggMelding = mockLoggMelding("01075534600")
+        val json = mapAnyToJson(mockLoggMelding)
+
+        val acknowledgment: Acknowledgment = mockk(relaxed = true)
+        kafkaLoggMeldingConsumer.sporingsloggConsumer(json, mockk(relaxed = true), acknowledgment)
+
+        verify(exactly = 1) { acknowledgment.acknowledge() }
+
+    }
+
+
 }
