@@ -46,8 +46,8 @@ spec:
       - kvPath: /serviceuser/data/prod/srvsporingslogg
         mountPath: /secrets/serviceuser
   webproxy: true
-#  kafka:
-#    pool: nav-prod
+  kafka:
+    pool: nav-prod
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: prod
@@ -67,4 +67,3 @@ spec:
       value: https://oidc.difi.no/idporten-oidc-provider/.well-known/openid-configuration
     - name: SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL
       value: https://security-token-service.nais.adeo.no/.well-known/openid-configuration
-#      value: https://security-token-service.nais.adeo.no/rest/v1/sts/.well-known/openid-configuration

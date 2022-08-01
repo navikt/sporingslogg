@@ -22,9 +22,9 @@ jobs:
           CLUSTER: dev-gcp
           RESOURCE: nais/topics/loggmeldingmottatt-q2.yaml
 
-#      - name: 'Deploy public-sporingslogg-loggmeldingMottatt to pensjonsamhandling namespace'
-#        uses: nais/deploy/actions/deploy@v1
-#        env:
-#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-#          CLUSTER: prod-gcp
-#          RESOURCE: nais/topics/loggmeldingMottatt.yaml
+      - name: 'Deploy public-sporingslogg-loggmeldingMottatt to pensjonsamhandling namespace'
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-gcp
+          RESOURCE: nais/topics/loggmeldingmottatt.yaml

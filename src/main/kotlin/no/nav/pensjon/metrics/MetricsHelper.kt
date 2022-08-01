@@ -5,6 +5,13 @@ import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Timer
 import org.springframework.stereotype.Component
 
+/**
+ * Denne er pent lånt fra:
+ * https://github.com/navikt/ep-metrics
+ *
+ * med tilpassninger for pensjonsamhandling og sporingslogg
+ */
+
 @Component
 class MetricsHelper(val registry: MeterRegistry) {
 
