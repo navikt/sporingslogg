@@ -23,6 +23,7 @@ management:
   endpoint:
     health:
       show-details: always
+      enabled: true
     metrics:
       enabled: true
     prometheus:
@@ -30,5 +31,4 @@ management:
   endpoints:
     web:
       exposure:
-        include: prometheus,health
-    enabled-by-default: false
+        include: prometheus,health,info,metrics
