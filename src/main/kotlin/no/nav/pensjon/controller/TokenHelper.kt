@@ -35,6 +35,9 @@ class TokenHelper(private val tokenValidationContextHolder: TokenValidationConte
        }
     }
 
+    /**
+     * delevis lånt fra https://github.com/navikt/pam-samtykke-api
+     */
     private fun extractForTokendingsIssuer(issuer: Issuer = Issuer.TOKENDINGS): String {
         val token = tokenValidationContextHolder.tokenValidationContext.getJwtToken(issuer.lowercase()).tokenAsString
         log.debug("token: $token")
