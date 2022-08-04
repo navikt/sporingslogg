@@ -59,4 +59,34 @@ internal class LesControllerTest: BaseTest() {
 
     }
 
+
+    @Test
+    fun `sjekk for lescontroller gyldig person fra tokenX funnet return liste over data`() {
+        val personIdent = "01086112250"
+        every { tokenHelper.getPidFromToken() } returns personIdent
+
+        loggTjeneste.lagreLoggInnslag(mockLoggInnslag(personIdent))
+        val preChecklist = loggTjeneste.hentAlleLoggInnslagForPerson(personIdent)
+        assertEquals(1, preChecklist.size)
+
+        val response = mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/les")
+                .header("tulleball", "dummy dummy")
+                .header("Ikke benytt","Do not use!")
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        val result = response.response.getContentAsString(charset("UTF-8"))
+        val list: List<LoggMelding> =  fromJson2Any(result, typeRefs())
+
+        val expected = """
+            LoggMelding [person=010861xxxxx, mottaker=938908909, tema=PEN, behandlingsGrunnlag=Lovhjemmel samordningsloven § 27 (samordningsloven paragraf 27), uthentingsTidspunkt=2021-10-09T10:10, leverteData=TGV2ZXJ0ZURhdGEgZXIga3VuIGZvciBkdW1teVRlc3RpbmcgYXYgc3BvcmluZ3Nsb2dnIFRlc3Q=, samtykkeToken=DummyToken, dataForespoersel=Foresporsel, leverandoer=lever]
+        """.trimIndent()
+
+        assertEquals(1, list.size)
+        assertEquals(expected, list[0].toString())
+
+    }
+
 }

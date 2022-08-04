@@ -73,6 +73,8 @@ dependencies {
     // Only used for starting up locally
     implementation("no.nav.security:token-validation-test-support:$tokensupporttestVersion")
 
+    implementation("no.nav.common:token-client:2.2022.06.30_14.40-a34f4016edd9")
+
     // Logging
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashlogbackVersion")
     configurations.implementation {

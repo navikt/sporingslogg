@@ -6,11 +6,20 @@ metadata:
   labels:
     team: pensjonsamhandling
 spec:
+  tokenx:
+    enabled: true
+  accessPolicy:
+    inbound:
+      rules:
+        - application: dsop-api
+          namespace: personbruker
+          cluster: dev-gcp
   image: {{ image }}
   port: 8080
   ingresses:
     - "https://sporingslogg-q2.nais.preprod.local"
     - "https://sporingslogg-q2.dev.intern.nav.no"
+    - "https://sporingslogg.dev-fss-pub.nais.io"
   secureLogs:
     enabled: false
   replicas:

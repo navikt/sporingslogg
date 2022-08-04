@@ -1,5 +1,6 @@
 package no.nav.pensjon.listener
 
+import io.micrometer.core.instrument.Metrics
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import no.nav.pensjon.controller.LoggMeldingValidator.validateRequest
 import no.nav.pensjon.controller.SporingsloggValidationException
@@ -63,6 +64,7 @@ class KafkaLoggMeldingConsumer(
             try {
                 val loggInnslag = LoggInnslag.fromLoggMelding(LoggMelding.checkForAndEncode(loggMelding))
                 val loggId = loggTjeneste.lagreLoggInnslag(loggInnslag)
+                countEnthet(loggInnslag)
                 val melding = "ID: $loggId, person: ${loggMelding.person.scrable()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
 
                 log.info("Lagret melding med unik: $melding")
@@ -77,6 +79,14 @@ class KafkaLoggMeldingConsumer(
 
         }
         latch.countDown()
+    }
+
+    private fun countEnthet(loggInnslag: LoggInnslag) {
+        try {
+            Metrics.counter("LoggInnslag",   "tema", loggInnslag.tema).increment()
+        } catch (e: Exception) {
+            log.warn("Metrics feilet på enhet: ${loggInnslag.tema}")
+        }
     }
 
 

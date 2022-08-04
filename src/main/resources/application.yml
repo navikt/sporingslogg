@@ -1,10 +1,14 @@
 no.nav.security.jwt:
-  issuer.difi:
-    discoveryurl: '${DIFI_TOKEN_CONFIGURATION_URL}'
-    accepted_audience: 'https://nav.no,https://dev.nav.no,nav.no,dev.nav.no'
-  issuer.servicebruker:
-    discoveryurl: '${SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL}'
-    accepted_audience: 'srvpensjon,srvsporingslogg'
+  issuer:
+    difi:
+      discoveryurl: '${DIFI_TOKEN_CONFIGURATION_URL}'
+      accepted_audience: 'https://nav.no,https://dev.nav.no,nav.no,dev.nav.no'
+    servicebruker:
+      discoveryurl: '${SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL}'
+      accepted_audience: 'srvpensjon,srvsporingslogg'
+    tokendings:
+      discovery_url: ${TOKEN_X_WELL_KNOWN_URL}
+      accepted_audience: ${TOKEN_X_CLIENT_ID}
 
 kafka:
   sporingslogg:
@@ -16,13 +20,11 @@ server:
     include-message: always
 
 management:
-  endpoints:
-    health:
-      show-details: always
-    metrics:
-      enabled: true
+  endpoint:
     prometheus:
       enabled: true
+  endpoints:
     web:
       exposure:
-        include: prometheus,health,info,metrics
+        include: prometheus,health
+    enabled-by-default: false
