@@ -1,0 +1,22 @@
+name: "Deploy to dev"
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Which version to deploy (e.g. 2020.01.01-12.55-a1b2c3d4e5f6)"
+        required: true
+
+jobs:
+  deployToProd:
+    name: "Deploy to Dev (Q2)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy to dev-fss
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-fss
+          RESOURCE: nais/dev_q2.yaml
+          IMAGE: "ghcr.io/navikt/sporingslogg/sporingslogg:${{ github.event.inputs.version }}"
