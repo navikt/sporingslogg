@@ -19,7 +19,7 @@ spec:
   ingresses:
     - "https://sporingslogg-q2.nais.preprod.local"
     - "https://sporingslogg-q2.dev.intern.nav.no"
-    - "https://sporingslogg.dev-fss-pub.nais.io"
+    - "https://sporingslogg-q2.dev-fss-pub.nais.io"
   secureLogs:
     enabled: false
   replicas:
@@ -37,8 +37,8 @@ spec:
     initialDelay: 30
   startup:
     path: actuator/health/readiness
-    initialDelay: 20
-    failureThreshold: 20
+    initialDelay: 30
+    failureThreshold: 30
     periodSeconds: 5
   resources:
     limits:
