@@ -22,7 +22,7 @@ class TokenHelper(private val tokenValidationContextHolder: TokenValidationConte
     private fun getClaims(issuer: Issuer): String {
         val context = tokenValidationContextHolder.tokenValidationContext
         if(context.issuers.isEmpty())
-            throw RuntimeException("No issuer found in context")
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "No issuer found in context")
 
         val optinalIssuer = context.getJwtTokenAsOptional(issuer.lowercase())
 
