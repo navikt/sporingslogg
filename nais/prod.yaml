@@ -6,11 +6,20 @@ metadata:
   labels:
     team: pensjonsamhandling
 spec:
+  tokenx:
+    enabled: true
+  accessPolicy:
+    inbound:
+      rules:
+        - application: dsop-api
+          namespace: personbruker
+          cluster: prod-gcp
   image: {{ image }}
   port: 8080
   ingresses:
     - "https://sporingslogg.nais.adeo.no"
     - "https://sporingslogg.intern.nav.no"
+    - "https://sporingslogg.prod-fss-pub.nais.io"
   secureLogs:
     enabled: false
   replicas:
@@ -34,10 +43,10 @@ spec:
   resources:
     limits:
       cpu: "4"
-      memory: 8096Mi
+      memory: 4096Mi
     requests:
       cpu: 800m
-      memory: 4024Mi
+      memory: 1024Mi
   vault:
     enabled: true
     paths:

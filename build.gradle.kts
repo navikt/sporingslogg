@@ -1,38 +1,35 @@
 
-val kotlinVersion="1.7.0"
+val kotlinVersion="1.7.10"
 val prometeusVersion="1.9.2"
-val springbootVersion="2.7.1"
-val springkafkaVersion="2.8.7"
+val springbootVersion="2.7.2"
+val springkafkaVersion="2.9.0"
 val springwebmvcpac4jVersion = "6.0.3"
 val springframeworkbomVersion = "5.3.22"
 val jacksonkotlinVersion="2.13.2"
 val slf4jVersion="1.7.36"
 val logstashlogbackVersion="7.2"
-val tokensupportVersion = "2.1.0"
+val tokensupportVersion = "2.1.3"
 val tokensupporttestVersion = "2.0.0"
 val hibernatrevalidatorVersion = "7.0.4.Final"
-val mockkVersion = "1.12.4"
+val mockkVersion = "1.12.5"
 val springmockkVersion = "3.1.1"
 val junitplatformVersion = "1.8.2"
 
 plugins {
-    kotlin("jvm") version "1.7.0"
-    kotlin("plugin.spring") version "1.7.0"
-    kotlin("plugin.jpa") version "1.7.0"
+    kotlin("jvm") version "1.7.10"
+    kotlin("plugin.spring") version "1.7.10"
+    kotlin("plugin.jpa") version "1.7.10"
     id("base")
-    id("org.springframework.boot") version "2.7.1"
+    id("org.springframework.boot") version "2.7.2"
     id("io.spring.dependency-management") version "1.0.12.RELEASE"
     id("org.owasp.dependencycheck") version "7.1.1"
 }
 
 group = "no.nav.pensjon"
 
-java.sourceCompatibility = JavaVersion.VERSION_17
-
-
 kotlin {
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(17)) // 17
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
@@ -72,6 +69,8 @@ dependencies {
     implementation("no.nav.security:token-client-spring:$tokensupportVersion")
     // Only used for starting up locally
     implementation("no.nav.security:token-validation-test-support:$tokensupporttestVersion")
+
+    implementation("no.nav.common:token-client:2.2022.06.30_14.40-a34f4016edd9")
 
     // Logging
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashlogbackVersion")

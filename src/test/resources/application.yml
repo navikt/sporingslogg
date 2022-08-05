@@ -8,6 +8,9 @@ server:
   error:
     include-message: always
 
+TOKEN_X_WELL_KNOWN_URL: "http://localhost"
+TOKEN_X_CLIENT_ID: 'dfsdfd'
+
 DIFI_TOKEN_CONFIGURATION_URL: "http://localhost"
 SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL: "http://localhost"
 
