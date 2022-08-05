@@ -1,7 +1,6 @@
 package no.nav.pensjon.controller
 
 import no.nav.security.token.support.core.context.TokenValidationContextHolder
-import no.nav.security.token.support.core.jwt.JwtToken
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
@@ -20,18 +19,26 @@ class TokenHelper(private val tokenValidationContextHolder: TokenValidationConte
         fun lowercase(): String = this.name.lowercase()
     }
 
-    private fun getClaims(issuer: Issuer): JwtToken {
+    private fun getClaims(issuer: Issuer): String {
         val context = tokenValidationContextHolder.tokenValidationContext
         if(context.issuers.isEmpty())
             throw RuntimeException("No issuer found in context")
 
         val optinalIssuer = context.getJwtTokenAsOptional(issuer.lowercase())
 
-        return if (optinalIssuer.isPresent) {
+        val jwtToken = if (optinalIssuer.isPresent) {
             optinalIssuer.get()
         } else {
             log.error("No valid token found for issuer: $issuer")
             throw ResponseStatusException(HttpStatus.NOT_FOUND ,"No valid token found")
+       }
+
+       return if (issuer == Issuer.DIFI) {
+           //pid is bruker/fnr fra difi
+           jwtToken.jwtTokenClaims.get("pid").toString()
+       } else {
+           //subject is systembruker
+           jwtToken.subject
        }
     }
 
@@ -39,9 +46,6 @@ class TokenHelper(private val tokenValidationContextHolder: TokenValidationConte
      * delevis lånt fra https://github.com/navikt/pam-samtykke-api
      */
     private fun extractForTokendingsIssuer(issuer: Issuer = Issuer.TOKENDINGS): String {
-        val token = tokenValidationContextHolder.tokenValidationContext.getJwtToken(issuer.lowercase()).tokenAsString
-        log.debug("token: $token")
-
         tokenValidationContextHolder.tokenValidationContext.getClaims(issuer.lowercase())?.get("pid")?.toString()?.let {
             return it
         } ?: run {
@@ -55,9 +59,9 @@ class TokenHelper(private val tokenValidationContextHolder: TokenValidationConte
         }
     }
 
-    fun getPid(): String = getClaims(Issuer.DIFI).jwtTokenClaims.get("pid").toString()
+    fun getPid(): String = getClaims(Issuer.DIFI)
 
-    fun getSystemUserId(): String = getClaims(Issuer.SERVICEBRUKER).subject
+    fun getSystemUserId(): String = getClaims(Issuer.SERVICEBRUKER)
 
     fun getPidFromToken(): String = extractForTokendingsIssuer()
 
