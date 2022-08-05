@@ -29,27 +29,27 @@ class LesController(
     private val log = LoggerFactory.getLogger(javaClass)
 
     private lateinit var lesController: MetricsHelper.Metric
+    private lateinit var tokenXlesController: MetricsHelper.Metric
 
     @PostConstruct
     fun initMetrics() {
         lesController = metricsHelper.init("logg_les")
+        tokenXlesController = metricsHelper.init("logg_lesX")
     }
 
 
     private fun commonLesLoggMelding(ident: String) : List<LoggMelding> {
-        return lesController.measure {
-            if (ident.length != 11) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Ugyldig ident")
-            log.debug("Henter ut pid : ${ident.scrable()}")
+        if (ident.length != 11) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Ugyldig ident")
+        log.debug("Henter ut pid : ${ident.scrable()}")
 
-            val result = loggTjeneste.hentAlleLoggInnslagForPerson(ident)
-            log.debug("resultat size: ${result.size}")
+        val result = loggTjeneste.hentAlleLoggInnslagForPerson(ident)
+        log.debug("resultat size: ${result.size}")
 
-            val loggmeldinger = result.map { logginnslag ->
-                LoggMelding.fromLoggInnslag(logginnslag)
-            }
-            log.info("return liste for LoggMelding")
-            return@measure loggmeldinger
+        val loggmeldinger = result.map { logginnslag ->
+            LoggMelding.fromLoggInnslag(logginnslag)
         }
+        log.info("return liste for LoggMelding")
+        return loggmeldinger
     }
 
 
@@ -57,8 +57,9 @@ class LesController(
     @ProtectedWithClaims(issuer = "difi", claimMap = [ "acr=Level4" ])
     fun oidcLesLoggMelding(@RequestHeader ("x_request_id") reqid: String?) : List<LoggMelding> {
         MDC.putCloseable("x_request_id", reqid ?: UUID.randomUUID().toString()).use {
-            val ident = tokenHelper.getPid()
-            return commonLesLoggMelding(ident)
+            return lesController.measure {
+                return@measure commonLesLoggMelding(tokenHelper.getPid())
+            }
         }
     }
 
@@ -66,8 +67,9 @@ class LesController(
     @ProtectedWithClaims(issuer = "tokendings", claimMap = [ "acr=Level4" ])
     fun tokenXlesLoggMelding(@RequestHeader ("x_request_id") reqid: String?) : List<LoggMelding> {
         MDC.putCloseable("x_request_id", reqid ?: UUID.randomUUID().toString()).use {
-            val ident = tokenHelper.getPidFromToken()
-            return commonLesLoggMelding(ident)
+            return tokenXlesController.measure {
+                return@measure commonLesLoggMelding(tokenHelper.getPidFromToken())
+            }
         }
     }
 

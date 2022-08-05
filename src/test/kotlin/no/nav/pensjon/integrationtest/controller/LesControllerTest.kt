@@ -71,8 +71,7 @@ internal class LesControllerTest: BaseTest() {
 
         val response = mockMvc.perform(
             MockMvcRequestBuilders.get("/api/les")
-                .header("tulleball", "dummy dummy")
-                .header("Ikke benytt","Do not use!")
+                .header("x_request_id", "f9815125-d4a3-TOKENX-TEST")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
