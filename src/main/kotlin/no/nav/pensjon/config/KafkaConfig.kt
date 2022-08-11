@@ -93,7 +93,7 @@ class KafkaConfig(
     }
 
     private fun commonConfig(bootstrapServer: String, configMap: MutableMap<String, Any>) {
-        configMap[ConsumerConfig.CLIENT_ID_CONFIG] = groupid //"sporingslogg"
+        configMap[ConsumerConfig.CLIENT_ID_CONFIG] = groupid
         configMap[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = bootstrapServer
         configMap[ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG] = false
         configMap[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest"
@@ -113,7 +113,7 @@ class KafkaConfig(
     }
 
     private fun onpremCommonConfig(configMap: MutableMap<String, Any>) {
-        configMap[CommonClientConfigs.SECURITY_PROTOCOL_CONFIG] = SecurityProtocol.SASL_SSL.name    // if (springProfile == "test") "SSL" else "SASL_SSL"
+        configMap[CommonClientConfigs.SECURITY_PROTOCOL_CONFIG] = SecurityProtocol.SASL_SSL.name
         configMap[SaslConfigs.SASL_MECHANISM] = "PLAIN"
         configMap[SaslConfigs.SASL_JAAS_CONFIG] = "org.apache.kafka.common.security.plain.PlainLoginModule required username='${srvusername}' password='${srvpassword}';"
     }

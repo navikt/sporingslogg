@@ -64,15 +64,5 @@ class UtilTest {
 
     }
 
-//    @Test
-//    fun `from loggMelding to Json`() {
-//
-//        val loggMelding = mockLoggMelding()
-//
-//        //val json = mapAnyToJson()
-//
-//    }
-
-
 
 }

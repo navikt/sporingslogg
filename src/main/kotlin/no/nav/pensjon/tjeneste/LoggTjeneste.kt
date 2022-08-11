@@ -68,18 +68,21 @@ class LoggTjeneste(
         }
    }
 
+    @Transactional
     fun hentAlleLoggInnslagForPerson(person: String): List<LoggInnslag> {
         return hentLoggInnslag.measure {
             return@measure loggRepository.hantAlleLoggInnslagForPerson(person)
         }
     }
 
+    @Transactional
     fun finnAllePersonerStarterMed(ident: String): List<String> {
         return finnLoggInnslag.measure {
             return@measure loggRepository.finnAllePersonStarterMed(ident).mapNotNull { innslag -> innslag.person }
         }
     }
 
+    @Transactional
     fun countAlleLoggInnslagForPerson(ident: String): Int = loggRepository.countAlleLoggInnslagForPerson(ident)
 
 }
