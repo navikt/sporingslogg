@@ -1,7 +1,7 @@
 
 # Team Samhandling Springslogg
 
-[![Build](https://github.com/navikt/sporingslogg/workflows/bygg_og_deploy_q2/badge.svg)](https://github.com/navikt/sporingslogg/actions)
+[![Build](https://github.com/navikt/sporingslogg/workflows/Bygg%20og%20deploy%20Q2/badge.svg)](https://github.com/navikt/sporingslogg/actions)
 [![Build](https://github.com/navikt/sporingslogg/workflows/Deploy%20to%20production/badge.svg)](https://github.com/navikt/sporingslogg/actions)
 ![](https://github.com/navikt/eessi-pensjon-fagmodul/workflows/Deploy%20to%20production/badge.svg)
 ![](https://github.com/navikt/eessi-pensjon-fagmodul/workflows/deploy_to_production/badge.svg)
