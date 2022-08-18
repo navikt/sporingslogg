@@ -5,7 +5,7 @@ val springbootVersion="2.7.2"
 val springkafkaVersion="2.9.0"
 val springwebmvcpac4jVersion = "6.0.3"
 val springframeworkbomVersion = "5.3.22"
-val jacksonkotlinVersion="2.13.2"
+val jacksonkotlinVersion="2.13.3"
 val slf4jVersion="1.7.36"
 val logstashlogbackVersion="7.2"
 val tokensupportVersion = "2.1.3"
@@ -13,7 +13,7 @@ val tokensupporttestVersion = "2.0.0"
 val hibernatrevalidatorVersion = "7.0.4.Final"
 val mockkVersion = "1.12.5"
 val springmockkVersion = "3.1.1"
-val junitplatformVersion = "1.8.2"
+val junitplatformVersion = "1.9.0"
 
 plugins {
     kotlin("jvm") version "1.7.10"
@@ -70,7 +70,7 @@ dependencies {
     // Only used for starting up locally
     implementation("no.nav.security:token-validation-test-support:$tokensupporttestVersion")
 
-    implementation("no.nav.common:token-client:2.2022.06.30_14.40-a34f4016edd9")
+    //implementation("no.nav.common:token-client:2.2022.06.30_14.40-a34f4016edd9")
 
     // Logging
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashlogbackVersion")

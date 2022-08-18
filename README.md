@@ -1,7 +1,13 @@
 
 # Team Samhandling Springslogg
 
-### Er en Kotlin Spring Boot applikasjon.
+[![Build](https://github.com/navikt/sporingslogg/workflows/bygg_og_deploy_q2/badge.svg)](https://github.com/navikt/sporingslogg/actions)
+[![Build](https://github.com/navikt/sporingslogg/workflows/Deploy%20to%20production/badge.svg)](https://github.com/navikt/sporingslogg/actions)
+![](https://github.com/navikt/eessi-pensjon-fagmodul/workflows/Deploy%20to%20production/badge.svg)
+![](https://github.com/navikt/eessi-pensjon-fagmodul/workflows/deploy_to_production/badge.svg)
+
+
+### Er en Kotlin Spring Boot applikasjon for team Pensjonsamhandling.
 
 ```
 Tar imot LoggMeldinger (hendelser, restkall) fra tjenester som har hatt innsyn i brukeres historie.
