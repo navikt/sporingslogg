@@ -1,7 +1,7 @@
 
 val kotlinVersion="1.7.10"
-val prometeusVersion="1.9.2"
-val springbootVersion="2.7.2"
+val prometeusVersion= "1.9.3"
+val springbootVersion= "2.7.3"
 val springkafkaVersion="2.9.0"
 val springwebmvcpac4jVersion = "6.0.3"
 val springframeworkbomVersion = "5.3.22"
@@ -44,7 +44,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springframework.boot:spring-boot-actuator")
+    implementation("org.springframework.boot:spring-boot-actuator:2.7.3")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa") {
         exclude(group = "com.zaxxer", module = "HikariCP")
@@ -122,5 +122,5 @@ tasks.withType<Jar> {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "7.4.2"
+    gradleVersion = "7.5.1"
 }
