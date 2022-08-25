@@ -101,26 +101,29 @@ dependencies {
     }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
+tasks {
+     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjsr305=strict")
+            jvmTarget = "17"
+        }
+     }
+
+    withType<Test> {
+        useJUnitPlatform()
+        failFast = true
+        testLogging {
+            events("passed", "skipped", "failed")
+            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        }
     }
-}
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-    failFast = true
-    testLogging {
-        events("passed", "skipped", "failed")
-        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    withType<Jar> {
+        archiveBaseName.set("sporingslogg")
     }
-}
 
-tasks.withType<Jar> {
-    archiveBaseName.set("sporingslogg")
-}
+    withType<Wrapper> {
+        gradleVersion = "7.5.1"
+    }
 
-tasks.withType<Wrapper> {
-    gradleVersion = "7.5.1"
 }
