@@ -68,7 +68,7 @@ dependencies {
     implementation("no.nav.security:token-validation-jaxrs:$tokensupportVersion")
     implementation("no.nav.security:token-client-spring:$tokensupportVersion")
     // Only used for starting up locally
-    testImplementation("no.nav.security:token-validation-test-support:$tokensupporttestVersion")
+    implementation("no.nav.security:token-validation-test-support:$tokensupporttestVersion")
 
     //implementation("no.nav.common:token-client:2.2022.06.30_14.40-a34f4016edd9")
 
