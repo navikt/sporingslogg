@@ -28,12 +28,10 @@ class LesController(
 
     private val log = LoggerFactory.getLogger(javaClass)
 
-    private lateinit var lesController: MetricsHelper.Metric
     private lateinit var tokenXlesController: MetricsHelper.Metric
 
     @PostConstruct
     fun initMetrics() {
-        lesController = metricsHelper.init("logg_les")
         tokenXlesController = metricsHelper.init("logg_lesX")
     }
 
@@ -50,17 +48,6 @@ class LesController(
         }
         log.info("return liste for LoggMelding")
         return loggmeldinger
-    }
-
-
-    @GetMapping("/sporingslogg/api/les", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @ProtectedWithClaims(issuer = "difi", claimMap = [ "acr=Level4" ])
-    fun oidcLesLoggMelding(@RequestHeader ("x_request_id") reqid: String?) : List<LoggMelding> {
-        MDC.putCloseable("x_request_id", reqid ?: UUID.randomUUID().toString()).use {
-            return lesController.measure {
-                return@measure commonLesLoggMelding(tokenHelper.getPid())
-            }
-        }
     }
 
     @GetMapping("/api/les", produces = [MediaType.APPLICATION_JSON_VALUE])

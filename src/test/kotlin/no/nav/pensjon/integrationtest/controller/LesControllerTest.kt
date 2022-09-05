@@ -16,14 +16,14 @@ internal class LesControllerTest: BaseTest() {
     @Test
     fun `sjekk for lescontroller gyldig person funnet return liste over data`() {
         val personIdent = "11886512250"
-        every { tokenHelper.getPid() } returns personIdent
+        every { tokenHelper.getPidFromToken() } returns personIdent
 
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag(personIdent))
         val preChecklist = loggTjeneste.hentAlleLoggInnslagForPerson(personIdent)
         assertEquals(1, preChecklist.size)
 
         val response = mockMvc.perform(
-            MockMvcRequestBuilders.get("/sporingslogg/api/les")
+            MockMvcRequestBuilders.get("/api/les")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
@@ -42,12 +42,12 @@ internal class LesControllerTest: BaseTest() {
 
     @Test
     fun `sjekk for lescontroller ingen persondata funnet return tom liste` () {
-        every { tokenHelper.getPid() } returns "20883234332"
+        every { tokenHelper.getPidFromToken() } returns "20883234332"
 
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("1188651431"))
 
         val response = mockMvc.perform(
-            MockMvcRequestBuilders.get("/sporingslogg/api/les")
+            MockMvcRequestBuilders.get("/api/les")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()

@@ -6,12 +6,12 @@ val springkafkaVersion="2.9.0"
 val springwebmvcpac4jVersion = "6.0.3"
 val springframeworkbomVersion = "5.3.22"
 val jacksonkotlinVersion="2.13.3"
-val slf4jVersion="1.7.36"
+val slf4jVersion= "2.0.0"
 val logstashlogbackVersion="7.2"
-val tokensupportVersion = "2.1.3"
+val tokensupportVersion = "2.1.4"
 val tokensupporttestVersion = "2.0.0"
 val hibernatrevalidatorVersion = "7.0.4.Final"
-val mockkVersion = "1.12.5"
+val mockkVersion = "1.12.7"
 val springmockkVersion = "3.1.1"
 val junitplatformVersion = "1.9.0"
 
@@ -41,12 +41,12 @@ dependencies {
 
     // Spring Boot & Framework
     implementation(platform("org.springframework.boot:spring-boot-dependencies:$springbootVersion"))
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-aop")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-web:2.7.3")
+    implementation("org.springframework.boot:spring-boot-starter-aop:2.7.3")
+    implementation("org.springframework.boot:spring-boot-starter-actuator:2.7.3")
     implementation("org.springframework.boot:spring-boot-actuator:2.7.3")
-    implementation("org.springframework.boot:spring-boot-starter-jdbc")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa") {
+    implementation("org.springframework.boot:spring-boot-starter-jdbc:2.7.3")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.7.3") {
         exclude(group = "com.zaxxer", module = "HikariCP")
     }
     implementation(platform("org.springframework:spring-framework-bom:$springframeworkbomVersion"))
@@ -68,7 +68,7 @@ dependencies {
     implementation("no.nav.security:token-validation-jaxrs:$tokensupportVersion")
     implementation("no.nav.security:token-client-spring:$tokensupportVersion")
     // Only used for starting up locally
-    implementation("no.nav.security:token-validation-test-support:$tokensupporttestVersion")
+    testImplementation("no.nav.security:token-validation-test-support:$tokensupporttestVersion")
 
     //implementation("no.nav.common:token-client:2.2022.06.30_14.40-a34f4016edd9")
 
@@ -84,7 +84,7 @@ dependencies {
 
     // DB
     implementation("javax.persistence:javax.persistence-api:2.2")
-    implementation("com.oracle.database.jdbc:ojdbc11:21.6.0.0.1")
+    implementation("com.oracle.database.jdbc:ojdbc11:21.7.0.0")
 
     //test
     testImplementation("com.ninja-squad:springmockk:$springmockkVersion")
