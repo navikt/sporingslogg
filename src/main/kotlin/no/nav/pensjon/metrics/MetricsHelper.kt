@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component
  *
  * med tilpassninger for pensjonsamhandling og sporingslogg
  */
-
 @Component
 class MetricsHelper(val registry: MeterRegistry) {
 
@@ -47,7 +46,6 @@ class MetricsHelper(val registry: MeterRegistry) {
         fun <R> measure(block: () -> R): R {
 
             var typeTag = success
-            var ignoreErrorCode = false
 
             try {
                 return block.let {

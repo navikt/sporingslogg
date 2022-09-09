@@ -17,7 +17,6 @@ spec:
   image: {{ image }}
   port: 8080
   ingresses:
-    - "https://sporingslogg-q2.nais.preprod.local"
     - "https://sporingslogg-q2.dev.intern.nav.no"
     - "https://sporingslogg-q2.dev-fss-pub.nais.io"
   secureLogs:
@@ -42,10 +41,10 @@ spec:
     periodSeconds: 5
   resources:
     limits:
-      cpu: "1"
+      cpu: 3000m
       memory: 2096Mi
     requests:
-      cpu: 800m
+      cpu: 1000m
       memory: 1024Mi
   vault:
     enabled: true

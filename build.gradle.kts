@@ -41,14 +41,12 @@ dependencies {
 
     // Spring Boot & Framework
     implementation(platform("org.springframework.boot:spring-boot-dependencies:$springbootVersion"))
-    implementation("org.springframework.boot:spring-boot-starter-web:2.7.3")
-    implementation("org.springframework.boot:spring-boot-starter-aop:2.7.3")
-    implementation("org.springframework.boot:spring-boot-starter-actuator:2.7.3")
-    implementation("org.springframework.boot:spring-boot-actuator:2.7.3")
-    implementation("org.springframework.boot:spring-boot-starter-jdbc:2.7.3")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.7.3") {
-        exclude(group = "com.zaxxer", module = "HikariCP")
-    }
+    implementation("org.springframework.boot:spring-boot-starter-web:$springbootVersion")
+    implementation("org.springframework.boot:spring-boot-starter-aop:$springbootVersion")
+    implementation("org.springframework.boot:spring-boot-starter-actuator:$springbootVersion")
+    implementation("org.springframework.boot:spring-boot-actuator:$springbootVersion")
+    implementation("org.springframework.boot:spring-boot-starter-jdbc:$springbootVersion")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springbootVersion")
     implementation(platform("org.springframework:spring-framework-bom:$springframeworkbomVersion"))
 
     // Kotlin
@@ -62,15 +60,12 @@ dependencies {
     // kafka-test/mock
     testImplementation("org.springframework.kafka:spring-kafka-test:$springkafkaVersion")
 
-
-    // OIDC - AzureAd
+    // Token support Azuread, Oidc
     implementation("no.nav.security:token-validation-spring:$tokensupportVersion")
     implementation("no.nav.security:token-validation-jaxrs:$tokensupportVersion")
     implementation("no.nav.security:token-client-spring:$tokensupportVersion")
     // Only used for starting up locally
     implementation("no.nav.security:token-validation-test-support:$tokensupporttestVersion")
-
-    //implementation("no.nav.common:token-client:2.2022.06.30_14.40-a34f4016edd9")
 
     // Logging
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashlogbackVersion")
@@ -86,7 +81,7 @@ dependencies {
     implementation("javax.persistence:javax.persistence-api:2.2")
     implementation("com.oracle.database.jdbc:ojdbc11:21.7.0.0")
 
-    //test
+    // test
     testImplementation("com.ninja-squad:springmockk:$springmockkVersion")
     testImplementation("org.pac4j:spring-webmvc-pac4j:$springwebmvcpac4jVersion")
 

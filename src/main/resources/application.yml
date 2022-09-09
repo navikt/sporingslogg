@@ -1,8 +1,5 @@
 no.nav.security.jwt:
   issuer:
-    difi:
-      discoveryurl: '${DIFI_TOKEN_CONFIGURATION_URL}'
-      accepted_audience: 'https://nav.no,https://dev.nav.no,nav.no,dev.nav.no'
     servicebruker:
       discoveryurl: '${SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL}'
       accepted_audience: 'srvpensjon,srvsporingslogg'
