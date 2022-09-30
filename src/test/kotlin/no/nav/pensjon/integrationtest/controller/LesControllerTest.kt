@@ -36,7 +36,7 @@ internal class LesControllerTest: BaseTest() {
         """.trimIndent()
 
         assertEquals(1, list.size)
-        assertEquals(expected, list[0].toString())
+        assertEquals(expected, list.first().toString())
 
     }
 
@@ -84,7 +84,7 @@ internal class LesControllerTest: BaseTest() {
         """.trimIndent()
 
         assertEquals(1, list.size)
-        assertEquals(expected, list[0].toString())
+        assertEquals(expected, list.first().toString())
 
     }
 

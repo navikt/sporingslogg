@@ -23,11 +23,11 @@ jobs:
       - name: 'Setter Image'
         run: echo "IMAGE=ghcr.io/${{ github.repository }}/sporingslogg:${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
 
-      # JAVA 17
-      - name: 'Java 17'
+      # JAVA 18
+      - name: 'Java 18'
         uses: actions/setup-java@v1.4.3
         with:
-          java-version: 17
+          java-version: 18
 
       # BYGGER DOCKER CONTAINER
       - name: 'Bygg og publiser docker image'
