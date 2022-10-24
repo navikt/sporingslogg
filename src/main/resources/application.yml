@@ -11,6 +11,7 @@ kafka:
   sporingslogg:
     topic: ${SPORINGSLOGG_KAFKA_TOPIC}
     groupid: ${SPORINGSLOGG_KAFKA_GROUP}
+    aiventopic: ${SPORINGSLOGG_AIVEN_KAFKA_TOPIC}
 
 server:
   error:
