@@ -26,14 +26,31 @@ class KafkaLoggMeldingConsumer(
 
     private val log = LoggerFactory.getLogger(javaClass)
     private lateinit var kafkaCounter: MetricsHelper.Metric
+    private lateinit var kafkaAivenCounter: MetricsHelper.Metric
+    private lateinit var kafkaOnpremCounter: MetricsHelper.Metric
 
     @PostConstruct
     fun initMetrics() {
         kafkaCounter = metricsHelper.init("sporingslogg_kafka")
+        kafkaAivenCounter = metricsHelper.init("sporingslogg_aivenkafka")
+        kafkaOnpremCounter = metricsHelper.init("sporingslogg_onpremkafka")
     }
 
     private val latch = CountDownLatch(6)
     fun getLatch() = latch
+
+
+    @KafkaListener(
+        containerFactory = "aivenKafkaListenerContainerFactory",
+        topics = ["\${kafka.sporingslogg.aiventopic}"],
+        groupId = "\${kafka.sporingslogg.groupid}"
+    )
+    fun sporingsloggAivenConsumer(hendelse: String, cr: ConsumerRecord<Int, String>, acknowledgment: Acknowledgment) {
+        kafkaAivenCounter.measure {
+            kafkaconsumer(hendelse, cr, acknowledgment)
+        }
+    }
+
 
     @KafkaListener(
         containerFactory = "onpremKafkaListenerContainerFactory",
@@ -42,6 +59,12 @@ class KafkaLoggMeldingConsumer(
         groupId = "\${kafka.sporingslogg.groupid}"
     )
     fun sporingsloggConsumer(hendelse: String, cr: ConsumerRecord<Int, String>, acknowledgment: Acknowledgment) {
+        kafkaOnpremCounter.measure {
+            kafkaconsumer(hendelse, cr, acknowledgment)
+        }
+    }
+
+    private fun kafkaconsumer(hendelse: String, cr: ConsumerRecord<Int, String>, acknowledgment: Acknowledgment) {
         kafkaCounter.measure {
             log.info("*** Innkommende hendelse. Offset: ${cr.offset()}, Partition: ${cr.partition()}, Key: ${cr.key()} ${ if (log.isDebugEnabled) ", hendelse: ${hendelse.trunc()}" else "" } ")
 

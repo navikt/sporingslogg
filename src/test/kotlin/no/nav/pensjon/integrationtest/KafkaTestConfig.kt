@@ -55,6 +55,15 @@ class KafkaTestConfig {
         return factory
     }
 
+    @Bean
+    fun aivenKafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, String> {
+        val factory = ConcurrentKafkaListenerContainerFactory<String, String>()
+        factory.consumerFactory = kafkaConsumerFactory()
+        factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL
+        factory.containerProperties.setAuthExceptionRetryInterval( Duration.ofSeconds(4L) )
+        return factory
+    }
+
     private fun kafkaConsumerFactory(): ConsumerFactory<String, String> {
         val configMap: MutableMap<String, Any> = HashMap()
         populerCommonConfig(configMap)
