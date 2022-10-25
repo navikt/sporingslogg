@@ -1,17 +1,17 @@
 
 val kotlinVersion="1.7.20"
-val prometeusVersion= "1.9.4"
+val prometeusVersion= "1.9.5"
 val springbootVersion= "2.7.4"
 val springkafkaVersion="2.9.0"
-val springwebmvcpac4jVersion = "6.1.0"
+val springwebmvcpac4jVersion = "6.2.0"
 val springframeworkbomVersion = "5.3.23"
 val jacksonkotlinVersion= "2.13.4"
-val slf4jVersion= "2.0.1"
+val slf4jVersion= "2.0.3"
 val logstashlogbackVersion="7.2"
-val tokensupportVersion = "2.1.4"
+val tokensupportVersion = "2.1.6"
 val tokensupporttestVersion = "2.0.0"
 val hibernatrevalidatorVersion = "7.0.4.Final"
-val mockkVersion = "1.12.8"
+val mockkVersion = "1.13.2"
 val springmockkVersion = "3.1.1"
 val junitplatformVersion = "1.9.0"
 
@@ -20,7 +20,7 @@ plugins {
     kotlin("plugin.spring") version "1.7.20"
     kotlin("plugin.jpa") version "1.7.20"
     id("base")
-    id("org.springframework.boot") version "2.7.2"
+    id("org.springframework.boot") version "2.7.4"
     id("io.spring.dependency-management") version "1.0.12.RELEASE"
     id("org.owasp.dependencycheck") version "7.1.1"
 }
@@ -29,7 +29,7 @@ group = "no.nav.pensjon"
 
 kotlin {
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(18))
     }
 }
 
