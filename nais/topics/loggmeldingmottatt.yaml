@@ -13,11 +13,14 @@ spec:
     partitions: 2
     replication: 3  # see min/max requirements
     retentionBytes: -1  # -1 means unlimited
-    retentionHours: -1  # -1 means unlimited
+    retentionHours: 730  # -1 means unlimited
   acl:
     - team: pensjonsamhandling
       application: sporingslogg
       access: read   # read, write, readwrite
+    - team: teamarenanais
+      application: arena-dsop-api
+      access: write
 #    - team: pensjon
 #      application: pensjon-q2
 #      access: write   #write

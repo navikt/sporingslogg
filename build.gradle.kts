@@ -1,8 +1,9 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion="1.7.20"
 val prometeusVersion= "1.9.5"
-val springbootVersion= "2.7.4"
-val springkafkaVersion="2.9.0"
+val springbootVersion= "2.7.5"
+val springkafkaVersion="2.9.2"
 val springwebmvcpac4jVersion = "6.2.0"
 val springframeworkbomVersion = "5.3.23"
 val jacksonkotlinVersion= "2.13.4"
@@ -27,16 +28,9 @@ plugins {
 
 group = "no.nav.pensjon"
 
-kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(18))
-    }
-}
-
 repositories {
     mavenCentral()
 }
-
 
 dependencies {
 
@@ -105,6 +99,10 @@ tasks {
             events("passed", "skipped", "failed")
             exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
         }
+    }
+
+    withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = "18"
     }
 
     withType<Jar> {

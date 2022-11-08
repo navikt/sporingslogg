@@ -43,9 +43,10 @@ class KafkaLoggMeldingConsumer(
     @KafkaListener(
         containerFactory = "aivenKafkaListenerContainerFactory",
         topics = ["\${kafka.sporingslogg.aiventopic}"],
-        groupId = "\${kafka.sporingslogg.groupid}"
+        groupId = "\${kafka.sporingslogg.aivengroupid}"
     )
     fun sporingsloggAivenConsumer(hendelse: String, cr: ConsumerRecord<Int, String>, acknowledgment: Acknowledgment) {
+        log.debug("sporingsloggAivenConsumer")
         kafkaAivenCounter.measure {
             kafkaconsumer(hendelse, cr, acknowledgment)
         }
@@ -59,6 +60,7 @@ class KafkaLoggMeldingConsumer(
         groupId = "\${kafka.sporingslogg.groupid}"
     )
     fun sporingsloggConsumer(hendelse: String, cr: ConsumerRecord<Int, String>, acknowledgment: Acknowledgment) {
+        log.debug("sporingsloggConsumer")
         kafkaOnpremCounter.measure {
             kafkaconsumer(hendelse, cr, acknowledgment)
         }
