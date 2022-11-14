@@ -18,6 +18,9 @@ spec:
     - team: pensjonsamhandling
       application: sporingslogg
       access: read   # read, write, readwrite
+    - team: pensjonsamhandling
+      application: dsop-ufo
+      access: write
     - team: teamarenanais
       application: arena-dsop-api
       access: write
