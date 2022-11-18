@@ -21,6 +21,9 @@ spec:
     - team: pensjonsamhandling
       application: dsop-ufo
       access: write
+    - team: pensjonsamhandling
+      application: pensjon-sporingslogg-integrasjon
+      access: write
     - team: teamarenanais
       application: arena-dsop-api
       access: write
