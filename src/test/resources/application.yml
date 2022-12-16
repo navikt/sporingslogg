@@ -24,7 +24,5 @@ SRVPASSWORD: "password"
 kafka:
   security.protocol: SSL
   sporingslogg:
-    topic: "aapen-sporingslogg-loggmeldingMottatt"
-    groupid: "KC-aapen-sporingslogg-loggmeldingMottatt"
     aiventopic: "aiven-sporingslogg-loggmeldingMottatt"
     aivengroupid: "aiven-sporingslogg-loggmeldingMottatt-groupid"
