@@ -2,9 +2,7 @@ package no.nav.pensjon.config
 
 import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.consumer.ConsumerConfig
-import org.apache.kafka.common.config.SaslConfigs
 import org.apache.kafka.common.config.SslConfigs
-import org.apache.kafka.common.security.auth.SecurityProtocol
 import org.apache.kafka.common.serialization.IntegerDeserializer
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.springframework.beans.factory.annotation.Value
@@ -28,10 +26,6 @@ class KafkaConfig(
     @param:Value("\${kafka.truststore.path}") private val truststorePath: String,
     @param:Value("\${kafka.brokers}") private val aivenBootstrapServers: String,
     @param:Value("\${kafka.security.protocol}") private val securityProtocol: String,
-    @param:Value("\${ONPREM_KAFKA_BOOTSTRAP_SERVERS_URL}") private val onpremBootstrapServers: String,
-    @param:Value("\${SRVUSERNAME}") private val srvusername: String,
-    @param:Value("\${SRVPASSWORD}") private val srvpassword: String,
-    @param:Value("\${kafka.sporingslogg.groupid}") private val groupid: String,
     @param:Value("\${kafka.sporingslogg.aivengroupid}") private val aivenGroupid: String,
 ) {
 
@@ -49,26 +43,6 @@ class KafkaConfig(
         factory.consumerFactory = aivenKafkaConsumerFactory()
         factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL
         factory.containerProperties.setAuthExceptionRetryInterval( Duration.ofSeconds(4L))
-//        if (kafkaErrorHandler != null) {
-//            factory.setErrorHandler(kafkaErrorHandler)
-//        }
-        return factory
-    }
-
-    fun onpremKafkaConsumerFactory(): ConsumerFactory<Int, String> {
-        val configMap: MutableMap<String, Any> = HashMap()
-        onpremCommonConfig(configMap)
-        commonConfig(onpremBootstrapServers, groupid, configMap)
-
-        return DefaultKafkaConsumerFactory(configMap, IntegerDeserializer(), StringDeserializer())
-    }
-
-    @Bean
-    fun onpremKafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<Int, String>? {
-        val factory = ConcurrentKafkaListenerContainerFactory<Int, String>()
-        factory.consumerFactory = onpremKafkaConsumerFactory()
-        factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL
-        factory.containerProperties.setAuthExceptionRetryInterval( Duration.ofSeconds(4L) )
 //        if (kafkaErrorHandler != null) {
 //            factory.setErrorHandler(kafkaErrorHandler)
 //        }
@@ -93,12 +67,6 @@ class KafkaConfig(
         configMap[SslConfigs.SSL_KEYSTORE_TYPE_CONFIG] = "PKCS12"
         configMap[SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG] = truststorePath
         configMap[CommonClientConfigs.SECURITY_PROTOCOL_CONFIG] = securityProtocol
-    }
-
-    private fun onpremCommonConfig(configMap: MutableMap<String, Any>) {
-        configMap[CommonClientConfigs.SECURITY_PROTOCOL_CONFIG] = SecurityProtocol.SASL_SSL.name
-        configMap[SaslConfigs.SASL_MECHANISM] = "PLAIN"
-        configMap[SaslConfigs.SASL_JAAS_CONFIG] = "org.apache.kafka.common.security.plain.PlainLoginModule required username='${srvusername}' password='${srvpassword}';"
     }
 
 }

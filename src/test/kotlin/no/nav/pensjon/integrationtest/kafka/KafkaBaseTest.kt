@@ -21,7 +21,7 @@ import org.springframework.kafka.test.utils.ContainerTestUtils
 import org.springframework.kafka.test.utils.KafkaTestUtils
 import java.util.concurrent.TimeUnit
 
-const val TOPIC = "aapen-sporingslogg-loggmeldingMottatt"
+const val TOPIC = "aiven-sporingslogg-loggmeldingMottatt" //"aapen-sporingslogg-loggmeldingMottatt"
 
 /***
  * Tatt fra eessi-pensjon-journalforing
@@ -108,7 +108,7 @@ abstract class KafkaListenerTest {
     ) {
 
         fun sendMsgOnDefaultTopic(hendelseAsJson : String) {
-           kafkaTemplate.sendDefault(hendelseAsJson)
+           kafkaTemplate.sendDefault(hendelseAsJson).get()
         }
 
         fun waitForlatch(kafkaConsumer: KafkaLoggMeldingConsumer) = kafkaConsumer.getLatch().await(timeout, TimeUnit.SECONDS)

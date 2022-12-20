@@ -7,7 +7,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Profile
 
 @SpringBootApplication
-@EnableJwtTokenValidation(ignore = ["org.springframework", "no.nav.pensjon"])
+@EnableJwtTokenValidation(ignore = ["no.nav.pensjon"])
 @Profile("unsecured-webmvctest")
 class UnsecuredWebMvcTestLauncher : SpringBootServletInitializer() {
 
