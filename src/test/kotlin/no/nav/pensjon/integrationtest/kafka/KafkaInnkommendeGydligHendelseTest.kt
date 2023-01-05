@@ -1,9 +1,10 @@
 package no.nav.pensjon.integrationtest.kafka
 
+import no.nav.pensjon.TestApplication
 import no.nav.pensjon.TestHelper.mockLoggMeldingAsJson
-import no.nav.pensjon.UnsecuredWebMvcTestLauncher
 import no.nav.pensjon.integrationtest.DataSourceTestConfig
 import no.nav.pensjon.integrationtest.KafkaTestConfig
+import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -14,8 +15,9 @@ import org.springframework.test.context.ActiveProfiles
 
 
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
-@SpringBootTest( classes = [DataSourceTestConfig::class, KafkaTestConfig::class, UnsecuredWebMvcTestLauncher::class], value = ["SPRING_PROFILES_ACTIVE", "unsecured-webmvctest"])
+@SpringBootTest( classes = [DataSourceTestConfig::class, KafkaTestConfig::class, TestApplication::class], value = ["SPRING_PROFILES_ACTIVE", "unsecured-webmvctest"])
 @ActiveProfiles("unsecured-webmvctest")
+@EnableMockOAuth2Server
 @DirtiesContext
 @EmbeddedKafka(topics = [TOPIC])
 class KafkaInnkommendeGydligHendelseTest: KafkaListenerTest() {

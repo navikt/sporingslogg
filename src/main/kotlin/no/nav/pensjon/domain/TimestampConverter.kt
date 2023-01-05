@@ -1,8 +1,8 @@
 package no.nav.pensjon.domain
 
+import jakarta.persistence.AttributeConverter
 import java.sql.Timestamp
 import java.time.LocalDateTime
-import javax.persistence.AttributeConverter
 
 class TimestampConverter : AttributeConverter<LocalDateTime, Timestamp> {
 

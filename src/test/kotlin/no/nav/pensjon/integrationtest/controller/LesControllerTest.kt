@@ -1,6 +1,5 @@
 package no.nav.pensjon.integrationtest.controller
 
-import io.mockk.every
 import no.nav.pensjon.TestHelper.mockLoggInnslag
 import no.nav.pensjon.domain.LoggMelding
 import no.nav.pensjon.util.fromJson2Any
@@ -16,7 +15,7 @@ internal class LesControllerTest: BaseTest() {
     @Test
     fun `sjekk for lescontroller gyldig person funnet return liste over data`() {
         val personIdent = "11886512250"
-        every { tokenHelper.getPidFromToken() } returns personIdent
+        val token: String = token("tokendings", personIdent.hashCode().toString(), "tokendings-test", mapOf("acr" to  "Level4", "pid" to personIdent))
 
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag(personIdent))
         val preChecklist = loggTjeneste.hentAlleLoggInnslagForPerson(personIdent)
@@ -24,6 +23,7 @@ internal class LesControllerTest: BaseTest() {
 
         val response = mockMvc.perform(
             MockMvcRequestBuilders.get("/api/les")
+                .header("Authorization", "Bearer $token")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
@@ -42,12 +42,13 @@ internal class LesControllerTest: BaseTest() {
 
     @Test
     fun `sjekk for lescontroller ingen persondata funnet return tom liste` () {
-        every { tokenHelper.getPidFromToken() } returns "20883234332"
+        val token: String = token("tokendings", "20883234332".hashCode().toString(), "tokendings-test", mapOf("acr" to  "Level4", "pid" to "20883234332"))
 
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("1188651431"))
 
         val response = mockMvc.perform(
             MockMvcRequestBuilders.get("/api/les")
+                .header("Authorization", "Bearer $token")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
@@ -63,7 +64,7 @@ internal class LesControllerTest: BaseTest() {
     @Test
     fun `sjekk for lescontroller gyldig person fra tokenX funnet return liste over data`() {
         val personIdent = "01086112250"
-        every { tokenHelper.getPidFromToken() } returns personIdent
+        val token: String = token("tokendings", personIdent.hashCode().toString(), "tokendings-test", mapOf("acr" to  "Level4", "pid" to personIdent))
 
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag(personIdent))
         val preChecklist = loggTjeneste.hentAlleLoggInnslagForPerson(personIdent)
@@ -71,6 +72,7 @@ internal class LesControllerTest: BaseTest() {
 
         val response = mockMvc.perform(
             MockMvcRequestBuilders.get("/api/les")
+                .header("Authorization", "Bearer $token")
                 .header("x_request_id", "f9815125-d4a3-TOKENX-TEST")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)

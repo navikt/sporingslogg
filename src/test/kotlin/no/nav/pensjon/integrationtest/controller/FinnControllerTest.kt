@@ -1,12 +1,10 @@
 package no.nav.pensjon.integrationtest.controller
 
-import io.mockk.every
 import no.nav.pensjon.TestHelper.mockLoggInnslag
 import no.nav.pensjon.domain.LoggMelding
 import no.nav.pensjon.util.fromJson2Any
 import no.nav.pensjon.util.typeRefs
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -14,20 +12,16 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 internal class FinnControllerTest: BaseTest() {
 
-    @BeforeEach
-    fun before() {
-        every { tokenHelper.getSystemUserId() } returns "srvsporingslogg"
-    }
-
-
     @Test
     fun `sjekk finnController for søk etter person`() {
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("13055212250"))
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("13055220123"))
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("17024101234"))
+        val token: String = token("servicebruker", "srvsporingslogg", "srvsporingslogg")
 
         val response = mockMvc.perform(
             MockMvcRequestBuilders.get("/sporingslogg/api/test/finn/130552")
+                .header("Authorization", "Bearer $token")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
@@ -39,9 +33,11 @@ internal class FinnControllerTest: BaseTest() {
 
     @Test
     fun `sjekk finnController for søk etter person med ingen resultat`() {
+        val token: String = token("servicebruker", "srvsporingslogg", "srvsporingslogg")
 
         val response = mockMvc.perform(
             MockMvcRequestBuilders.get("/sporingslogg/api/test/finn/010203404")
+                .header("Authorization", "Bearer $token")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
@@ -54,9 +50,11 @@ internal class FinnControllerTest: BaseTest() {
     @Test
     fun `sjekk finnController for hent av data`() {
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("03055212288"))
+        val token: String = token("servicebruker", "srvsporingslogg", "srvsporingslogg")
 
         val response = mockMvc.perform(
             MockMvcRequestBuilders.get("/sporingslogg/api/test/hent/03055212288")
+                .header("Authorization", "Bearer $token")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
@@ -76,9 +74,11 @@ internal class FinnControllerTest: BaseTest() {
     fun `sjekk finnController for hentAntall`() {
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("01053212288"))
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("01053212288"))
+        val token: String = token("servicebruker", "srvsporingslogg", "srvsporingslogg")
 
         val response = mockMvc.perform(
             MockMvcRequestBuilders.get("/sporingslogg/api/test/antall/01053212288")
+                .header("Authorization", "Bearer $token")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
@@ -86,6 +86,5 @@ internal class FinnControllerTest: BaseTest() {
         assertEquals("2", response.response.getContentAsString(charset("UTF-8")))
 
     }
-
 
 }
