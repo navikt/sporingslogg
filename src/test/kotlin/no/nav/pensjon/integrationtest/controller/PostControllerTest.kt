@@ -1,6 +1,5 @@
 package no.nav.pensjon.integrationtest.controller
 
-import io.mockk.every
 import no.nav.pensjon.TestHelper.base64LevertData
 import no.nav.pensjon.TestHelper.mockLoggInnslag
 import no.nav.pensjon.TestHelper.mockLoggMeldingAsJson
@@ -17,16 +16,16 @@ internal class PostControllerTest: BaseTest() {
     @Test
     fun `sjekk for postcontroller gyldig loggmelding for post og lagring db`() {
         val brukerpid = "08886512234"
-        every { tokenHelper.getSystemUserId() } returns "srvsporingslogg"
 
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("12886512250"))
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag(brukerpid))
-        println(loggTjeneste.hentAlleLoggInnslagForPerson(brukerpid))
 
+        val token: String = token("servicebruker", "srvsporingslogg", "srvsporingslogg")
         val jsondata = mockLoggMeldingAsJson(brukerpid)
 
         val response = mockMvc.perform(
                 MockMvcRequestBuilders.post("/sporingslogg/api/post")
+                    .header("Authorization", "Bearer $token")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content( jsondata ))
                 .andExpect(MockMvcResultMatchers.status().isOk)
@@ -46,12 +45,12 @@ internal class PostControllerTest: BaseTest() {
     @Test
     fun `sjekk for postcontroller gyldig loggmelding ferdig base64 lagres i db`() {
         val brukerpid = "01884512234"
-        every { tokenHelper.getSystemUserId() } returns "srvsporingslogg"
-
         val jsondata = mockLoggMeldingAsJson(brukerpid, levertBase64 = true)
+        val token: String = token("servicebruker", "srvsporingslogg", "srvsporingslogg")
 
         val response = mockMvc.perform(
             MockMvcRequestBuilders.post("/sporingslogg/api/post")
+                .header("Authorization", "Bearer $token")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content( jsondata ))
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -69,9 +68,11 @@ internal class PostControllerTest: BaseTest() {
     fun `sjekk postcontroller ugyldig loggmelding sendes inn`() {
         val brukerpid = "08886512234"
         val jsondata = mockLoggMeldingAsJson(brukerpid, mottaker = "123123")
+        val token: String = token("servicebruker", "srvsporingslogg", "srvsporingslogg")
 
         val response = mockMvc.perform(
             MockMvcRequestBuilders.post("/sporingslogg/api/post")
+                .header("Authorization", "Bearer $token")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content( jsondata ))
             .andExpect(MockMvcResultMatchers.status().is4xxClientError)

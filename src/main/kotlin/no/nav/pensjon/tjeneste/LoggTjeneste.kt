@@ -1,6 +1,8 @@
 package no.nav.pensjon.tjeneste
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
+import jakarta.annotation.PostConstruct
+import jakarta.transaction.Transactional
 import no.nav.pensjon.domain.LoggInnslag
 import no.nav.pensjon.metrics.MetricsHelper
 import no.nav.pensjon.tjeneste.ValideringTjeneste.validerIkkeBlank
@@ -10,8 +12,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
-import javax.annotation.PostConstruct
-import javax.transaction.Transactional
 
 @Service
 class LoggTjeneste(

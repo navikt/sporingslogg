@@ -23,7 +23,7 @@ jobs:
       - name: 'Setter Image'
         run: echo "IMAGE=ghcr.io/${{ github.repository }}/sporingslogg:${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
 
-      # JAVA 18
+      # JAVA
       - name: 'Java 18'
         uses: actions/setup-java@v3
         with:

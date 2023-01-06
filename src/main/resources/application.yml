@@ -4,7 +4,7 @@ no.nav.security.jwt:
       discoveryurl: '${SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL}'
       accepted_audience: 'srvpensjon,srvsporingslogg'
     tokendings:
-      discovery_url: ${TOKEN_X_WELL_KNOWN_URL}
+      discoveryurl: ${TOKEN_X_WELL_KNOWN_URL}
       accepted_audience: ${TOKEN_X_CLIENT_ID}
 
 kafka:

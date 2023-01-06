@@ -2,6 +2,7 @@ package no.nav.pensjon.listener
 
 import io.micrometer.core.instrument.Metrics
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
+import jakarta.annotation.PostConstruct
 import no.nav.pensjon.controller.LoggMeldingValidator.validateRequest
 import no.nav.pensjon.controller.SporingsloggValidationException
 import no.nav.pensjon.domain.LoggInnslag
@@ -17,7 +18,6 @@ import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Service
 import java.util.concurrent.CountDownLatch
-import javax.annotation.PostConstruct
 
 @Service
 class KafkaLoggMeldingConsumer(

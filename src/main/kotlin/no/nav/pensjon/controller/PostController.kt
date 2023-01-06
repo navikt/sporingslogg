@@ -1,6 +1,7 @@
 package no.nav.pensjon.controller
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
+import jakarta.annotation.PostConstruct
 import no.nav.pensjon.controller.LoggMeldingValidator.validateRequestAsResponseRequestExcption
 import no.nav.pensjon.domain.LoggInnslag
 import no.nav.pensjon.domain.LoggMelding
@@ -14,7 +15,6 @@ import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import javax.annotation.PostConstruct
 
 
 @RestController

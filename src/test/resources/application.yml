@@ -8,11 +8,11 @@ server:
   error:
     include-message: always
 
-TOKEN_X_WELL_KNOWN_URL: "http://localhost"
-TOKEN_X_CLIENT_ID: 'dfsdfd'
+TOKEN_X_WELL_KNOWN_URL: http://localhost:${mock-oauth2-server.port}/tokendings/.well-known/openid-configuration
+TOKEN_X_CLIENT_ID: 'tokendings-test'
 
 DIFI_TOKEN_CONFIGURATION_URL: "http://localhost"
-SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL: "http://localhost"
+SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL: http://localhost:${mock-oauth2-server.port}/servicebruker/.well-known/openid-configuration
 
 DBURL: 'jdbc:h2:mem:mydbsporingslogg'
 DBUSERNAME: 'sa'
@@ -26,3 +26,15 @@ kafka:
   sporingslogg:
     aiventopic: "aiven-sporingslogg-loggmeldingMottatt"
     aivengroupid: "aiven-sporingslogg-loggmeldingMottatt-groupid"
+
+no.nav.security.jwt:
+  expirythreshold: 1 #threshold in minutes until token expires
+  issuer:
+    servicebruker:
+      discoveryurl: ${SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL}
+      accepted_audience: 'srvpensjon,srvsporingslogg'
+      cookie_name: "idtoken"
+    tokendings:
+      discoveryurl: ${TOKEN_X_WELL_KNOWN_URL}
+      accepted_audience: ${TOKEN_X_CLIENT_ID}
+      cookie_name: "idtoken"

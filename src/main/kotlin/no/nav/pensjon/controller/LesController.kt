@@ -1,6 +1,7 @@
 package no.nav.pensjon.controller
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
+import jakarta.annotation.PostConstruct
 import no.nav.pensjon.domain.LoggMelding
 import no.nav.pensjon.metrics.MetricsHelper
 import no.nav.pensjon.tjeneste.LoggTjeneste
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import java.util.*
-import javax.annotation.PostConstruct
 
 
 @RestController
@@ -52,6 +52,7 @@ class LesController(
 
     @GetMapping("/api/les", produces = [MediaType.APPLICATION_JSON_VALUE])
     @ProtectedWithClaims(issuer = "tokendings", claimMap = [ "acr=Level4" ])
+    //
     fun tokenXlesLoggMelding(@RequestHeader ("x_request_id") reqid: String?) : List<LoggMelding> {
         MDC.putCloseable("x_request_id", reqid ?: UUID.randomUUID().toString()).use {
             return tokenXlesController.measure {
