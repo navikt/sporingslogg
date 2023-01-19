@@ -15,7 +15,7 @@ internal class LesControllerTest: BaseTest() {
     @Test
     fun `sjekk for lescontroller gyldig person funnet return liste over data`() {
         val personIdent = "11886512250"
-        val token: String = token("tokendings", personIdent.hashCode().toString(), "tokendings-test", mapOf("acr" to  "Level4", "pid" to personIdent))
+        val token: String = mockTokenDings(personIdent)
 
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag(personIdent))
         val preChecklist = loggTjeneste.hentAlleLoggInnslagForPerson(personIdent)
@@ -42,8 +42,8 @@ internal class LesControllerTest: BaseTest() {
 
     @Test
     fun `sjekk for lescontroller ingen persondata funnet return tom liste` () {
-        val token: String = token("tokendings", "20883234332".hashCode().toString(), "tokendings-test", mapOf("acr" to  "Level4", "pid" to "20883234332"))
 
+        val token: String = mockTokenDings("20883234332")
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("1188651431"))
 
         val response = mockMvc.perform(
@@ -64,7 +64,7 @@ internal class LesControllerTest: BaseTest() {
     @Test
     fun `sjekk for lescontroller gyldig person fra tokenX funnet return liste over data`() {
         val personIdent = "01086112250"
-        val token: String = token("tokendings", personIdent.hashCode().toString(), "tokendings-test", mapOf("acr" to  "Level4", "pid" to personIdent))
+        val token: String = mockTokenDings(personIdent)
 
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag(personIdent))
         val preChecklist = loggTjeneste.hentAlleLoggInnslagForPerson(personIdent)

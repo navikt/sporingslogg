@@ -52,7 +52,6 @@ class LesController(
 
     @GetMapping("/api/les", produces = [MediaType.APPLICATION_JSON_VALUE])
     @ProtectedWithClaims(issuer = "tokendings", claimMap = [ "acr=Level4" ])
-    //
     fun tokenXlesLoggMelding(@RequestHeader ("x_request_id") reqid: String?) : List<LoggMelding> {
         MDC.putCloseable("x_request_id", reqid ?: UUID.randomUUID().toString()).use {
             return tokenXlesController.measure {

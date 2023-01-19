@@ -17,7 +17,7 @@ internal class FinnControllerTest: BaseTest() {
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("13055212250"))
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("13055220123"))
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("17024101234"))
-        val token: String = token("servicebruker", "srvsporingslogg", "srvsporingslogg")
+        val token: String = mockServiceToken()
 
         val response = mockMvc.perform(
             MockMvcRequestBuilders.get("/sporingslogg/api/test/finn/130552")
@@ -33,7 +33,7 @@ internal class FinnControllerTest: BaseTest() {
 
     @Test
     fun `sjekk finnController for søk etter person med ingen resultat`() {
-        val token: String = token("servicebruker", "srvsporingslogg", "srvsporingslogg")
+        val token: String = mockServiceToken()
 
         val response = mockMvc.perform(
             MockMvcRequestBuilders.get("/sporingslogg/api/test/finn/010203404")
@@ -50,7 +50,7 @@ internal class FinnControllerTest: BaseTest() {
     @Test
     fun `sjekk finnController for hent av data`() {
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("03055212288"))
-        val token: String = token("servicebruker", "srvsporingslogg", "srvsporingslogg")
+        val token: String = mockServiceToken()
 
         val response = mockMvc.perform(
             MockMvcRequestBuilders.get("/sporingslogg/api/test/hent/03055212288")
@@ -74,7 +74,7 @@ internal class FinnControllerTest: BaseTest() {
     fun `sjekk finnController for hentAntall`() {
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("01053212288"))
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("01053212288"))
-        val token: String = token("servicebruker", "srvsporingslogg", "srvsporingslogg")
+        val token: String = mockServiceToken()
 
         val response = mockMvc.perform(
             MockMvcRequestBuilders.get("/sporingslogg/api/test/antall/01053212288")

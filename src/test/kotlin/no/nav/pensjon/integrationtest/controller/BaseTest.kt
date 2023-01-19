@@ -29,9 +29,6 @@ import org.springframework.test.web.servlet.MockMvc
 @AutoConfigureMockMvc
 abstract class BaseTest {
 
-//    @MockkBean
-//    protected lateinit var tokenHelper: TokenHelper
-
     @Autowired
     protected lateinit var loggTjeneste: LoggTjeneste
 
@@ -46,10 +43,14 @@ abstract class BaseTest {
         clearAllMocks()
     }
 
-    fun token(issuerId: String, subject: String, audience: String): String {
+    fun mockTokenDings(subject: String): String = token("tokendings", subject.hashCode().toString(), "tokendings-test", mapOf("acr" to  "Level4", "pid" to subject))
+
+    fun mockServiceToken() = token("servicebruker",  "srvsporingslogg", "srvsporingslogg")
+
+    private fun token(issuerId: String, subject: String, audience: String): String {
         return token(issuerId, subject, audience, emptyMap())
     }
-    fun token(issuerId: String, subject: String, audience: String, claims: Map<String, Any>): String {
+    private fun token(issuerId: String, subject: String, audience: String, claims: Map<String, Any>): String {
         return server.issueToken(
             issuerId, "theclientid", DefaultOAuth2TokenCallback(
                 issuerId, subject, JOSEObjectType.JWT.type, listOf(audience), claims, 3600
