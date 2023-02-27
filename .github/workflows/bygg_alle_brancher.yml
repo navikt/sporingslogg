@@ -21,6 +21,7 @@ jobs:
         with:
           java-version: 18
           distribution: temurin
+          cache: 'gradle'
 
       - name: 'Setter dato og commit variabel'
         run: |
