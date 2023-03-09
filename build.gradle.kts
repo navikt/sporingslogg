@@ -10,9 +10,9 @@ val jacksonkotlinVersion= "2.14.2"
 val oracle11Version="21.8.0.0"
 val slf4jVersion= "2.0.6"
 val logstashlogbackVersion="7.3"
-val tokensupportVersion = "3.0.2"
+val tokensupportVersion = "3.0.4"
 val tokensupporttestVersion = "2.0.0"
-val mockOAuth2ServerVersion = "0.5.7"
+val mockOAuth2ServerVersion = "0.5.8"
 val hibernateCoreJackartaVersion = "5.6.15.Final"
 val jakartaPersistenceApiVersion = "3.1.0"
 val jakartaAnnotationApiVersion = "2.1.1"
@@ -23,8 +23,8 @@ val junitplatformVersion = "1.9.2"
 val h2DbVersion = "2.1.214"
 
 plugins {
-    val pluginSpringBootVersion = "3.0.1"
-    val pluginKotlinVersion = "1.8.0"
+    val pluginSpringBootVersion = "3.0.4"
+    val pluginKotlinVersion = "1.8.10"
 
     kotlin("jvm") version pluginKotlinVersion
     kotlin("plugin.spring") version pluginKotlinVersion
