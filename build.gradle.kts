@@ -69,7 +69,7 @@ dependencies {
     implementation("no.nav.security:token-validation-jaxrs:$tokensupportVersion")
     implementation("no.nav.security:token-client-spring:$tokensupportVersion")
     // Only used for starting up locally
-    implementation("no.nav.security:token-validation-test-support:$tokensupporttestVersion")
+    testImplementation("no.nav.security:token-validation-test-support:$tokensupporttestVersion")
     testImplementation("no.nav.security:mock-oauth2-server:$mockOAuth2ServerVersion")
     testImplementation("no.nav.security:token-validation-spring-test:$tokensupportVersion")
 

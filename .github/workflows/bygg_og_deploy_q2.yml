@@ -29,6 +29,7 @@ jobs:
         with:
           java-version: 18
           distribution: temurin
+          cache: 'gradle'
 
       # BYGGER DOCKER CONTAINER
       - name: 'Bygg og publiser docker image'
