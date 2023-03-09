@@ -20,7 +20,6 @@ import java.time.Duration
 @Profile("prod", "test")
 @Configuration
 class KafkaConfig(
-    private val kafkaErrorHandler: KafkaErrorHandler?,
     @param:Value("\${kafka.keystore.path}") private val keystorePath: String,
     @param:Value("\${kafka.credstore.password}") private val credstorePassword: String,
     @param:Value("\${kafka.truststore.path}") private val truststorePath: String,
@@ -43,9 +42,6 @@ class KafkaConfig(
         factory.consumerFactory = aivenKafkaConsumerFactory()
         factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL
         factory.containerProperties.setAuthExceptionRetryInterval( Duration.ofSeconds(4L))
-//        if (kafkaErrorHandler != null) {
-//            factory.setErrorHandler(kafkaErrorHandler)
-//        }
         return factory
     }
 

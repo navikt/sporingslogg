@@ -1,22 +1,26 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion="1.8.10"
-val prometeusVersion= "1.10.2"
-val springbootVersion= "3.0.2"
-val springkafkaVersion="3.0.2"
+val prometeusVersion= "1.10.4"
+val springbootVersion= "3.0.4"
+val springkafkaVersion="3.0.4"
 val springwebmvcpac4jVersion = "7.0.0"
-val springframeworkbomVersion = "6.0.4"
+val springframeworkbomVersion = "6.0.6"
 val jacksonkotlinVersion= "2.14.2"
 val oracle11Version="21.8.0.0"
-val slf4jVersion= "2.0.5"
-val logstashlogbackVersion="7.2"
+val slf4jVersion= "2.0.6"
+val logstashlogbackVersion="7.3"
 val tokensupportVersion = "3.0.2"
 val tokensupporttestVersion = "2.0.0"
 val mockOAuth2ServerVersion = "0.5.7"
-val hibernatrevalidatorVersion = "7.0.4.Final"
+val hibernateCoreJackartaVersion = "5.6.15.Final"
+val jakartaPersistenceApiVersion = "3.1.0"
+val jakartaAnnotationApiVersion = "2.1.1"
+val jakartaInjectApiVersion = "2.0.1"
 val mockkVersion = "1.13.4"
-val springmockkVersion = "4.0.0"
+val springmockkVersion = "4.0.1"
 val junitplatformVersion = "1.9.2"
+val h2DbVersion = "2.1.214"
 
 plugins {
     val pluginSpringBootVersion = "3.0.1"
@@ -27,7 +31,7 @@ plugins {
     kotlin("plugin.jpa") version pluginKotlinVersion
     id("org.springframework.boot") version pluginSpringBootVersion
     id("io.spring.dependency-management") version "1.1.0"
-    id("org.owasp.dependencycheck") version "7.1.1"
+    id("org.owasp.dependencycheck") version "8.1.2"
 }
 
 group = "no.nav.pensjon"
@@ -48,21 +52,20 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-jdbc:$springbootVersion")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springbootVersion")
     implementation(platform("org.springframework:spring-framework-bom:$springframeworkbomVersion"))
+    // Kafka
+    implementation("org.springframework.kafka:spring-kafka:$springbootVersion")
+    // Kafka-test
+    testImplementation("org.springframework.kafka:spring-kafka-test:$springbootVersion")
 
-    //spring boot 3.0 extra
-    implementation("jakarta.annotation:jakarta.annotation-api:2.1.1")
-    implementation("jakarta.inject:jakarta.inject-api:2.0.1")
+    //spring boot 3.0 jakaera-api
+    implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationApiVersion")
+    implementation("jakarta.inject:jakarta.inject-api:$jakartaInjectApiVersion")
 
     // Kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonkotlinVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonkotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
-
-    // Kafka
-    implementation("org.springframework.kafka:spring-kafka:$springkafkaVersion")
-    // Kafka-test
-    testImplementation("org.springframework.kafka:spring-kafka-test:$springkafkaVersion")
 
     // Token support Azuread, Oidc
     implementation("no.nav.security:token-validation-spring:$tokensupportVersion")
@@ -79,21 +82,20 @@ dependencies {
         exclude(group = "commons-logging", module = "commons-logging")
     }
     implementation("org.slf4j:jcl-over-slf4j:$slf4jVersion")
-
     // Micrometer
     implementation("io.micrometer:micrometer-registry-prometheus:$prometeusVersion")
 
     // DB
-    implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
+    implementation("jakarta.persistence:jakarta.persistence-api:$jakartaPersistenceApiVersion")
     implementation("com.oracle.database.jdbc:ojdbc11:$oracle11Version")
-    implementation("org.hibernate:hibernate-core-jakarta:5.6.14.Final")
+    implementation("org.hibernate:hibernate-core-jakarta:$hibernateCoreJackartaVersion")
 
     // test
     testImplementation("com.ninja-squad:springmockk:$springmockkVersion")
     testImplementation("org.pac4j:spring-webmvc-pac4j:$springwebmvcpac4jVersion")
 
     // mock - test
-    testImplementation("com.h2database:h2:2.1.214")
+    testImplementation("com.h2database:h2:$h2DbVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("org.junit.platform:junit-platform-suite-api:$junitplatformVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springbootVersion") {

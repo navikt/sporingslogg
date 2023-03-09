@@ -19,7 +19,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
-@SpringBootTest(classes = [DataSourceTestConfig::class, KafkaTestConfig::class, TestApplication::class], value = ["SPRING_PROFILES_ACTIVE", "unsecured-webmvctest"], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = [DataSourceTestConfig::class, KafkaTestConfig::class, TestApplication::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(profiles = ["unsecured-webmvctest"])
 @EmbeddedKafka(topics = [TOPIC+"LESPOSTTST"])
 @EnableMockOAuth2Server
@@ -42,11 +42,8 @@ abstract class BaseTest {
 
     fun mockTokenDings(subject: String): String = token("tokendings", subject.hashCode().toString(), "tokendings-test", mapOf("acr" to  "Level4", "pid" to subject))
 
-    fun mockServiceToken() = token("servicebruker",  "srvsporingslogg", "srvsporingslogg")
+    fun mockServiceToken() = token("servicebruker",  "srvsporingslogg", "srvsporingslogg", emptyMap())
 
-    private fun token(issuerId: String, subject: String, audience: String): String {
-        return token(issuerId, subject, audience, emptyMap())
-    }
     private fun token(issuerId: String, subject: String, audience: String, claims: Map<String, Any>): String {
         return server.issueToken(
             issuerId, "theclientid", DefaultOAuth2TokenCallback(
