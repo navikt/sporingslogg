@@ -7,7 +7,7 @@ val springkafkaVersion="3.0.4"
 val springwebmvcpac4jVersion = "7.0.0"
 val springframeworkbomVersion = "6.0.6"
 val jacksonkotlinVersion= "2.14.2"
-val oracle11Version="21.8.0.0"
+val oracle11Version="21.9.0.0"
 val slf4jVersion= "2.0.6"
 val logstashlogbackVersion="7.3"
 val tokensupportVersion = "3.0.4"
@@ -72,7 +72,7 @@ dependencies {
     implementation("no.nav.security:token-validation-jaxrs:$tokensupportVersion")
     implementation("no.nav.security:token-client-spring:$tokensupportVersion")
     // Only used for starting up locally
-    testImplementation("no.nav.security:token-validation-test-support:$tokensupporttestVersion")
+    implementation("no.nav.security:token-validation-test-support:$tokensupporttestVersion")
     testImplementation("no.nav.security:mock-oauth2-server:$mockOAuth2ServerVersion")
     testImplementation("no.nav.security:token-validation-spring-test:$tokensupportVersion")
 
