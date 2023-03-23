@@ -73,7 +73,7 @@ internal class LesControllerTest: BaseTest() {
         val response = mockMvc.perform(
             MockMvcRequestBuilders.get("/api/les")
                 .header("Authorization", "Bearer $token")
-                .header("x_request_id", "f9815125-d4a3-TOKENX-TEST")
+                .header("X-Request-Id", "f9815125-d4a3-TOKENX-TEST")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
