@@ -1,4 +1,4 @@
-name: Bygg og deploy Q2
+name: Bygg og deploy
 
 on:
   push:
@@ -42,7 +42,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # DEPLOYER TIL NAIS Q2 team namespace
-      - name: 'Deploy to NAIS q2'
+      - name: 'Deploy to NAIS Q2'
         uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
@@ -55,7 +55,7 @@ jobs:
         run: |
           curl -v -s -X POST https://api.github.com/repos/navikt/sporingslogg/git/refs -H "Authorization: token  ${{ secrets.GITHUB_TOKEN }}" -d '{ "ref": "refs/tags/${{ env.DATE }}---${{ env.COMMIT_HASH }}",  "sha": "${{ env.COMMIT_HASH }}" }'
 
-      - name: 'Deploy to NAIS Prod'
+      - name: 'Deploy to Prod'
         uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}

@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val kotlinVersion="1.8.10"
+val kotlinVersion= "1.8.21"
 val prometeusVersion= "1.10.5"
-val springbootVersion= "3.0.4"
-val springkafkaVersion="3.0.4"
+val springbootVersion= "3.1.0"
+val springkafkaVersion="3.0.7"
 val springwebmvcpac4jVersion = "7.0.0"
 val springframeworkbomVersion = "6.0.6"
 val jacksonkotlinVersion= "2.14.2"
@@ -16,10 +16,10 @@ val mockOAuth2ServerVersion = "0.5.8"
 val hibernateCoreJackartaVersion = "5.6.15.Final"
 val jakartaPersistenceApiVersion = "3.1.0"
 val jakartaAnnotationApiVersion = "2.1.1"
-val jakartaInjectApiVersion = "2.0.1"
+val jakartaInjectApiVersion = "2.0.1.MR"
 val mockkVersion = "1.13.4"
 val springmockkVersion = "4.0.2"
-val junitplatformVersion = "1.9.2"
+val junitplatformVersion = "1.10.0-M1"
 val h2DbVersion = "2.1.214"
 
 plugins {
@@ -52,10 +52,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-jdbc:$springbootVersion")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springbootVersion")
     implementation(platform("org.springframework:spring-framework-bom:$springframeworkbomVersion"))
+
     // Kafka
-    implementation("org.springframework.kafka:spring-kafka:$springbootVersion")
-    // Kafka-test
-    testImplementation("org.springframework.kafka:spring-kafka-test:$springbootVersion")
+    implementation("org.springframework.kafka:spring-kafka:$springkafkaVersion")
+    testImplementation("org.springframework.kafka:spring-kafka-test:$springkafkaVersion")
 
     //spring boot 3.0 jakaera-api
     implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationApiVersion")
