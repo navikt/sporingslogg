@@ -1,6 +1,7 @@
 
 # Team Samhandling Springslogg
 
+[![Bygg alle brancher](https://github.com/navikt/sporingslogg/actions/workflows/bygg_alle_brancher.yml/badge.svg)](https://github.com/navikt/sporingslogg/actions/workflows/bygg_alle_brancher.yml)
 [![Build](https://github.com/navikt/sporingslogg/workflows/Bygg%20og%20deploy%20Q2/badge.svg)](https://github.com/navikt/sporingslogg/actions)
 [![Build](https://github.com/navikt/sporingslogg/workflows/Deploy%20to%20production/badge.svg)](https://github.com/navikt/sporingslogg/actions)
 
