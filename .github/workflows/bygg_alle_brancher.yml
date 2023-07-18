@@ -23,20 +23,9 @@ jobs:
           distribution: temurin
           cache: 'gradle'
 
-      - name: 'Setter dato og commit variabel'
-        run: |
-          export TZ=CET
-          echo "DATE=$(date "+%Y-%m-%d--%H-%M-%S")" >> $GITHUB_ENV
-          echo "COMMIT_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
-      - name: 'Setter Image'
-        run: echo "IMAGE=ghcr.io/${{ github.repository }}/sporingslogg:${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
-
-      - name: 'Bygg og publiser docker image'
+      - name: 'Bugg og test'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           export TZ=CET
           ./gradlew build --stacktrace
-          docker build --tag ${{ env.IMAGE }} .
-          docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${{ secrets.GITHUB_TOKEN }}
-          docker push ${{ env.IMAGE }}
