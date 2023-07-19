@@ -22,10 +22,7 @@ interface LoggRepository: JpaRepository<LoggInnslag, Long> {
     fun countAlleLoggInnslagForPerson(@Param("personIdent") personIdent: String): Int
 
 
-    @Query(
-        value = "from LoggInnslag as l " +
-                " where l.person like :personIdent%"
-    )
+    @Query(value = "from LoggInnslag as l where l.person like CONCAT(:personIdent, '%%')" )
     fun finnAllePersonStarterMed(@Param("personIdent") personIdent: String): List<LoggInnslag>
 
 }
