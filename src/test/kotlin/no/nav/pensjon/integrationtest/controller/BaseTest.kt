@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @SpringBootTest(classes = [DataSourceTestConfig::class, KafkaTestConfig::class, TestApplication::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(profiles = ["unsecured-webmvctest"])
-@EmbeddedKafka(topics = [TOPIC+"LESPOSTTST"])
+@EmbeddedKafka(topics = [TOPIC + "LESPOSTTST"])
 @EnableMockOAuth2Server
 @AutoConfigureMockMvc
 abstract class BaseTest {
