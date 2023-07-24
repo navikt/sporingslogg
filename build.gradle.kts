@@ -19,7 +19,7 @@ val jakartaAnnotationApiVersion = "2.1.1"
 val jakartaInjectApiVersion = "2.0.1"
 val mockkVersion = "1.13.5"
 val springmockkVersion = "4.0.2"
-val junitplatformVersion = "1.10.0-RC2"
+val junitplatformVersion = "1.10.0"
 val h2DbVersion = "2.2.220"
 
 plugins {
