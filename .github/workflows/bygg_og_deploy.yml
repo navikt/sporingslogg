@@ -12,7 +12,7 @@ jobs:
     steps:
       # PULLER REPO
       - name: 'Pull repo'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # SETTER DATO OG COMMIT VARIABEL
       - name: 'Setter dato og commit variabel'
