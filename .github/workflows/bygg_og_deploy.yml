@@ -9,6 +9,11 @@ jobs:
   tag_build_and_deploy:
     name: 'Build, deploy and tag'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      checks: write
     steps:
       # PULLER REPO
       - name: 'Pull repo'
