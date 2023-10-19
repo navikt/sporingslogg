@@ -57,14 +57,14 @@ jobs:
           IMAGE: ${{ env.IMAGE }}
 
       # OPPRETTER GIT TAG
-#      - name: 'Opprett git tag'
-#        run: |
-#          curl -v -s -X POST https://api.github.com/repos/navikt/sporingslogg/git/refs -H "Authorization: token  ${{ secrets.GITHUB_TOKEN }}" -d '{ "ref": "refs/tags/${{ env.DATE }}---${{ env.COMMIT_HASH }}",  "sha": "${{ env.COMMIT_HASH }}" }'
-#
-#      - name: 'Deploy to Prod'
-#        uses: nais/deploy/actions/deploy@v1
-#        env:
-#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-#          CLUSTER: prod-fss
-#          RESOURCE: nais/prod.yaml
-#          IMAGE: ${{ env.IMAGE }}
+      - name: 'Opprett git tag'
+        run: |
+          curl -v -s -X POST https://api.github.com/repos/navikt/sporingslogg/git/refs -H "Authorization: token  ${{ secrets.GITHUB_TOKEN }}" -d '{ "ref": "refs/tags/${{ env.DATE }}---${{ env.COMMIT_HASH }}",  "sha": "${{ env.COMMIT_HASH }}" }'
+
+      - name: 'Deploy to Prod'
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-fss
+          RESOURCE: nais/prod.yaml
+          IMAGE: ${{ env.IMAGE }}
