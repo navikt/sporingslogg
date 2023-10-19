@@ -41,15 +41,14 @@ class LesController(
             if (ident.length != 11) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Ugyldig ident")
             log.debug("Henter ut pid : ${ident.scrable()}")
 
-            val result = loggTjeneste.hentAlleLoggInnslagForPerson(ident)
-            log.debug("resultat size: ${result.size}")
-
-            val loggmeldinger = result.map { logginnslag ->
+            return@measure loggTjeneste.hentAlleLoggInnslagForPerson(ident)
+            .also { log.debug("resultat size: ${ it.size}") }
+            .map { logginnslag ->
                 LoggMelding.fromLoggInnslag(logginnslag)
+              }
+            .also {
+                log.info("return liste for LoggMelding")
             }
-            log.info("return liste for LoggMelding")
-            return@measure loggmeldinger
-
         }
     }
 }

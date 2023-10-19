@@ -63,13 +63,14 @@ class KafkaLoggMeldingConsumer(
             try {
                 val loggInnslag = LoggInnslag.fromLoggMelding(LoggMelding.checkForAndEncode(loggMelding))
                 val loggId = loggTjeneste.lagreLoggInnslag(loggInnslag)
-                countEnthet(loggInnslag)
-                val melding = "ID: $loggId, person: ${loggMelding.person.scrable()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
 
-                log.info("Lagret melding med unik: $melding")
+                loggInnslag.tema?.let { countEnhet(it) } //metrics from who. .
+
+                val loggMelding = "ID: $loggId, person: ${loggMelding.person.scrable()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
+                log.info("Lagret melding med unik: $loggMelding")
+
                 acknowledgment.acknowledge()
                 log.info("*** Acket, klar for neste loggmelding.. .")
-
             } catch (e: Exception) {
                 log.error("Feilet ved lagre LoggInnslag, melding: ${e.message}", e)
                 Thread.sleep(3000L) //sleep 3sek..
@@ -80,11 +81,11 @@ class KafkaLoggMeldingConsumer(
         latch.countDown()
     }
 
-    private fun countEnthet(loggInnslag: LoggInnslag) {
+    private fun countEnhet(tema: String) {
         try {
-            Metrics.counter("LoggInnslag",   "tema", loggInnslag.tema).increment()
+            Metrics.counter("LoggInnslag",   "tema", tema).increment()
         } catch (e: Exception) {
-            log.warn("Metrics feilet på enhet: ${loggInnslag.tema}")
+            log.warn("Metrics feilet på enhet: $tema")
         }
     }
 

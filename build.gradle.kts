@@ -16,7 +16,7 @@ val mockOAuth2ServerVersion = "1.0.0"
 val hibernateCoreJackartaVersion = "5.6.15.Final"
 val jakartaPersistenceApiVersion = "3.1.0"
 val jakartaAnnotationApiVersion = "2.1.1"
-val jakartaInjectApiVersion = "2.0.1"
+val jakartaInjectApiVersion = "2.0.1.MR"
 val mockkVersion = "1.13.8"
 val springmockkVersion = "4.0.2"
 val junitplatformVersion = "1.10.0"
@@ -35,7 +35,7 @@ plugins {
 }
 
 group = "no.nav.pensjon"
-java.sourceCompatibility = JavaVersion.VERSION_18
+java.sourceCompatibility = JavaVersion.VERSION_20
 
 repositories {
     mavenCentral()
@@ -78,9 +78,9 @@ dependencies {
 
     // Logging
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashlogbackVersion")
-    configurations.implementation {
-        exclude(group = "commons-logging", module = "commons-logging")
-    }
+//    configurations.implementation {
+//        exclude(group = "commons-logging", module = "commons-logging")
+//    }
     implementation("org.slf4j:jcl-over-slf4j:$slf4jVersion")
     // Micrometer
     implementation("io.micrometer:micrometer-registry-prometheus:$prometeusVersion")
@@ -118,7 +118,7 @@ tasks {
     withType<KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = listOf("-Xjsr305=strict")
-            jvmTarget = "18"
+            jvmTarget = "20"
         }
     }
 
