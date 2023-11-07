@@ -27,8 +27,8 @@ jobs:
           distribution: temurin
           cache: 'gradle'
 
-      # BYGGER DOCKER CONTAINER
-      - name: 'Bygg og publiser docker image'
+      #
+      - name: 'Gradlew bygg og test'
         run: ./gradlew build --stacktrace
 
       # LOGGIN TO GHCR
@@ -40,7 +40,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # SETTER DATO OG COMMIT VARIABEL
-      - name: 'Setter dato og Image tag and hash'
+      - name: 'Setter dato og hash'
         run: |
           export TZ=CET
           echo "DATE=$(date "+%Y-%m-%d--%H-%M-%S")" >> $GITHUB_ENV
@@ -53,6 +53,7 @@ jobs:
       - name: Build and push docker image
         uses: docker/build-push-action@v5
         with:
+          context: .
           push: true
           tags: ${{ env.IMAGE }}
 
