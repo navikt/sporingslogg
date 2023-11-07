@@ -24,7 +24,7 @@ import org.springframework.test.context.ActiveProfiles
 class KafkaInnkommendeFlereHendelserTest: KafkaListenerTest() {
 
     @Test
-    fun `Når en flere hendelser er gyldige og ugyldige skal gyldige lagrs i db`() {
+    fun `Når en flere hendelser er gyldige og ugyldige skal gyldige lagres i db`() {
         val personIdent = "20903322123"
 
         val sanitycheck = loggTjeneste.hentAlleLoggInnslagForPerson(personIdent)
