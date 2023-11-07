@@ -14,8 +14,6 @@ jobs:
       packages: write
       id-token: write
       checks: write
-    outputs:
-      version: ${{ steps.version.version }}
     steps:
       # PULL REPO
       - name: 'Pull repo'
@@ -51,10 +49,6 @@ jobs:
       - name: Set Image
         run: echo "IMAGE=ghcr.io/${{ github.repository }}/sporingslogg:${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
 
-      - name: Set version
-        id: "version"
-        run: echo "VERSION=${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
-
       # PUBLISH DOCKER IMAGE
       - name: Build and push docker image
         uses: docker/build-push-action@v5
@@ -63,17 +57,20 @@ jobs:
           push: true
           tags: ${{ env.IMAGE }}
 
-  DeployToQ2:
-    name: Deploy to Q2
-    needs: tag_build_and_deploy
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Deploy to Q2
+      # DEPLOYER TIL NAIS Q2
+      - name: Deploy to NAIS Q2
         uses: nais/deploy/actions/deploy@v1
         env:
-          "APIKEY": ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          "CLUSTER": dev-fss
-          "RESOURCE": nais/dev_q2.yaml
-          "IMAGE": ghcr.io/${{ github.repository }}/sporingslogg:${{ needs.tag_build_and_deploy.outputs.version }}
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-fss
+          RESOURCE: nais/dev_q2.yaml
+          IMAGE: ${{ env.IMAGE }}
 
+      # DEPLOYER TIL NAIS PROD
+      - name: Deploy to NAIS PROD
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-fss
+          RESOURCE: nais/prod.yaml
+          IMAGE: ${{ env.IMAGE }}
