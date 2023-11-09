@@ -23,6 +23,8 @@ data class LoggMelding(
     val leverandoer: String?
 ) {
 
+    fun scramblePerson() = person.scrable()
+
     override fun toString(): String {
         return "LoggMelding [person=${person.scrable()}, mottaker=$mottaker, tema=$tema, behandlingsGrunnlag=$behandlingsGrunnlag, " +
                 "uthentingsTidspunkt=$uthentingsTidspunkt, leverteData=$leverteData, samtykkeToken=$samtykkeToken, dataForespoersel=$dataForespoersel, " +

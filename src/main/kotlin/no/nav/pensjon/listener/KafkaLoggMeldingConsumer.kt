@@ -9,7 +9,6 @@ import no.nav.pensjon.domain.LoggInnslag
 import no.nav.pensjon.domain.LoggMelding
 import no.nav.pensjon.metrics.MetricsHelper
 import no.nav.pensjon.tjeneste.LoggTjeneste
-import no.nav.pensjon.util.scrable
 import no.nav.pensjon.util.trunc
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.slf4j.LoggerFactory
@@ -66,8 +65,8 @@ class KafkaLoggMeldingConsumer(
 
                 loggInnslag.tema?.let { countEnhet(it) } //metrics from who. .
 
-                val loggMelding = "ID: $loggId, person: ${loggMelding.person.scrable()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
-                log.info("Lagret melding med unik: $loggMelding")
+                val melding = "ID: $loggId, person: ${loggMelding.scramblePerson()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
+                log.info("Lagret melding med unik: $melding")
 
                 acknowledgment.acknowledge()
                 log.info("*** Acket, klar for neste loggmelding.. .")
