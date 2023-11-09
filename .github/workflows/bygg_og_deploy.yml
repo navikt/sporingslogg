@@ -51,9 +51,12 @@ jobs:
           echo "COMMIT_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
       # SETTER IMAGE VARIABEL
       - name: Set Image
-        run: echo "IMAGE=ghcr.io/${{ github.repository }}/sporingslogg:${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
-      - id: setimage
-        run: echo "IMAGE=${{ env.IMAGE }}" >> $GITHUB_OUTPUT
+        id: setimage
+        run: | 
+          echo "IMAGE=ghcr.io/${{ github.repository }}/sporingslogg:${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
+          echo "IMAGE=${{ env.IMAGE }}" >> $GITHUB_OUTPUT
+#      - id: setimage
+#        run: echo "IMAGE=${{ env.IMAGE }}" >> $GITHUB_OUTPUT
 
       # PUBLISH DOCKER IMAGE
       - name: Build and push docker image
