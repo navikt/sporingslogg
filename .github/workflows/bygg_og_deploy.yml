@@ -14,6 +14,8 @@ jobs:
       packages: write
       id-token: write
       checks: write
+    outputs:
+      image: ${{ steps.setimage.outputs.IMAGE }}
     steps:
       # PULL REPO
       - name: 'Pull repo'
@@ -47,6 +49,7 @@ jobs:
           echo "COMMIT_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
       # SETTER IMAGE VARIABEL
       - name: Set Image
+        id: setimage
         run: echo "IMAGE=ghcr.io/${{ github.repository }}/sporingslogg:${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
 
       # PUBLISH DOCKER IMAGE
@@ -87,4 +90,4 @@ jobs:
           "APIKEY": ${{ secrets.NAIS_DEPLOY_APIKEY }}
           "CLUSTER": dev-fss
           "RESOURCE": nais/dev_q2.yaml
-          "IMAGE": ${{ needs.build_and_tag.env.IMAGE }}
+          "IMAGE": ${{ needs.build_and_tag.outputs.image }}
