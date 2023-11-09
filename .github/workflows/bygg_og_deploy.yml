@@ -80,11 +80,11 @@ jobs:
     needs: build_and_tag
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Deploy to Q2
         uses: nais/deploy/actions/deploy@v1
         env:
           "APIKEY": ${{ secrets.NAIS_DEPLOY_APIKEY }}
           "CLUSTER": dev-fss
-          "RESOURCE": nais/dev_q2.yaml"
+          "RESOURCE": nais/dev_q2.yaml
           "IMAGE": ${{ needs.build_and_tag.env.IMAGE }}
