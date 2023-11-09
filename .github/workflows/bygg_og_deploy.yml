@@ -6,8 +6,8 @@ on:
       - master
 
 jobs:
-  tag_build_and_deploy:
-    name: 'Build, deploy and tag'
+  build_and_tag:
+    name: 'Build and tag'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -57,20 +57,34 @@ jobs:
           push: true
           tags: ${{ env.IMAGE }}
 
-      # DEPLOYER TIL NAIS Q2
-      - name: Deploy to NAIS Q2
-        uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-fss
-          RESOURCE: nais/dev_q2.yaml
-          IMAGE: ${{ env.IMAGE }}
+#      # DEPLOYER TIL NAIS Q2
+#      - name: Deploy to NAIS Q2
+#        uses: nais/deploy/actions/deploy@v1
+#        env:
+#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+#          CLUSTER: dev-fss
+#          RESOURCE: nais/dev_q2.yaml
+#          IMAGE: ${{ env.IMAGE }}
+#
+#      # DEPLOYER TIL NAIS PROD
+#      - name: Deploy to NAIS PROD
+#        uses: nais/deploy/actions/deploy@v1
+#        env:
+#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+#          CLUSTER: prod-fss
+#          RESOURCE: nais/prod.yaml
+#          IMAGE: ${{ env.IMAGE }}
 
-      # DEPLOYER TIL NAIS PROD
-      - name: Deploy to NAIS PROD
+  deployToQ2:
+    name: 'Deploy NAIS Q2'
+    needs: build_and_tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy to Q2
         uses: nais/deploy/actions/deploy@v1
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: prod-fss
-          RESOURCE: nais/prod.yaml
-          IMAGE: ${{ env.IMAGE }}
+          "APIKEY": ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          "CLUSTER": dev-fss
+          "RESOURCE": nais/dev_q2.yaml"
+          "IMAGE": ${{ needs.build_and_tag.env.IMAGE }}
