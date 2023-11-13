@@ -35,7 +35,7 @@ plugins {
 }
 
 group = "no.nav.pensjon"
-java.sourceCompatibility = JavaVersion.VERSION_20
+java.sourceCompatibility = JavaVersion.VERSION_21
 
 repositories {
     mavenCentral()
@@ -71,16 +71,13 @@ dependencies {
     implementation("no.nav.security:token-validation-spring:$tokensupportVersion")
     implementation("no.nav.security:token-validation-jaxrs:$tokensupportVersion")
     implementation("no.nav.security:token-client-spring:$tokensupportVersion")
-    // Only used for starting up locally
+    // Only used for starting up locally testing
     implementation("no.nav.security:token-validation-test-support:$tokensupporttestVersion")
     testImplementation("no.nav.security:mock-oauth2-server:$mockOAuth2ServerVersion")
     testImplementation("no.nav.security:token-validation-spring-test:$tokensupportVersion")
 
     // Logging
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashlogbackVersion")
-//    configurations.implementation {
-//        exclude(group = "commons-logging", module = "commons-logging")
-//    }
     implementation("org.slf4j:jcl-over-slf4j:$slf4jVersion")
     // Micrometer
     implementation("io.micrometer:micrometer-registry-prometheus:$prometeusVersion")
@@ -118,7 +115,7 @@ tasks {
     withType<KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = listOf("-Xjsr305=strict")
-            jvmTarget = "20"
+            jvmTarget = "21"
         }
     }
 
@@ -127,7 +124,7 @@ tasks {
     }
 
     withType<Wrapper> {
-        gradleVersion = "8.1.1"
+        gradleVersion = "8.4"
     }
 
 }
