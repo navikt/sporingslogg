@@ -9,13 +9,14 @@ import no.nav.pensjon.domain.LoggInnslag
 import no.nav.pensjon.domain.LoggMelding
 import no.nav.pensjon.metrics.MetricsHelper
 import no.nav.pensjon.tjeneste.LoggTjeneste
-import no.nav.pensjon.util.trunc
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Service
+import java.util.*
 import java.util.concurrent.CountDownLatch
 
 @Service
@@ -40,42 +41,43 @@ class KafkaLoggMeldingConsumer(
         groupId = "\${kafka.sporingslogg.aivengroupid}"
     )
     fun sporingsloggConsumer(hendelse: String, cr: ConsumerRecord<Int, String>, acknowledgment: Acknowledgment) {
-        kafkaCounter.measure {
-            log.info("*** Innkommende hendelse. Offset: ${cr.offset()}, Partition: ${cr.partition()}, Key: ${cr.key()} ${ if (log.isDebugEnabled) ", hendelse: ${hendelse.trunc()}" else "" } ")
+        MDC.putCloseable("x_request_id", UUID.randomUUID().toString()).use {
+            kafkaCounter.measure {
+                log.info("*** Innkommende hendelse. Offset: ${cr.offset()}, Partition: ${cr.partition()}, Key: ${cr.key()} ")
 
-            val loggMelding: LoggMelding = try {
-                LoggMelding.fromJson(hendelse)
-            } catch (e: Exception) {
-                log.error("Mottatt sporingsmelding kan ikke deserialiseres, må evt rettes og sendes inn på nytt.", e)
-                acknowledgment.acknowledge()
-                return@measure
+                val loggMelding: LoggMelding = try {
+                    LoggMelding.fromJson(hendelse)
+                } catch (e: Exception) {
+                    log.error("Mottatt sporingsmelding kan ikke deserialiseres, må evt rettes og sendes inn på nytt.", e)
+                    acknowledgment.acknowledge()
+                    return@measure
+                }
+
+                try {
+                    validateRequest(loggMelding)
+                } catch (sve: SporingsloggValidationException) {
+                    log.error("Mottatt sporingsmelding kan ikke valideres, må evt rettes og sendes inn på nytt.", sve)
+                    acknowledgment.acknowledge()
+                    return@measure
+                }
+
+                try {
+                    val loggInnslag = LoggInnslag.fromLoggMelding(LoggMelding.checkForAndEncode(loggMelding))
+                    val loggId = loggTjeneste.lagreLoggInnslag(loggInnslag)
+
+                    loggInnslag.tema?.let { countEnhet(it) } //metrics from who. .
+
+                    val melding = "ID: $loggId, person: ${loggMelding.scramblePerson()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
+                    log.info("Lagret melding med unik: $melding")
+
+                    acknowledgment.acknowledge()
+                    log.info("*** Acket, klar for neste loggmelding.. .")
+                } catch (e: Exception) {
+                    log.error("Feilet ved lagre LoggInnslag, melding: ${e.message}", e)
+                    Thread.sleep(3000L) //sleep 3sek..
+                    throw Exception("Feilet ved lagre LoggInnslag", e)
+                }
             }
-
-            try {
-                validateRequest(loggMelding)
-            } catch (sve: SporingsloggValidationException) {
-                log.error("Mottatt sporingsmelding kan ikke valideres, må evt rettes og sendes inn på nytt.", sve)
-                acknowledgment.acknowledge()
-                return@measure
-            }
-
-            try {
-                val loggInnslag = LoggInnslag.fromLoggMelding(LoggMelding.checkForAndEncode(loggMelding))
-                val loggId = loggTjeneste.lagreLoggInnslag(loggInnslag)
-
-                loggInnslag.tema?.let { countEnhet(it) } //metrics from who. .
-
-                val melding = "ID: $loggId, person: ${loggMelding.scramblePerson()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
-                log.info("Lagret melding med unik: $melding")
-
-                acknowledgment.acknowledge()
-                log.info("*** Acket, klar for neste loggmelding.. .")
-            } catch (e: Exception) {
-                log.error("Feilet ved lagre LoggInnslag, melding: ${e.message}", e)
-                Thread.sleep(3000L) //sleep 3sek..
-                throw Exception("Feilet ved lagre LoggInnslag", e)
-            }
-
         }
         latch.countDown()
     }
