@@ -27,6 +27,9 @@ spec:
     - team: teamarenanais
       application: arena-dsop-api
       access: write
+    - team: tbd
+      application: spapi
+      access: write
 #    - team: pensjon
 #      application: pensjon-q2
 #      access: write   #write
