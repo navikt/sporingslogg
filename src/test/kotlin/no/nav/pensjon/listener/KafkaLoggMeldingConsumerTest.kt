@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.kafka.support.Acknowledgment
+import java.sql.SQLException
 
 internal class KafkaLoggMeldingConsumerTest {
 
@@ -45,6 +46,20 @@ internal class KafkaLoggMeldingConsumerTest {
         }
 
         verify(exactly = 0) { acknowledgment.acknowledge() }
+
+
+    }
+
+    @Test
+    fun testingAvConsumerSomFeilerVedLagring2() {
+
+        val hendelse = mockLoggMeldingAsJson(tema = "SYK")
+
+        every { loggTjeneste.lagreLoggInnslag(any()) } throws SQLException("ORA-12899: verdien er for stor for kolonnen")
+
+        kafkaLoggMeldingConsumer.sporingsloggConsumer(hendelse, mockk(relaxed = true), acknowledgment)
+
+        verify(exactly = 1) { acknowledgment.acknowledge() }
 
 
     }

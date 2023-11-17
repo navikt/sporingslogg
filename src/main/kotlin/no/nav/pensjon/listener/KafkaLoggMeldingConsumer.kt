@@ -73,6 +73,11 @@ class KafkaLoggMeldingConsumer(
                     acknowledgment.acknowledge()
                     log.info("*** Acket, klar for neste loggmelding.. .")
                 } catch (e: Exception) {
+                    if (loggMelding.tema == "SYK" && checkForErrorMsgAndAck(e.message)) {
+                        acknowledgment.acknowledge()
+                        log.error("Feilet ved lagre LoggInnslag, må evt rettes og sendes inn på nytt, melding: ${e.message}", e)
+                        return@measure
+                    }
                     log.error("Feilet ved lagre LoggInnslag, melding: ${e.message}", e)
                     Thread.sleep(3000L) //sleep 3sek..
                     throw Exception("Feilet ved lagre LoggInnslag", e)
@@ -80,6 +85,14 @@ class KafkaLoggMeldingConsumer(
             }
         }
         latch.countDown()
+    }
+
+    private fun checkForErrorMsgAndAck(errmsg: String?): Boolean {
+        val msg = errmsg ?: return false
+        return when {
+            msg.contains("ORA-12899") -> true
+            else -> false
+        }
     }
 
     private fun countEnhet(tema: String) {

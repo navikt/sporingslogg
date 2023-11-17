@@ -24,13 +24,13 @@ object TestHelper {
         )
     }
 
-    fun mockLoggMelding(ident: String = "11886512234", mottaker: String = "938908909", levertBase64: Boolean = false): LoggMelding {
+    fun mockLoggMelding(ident: String = "11886512234", mottaker: String = "938908909", tema: String = "PEN", levertBase64: Boolean = false): LoggMelding {
         val tidspunkt  = LocalDateTime.of(2021, 10, 9, 10, 10)
         return LoggMelding(
             id = null,
             person = ident,
             mottaker = mottaker,
-            tema = "PEN",
+            tema = tema,
             behandlingsGrunnlag = "Lovhjemmel samordningsloven § 27 (samordningsloven paragraf 27)",
             uthentingsTidspunkt = tidspunkt,
             leverteData = if (levertBase64) base64LevertData() else "LeverteData er kun for dummyTesting av sporingslogg Test",
@@ -40,7 +40,7 @@ object TestHelper {
         )
     }
 
-    fun mockLoggMeldingAsJson(ident: String = "11886512234", mottaker: String = "938908909", levertBase64: Boolean = false) = mapAnyToJson(mockLoggMelding(ident, mottaker, levertBase64))
+    fun mockLoggMeldingAsJson(ident: String = "11886512234", mottaker: String = "938908909", tema: String = "PEN",  levertBase64: Boolean = false) = mapAnyToJson(mockLoggMelding(ident, mottaker, tema, levertBase64))
 
 
     fun mockNoneValidLoggMeldingJson() : String {
