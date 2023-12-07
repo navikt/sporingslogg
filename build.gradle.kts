@@ -16,7 +16,7 @@ val mockOAuth2ServerVersion = "2.0.1"
 val hibernateCoreJackartaVersion = "5.6.15.Final"
 val jakartaPersistenceApiVersion = "3.1.0"
 val jakartaAnnotationApiVersion = "2.1.1"
-val jakartaInjectApiVersion = "2.0.1"
+val jakartaInjectApiVersion = "2.0.1.MR"
 val mockkVersion = "1.13.8"
 val springmockkVersion = "4.0.2"
 val junitplatformVersion = "1.10.1"
@@ -106,6 +106,8 @@ tasks {
     withType<Test> {
         useJUnitPlatform()
         failFast = true
+        //maxParallelForks = 6
+        //forkEvery = 1
         testLogging {
             events("passed", "skipped", "failed")
             exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
@@ -124,7 +126,7 @@ tasks {
     }
 
     withType<Wrapper> {
-        gradleVersion = "8.4"
+        gradleVersion = "8.5"
     }
 
 }
