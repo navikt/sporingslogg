@@ -30,6 +30,12 @@ spec:
     - team: tbd
       application: spapi
       access: write
+    - team: aap
+      application: api
+      access: write
+    - team: teamdagpenger
+      application: dp-datadeling
+      access: write
 #    - team: pensjon
 #      application: pensjon-q2
 #      access: write   #write
