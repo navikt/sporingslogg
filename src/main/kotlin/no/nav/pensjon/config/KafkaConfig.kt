@@ -14,6 +14,7 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory
 import org.springframework.kafka.core.ConsumerFactory
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory
 import org.springframework.kafka.listener.ContainerProperties
+import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
 import java.time.Duration
 
 @EnableKafka
@@ -32,16 +33,19 @@ class KafkaConfig(
         val configMap: MutableMap<String, Any> = HashMap()
         aivenCommonConfig(configMap)
         commonConfig(aivenBootstrapServers, aivenGroupid, configMap)
+        errorHandlingConfig(configMap)
 
-        return DefaultKafkaConsumerFactory(configMap, IntegerDeserializer(), StringDeserializer())
+
+        return DefaultKafkaConsumerFactory(configMap)
     }
+
 
     @Bean
     fun aivenKafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<Int, String> {
         val factory = ConcurrentKafkaListenerContainerFactory<Int, String>()
         factory.consumerFactory = aivenKafkaConsumerFactory()
         factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL
-        factory.containerProperties.setAuthExceptionRetryInterval( Duration.ofSeconds(4L))
+        factory.containerProperties.setAuthExceptionRetryInterval(Duration.ofSeconds(4L))
         return factory
     }
 
@@ -65,4 +69,10 @@ class KafkaConfig(
         configMap[CommonClientConfigs.SECURITY_PROTOCOL_CONFIG] = securityProtocol
     }
 
+    private fun errorHandlingConfig(configMap: MutableMap<String, Any>) {
+        configMap[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = ErrorHandlingDeserializer::class.java
+        configMap[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = ErrorHandlingDeserializer::class.java
+        configMap[ErrorHandlingDeserializer.KEY_DESERIALIZER_CLASS] = IntegerDeserializer::class.java
+        configMap[ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS] = StringDeserializer::class.java
+    }
 }
