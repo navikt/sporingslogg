@@ -76,16 +76,16 @@ jobs:
           "RESOURCE": nais/dev_q2.yaml
           "IMAGE": ${{ needs.build_and_tag.outputs.image }}
 
-  deployToProd:
-    name: 'Deploy NAIS PROD'
-    needs: build_and_tag
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Deploy to PROD
-        uses: nais/deploy/actions/deploy@v1
-        env:
-          "APIKEY": ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          "CLUSTER": prod-fss
-          "RESOURCE": nais/prod.yaml
-          "IMAGE": ${{ needs.build_and_tag.outputs.image }}
+#  deployToProd:
+#    name: 'Deploy NAIS PROD'
+#    needs: build_and_tag
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#      - name: Deploy to PROD
+#        uses: nais/deploy/actions/deploy@v1
+#        env:
+#          "APIKEY": ${{ secrets.NAIS_DEPLOY_APIKEY }}
+#          "CLUSTER": prod-fss
+#          "RESOURCE": nais/prod.yaml
+#          "IMAGE": ${{ needs.build_and_tag.outputs.image }}
