@@ -5,6 +5,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.common.config.SslConfigs
 import org.apache.kafka.common.serialization.IntegerDeserializer
 import org.apache.kafka.common.serialization.StringDeserializer
+import org.apache.kafka.common.serialization.StringSerializer
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -28,20 +29,20 @@ class KafkaConfig(
     @param:Value("\${kafka.sporingslogg.aivengroupid}") private val aivenGroupid: String,
 ) {
 
-    fun aivenKafkaConsumerFactory(): ConsumerFactory<Int, String> {
+    fun aivenKafkaConsumerFactory(): ConsumerFactory<String, String> {
         val configMap: MutableMap<String, Any> = HashMap()
         aivenCommonConfig(configMap)
         commonConfig(aivenBootstrapServers, aivenGroupid, configMap)
 
-        return DefaultKafkaConsumerFactory(configMap, IntegerDeserializer(), StringDeserializer())
+        return DefaultKafkaConsumerFactory(configMap, StringDeserializer(), StringDeserializer())
     }
 
     @Bean
-    fun aivenKafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<Int, String> {
-        val factory = ConcurrentKafkaListenerContainerFactory<Int, String>()
+    fun aivenKafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, String> {
+        val factory = ConcurrentKafkaListenerContainerFactory<String, String>()
         factory.consumerFactory = aivenKafkaConsumerFactory()
         factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL
-        factory.containerProperties.setAuthExceptionRetryInterval( Duration.ofSeconds(4L))
+        factory.containerProperties.setAuthExceptionRetryInterval(Duration.ofSeconds(4L))
         return factory
     }
 
