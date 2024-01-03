@@ -1,6 +1,7 @@
 package no.nav.pensjon.integrationtest.kafka
 
 import no.nav.pensjon.TestApplication
+import no.nav.pensjon.TestHelper.mockNoneValidLoggMeldingJson
 import no.nav.pensjon.integrationtest.DataSourceTestConfig
 import no.nav.pensjon.integrationtest.KafkaTestConfig
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
@@ -14,12 +15,12 @@ import org.springframework.test.context.ActiveProfiles
 
 
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
-@SpringBootTest( classes = [DataSourceTestConfig::class, KafkaTestConfig::class, TestApplication::class], value = ["SPRING_PROFILES_ACTIVE", "unsecured-webmvctest"])
-@ActiveProfiles("unsecured-webmvctest")
+@SpringBootTest( classes = [DataSourceTestConfig::class, KafkaTestConfig::class, TestApplication::class])
+@ActiveProfiles("test")
 @EnableMockOAuth2Server
 @DirtiesContext
 @EmbeddedKafka(topics = [TOPIC])
-class KafkaInnkommendeUGydligHendelseTest: KafkaListenerTest() {
+class KafkaInnkommendeUGydligHendelseTest: KafkaTests(){
 
     @Test
     fun `Når en hendsle av LoggMelding er ugydlig skal det ikke lagers`() {
@@ -27,15 +28,14 @@ class KafkaInnkommendeUGydligHendelseTest: KafkaListenerTest() {
 
         assertEquals(0, loggTjeneste.hentAlleLoggInnslagForPerson(personIdent).size)
 
-        val hendsleJson = mockNoValidJson()
+        val hendsleJson = mockNoneValidLoggMeldingJson()
 
         //send msg
-            initAndRunContainer().also {
+        initTestRun().also {
                 it.sendMsgOnDefaultTopic(hendsleJson)
                 it.waitForlatch(kafkaLoggMeldingConsumer)
             }
 
-        debugPrintLogging()
 
         assertTrue(sjekkLoggingFinnes("Mottatt sporingsmelding kan ikke deserialiseres, må evt rettes og sendes inn på nytt."))
         assertEquals(0, loggTjeneste.hentAlleLoggInnslagForPerson(personIdent).size)

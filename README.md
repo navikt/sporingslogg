@@ -24,5 +24,17 @@ Disse meldinger skal lagres og gjøres tilgjengelig for brukere når de logger i
 * plan kafka om å flytte til gcp. (aiven)
 
 
+### Eksempel på hvordan melding skal se ut:
+
+`{
+"person" : "20903xxxxx",
+"mottaker" : "938908909",
+"tema" : "PEN",
+"behandlingsGrunnlag" : "Lovhjemmel samordningsloven § 27 (samordningsloven paragraf 27)",
+"uthentingsTidspunkt" : [ 2021, 10, 9, 10, 10 ],
+"leverteData" : "LeverteData er kun for dummyTesting av sporingslogg Test"
+}`
+
+
 ### kontakt oss på NAV slack: 
 #pensjon_samhandling

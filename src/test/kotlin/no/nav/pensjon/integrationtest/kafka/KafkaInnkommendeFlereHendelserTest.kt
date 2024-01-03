@@ -3,6 +3,7 @@ package no.nav.pensjon.integrationtest.kafka
 import no.nav.pensjon.TestApplication
 import no.nav.pensjon.TestHelper.mapAnyToJson
 import no.nav.pensjon.TestHelper.mockLoggMelding
+import no.nav.pensjon.TestHelper.mockNoneValidLoggMeldingJson
 import no.nav.pensjon.integrationtest.DataSourceTestConfig
 import no.nav.pensjon.integrationtest.KafkaTestConfig
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
@@ -16,12 +17,12 @@ import org.springframework.test.context.ActiveProfiles
 
 
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
-@SpringBootTest( classes = [DataSourceTestConfig::class, KafkaTestConfig::class, TestApplication::class], value = ["SPRING_PROFILES_ACTIVE", "unsecured-webmvctest"])
-@ActiveProfiles("unsecured-webmvctest")
+@SpringBootTest( classes = [DataSourceTestConfig::class, KafkaTestConfig::class, TestApplication::class])
+@ActiveProfiles("test")
 @EnableMockOAuth2Server
 @DirtiesContext
 @EmbeddedKafka(topics = [TOPIC])
-class KafkaInnkommendeFlereHendelserTest: KafkaListenerTest() {
+class KafkaInnkommendeFlereHendelserTest: KafkaTests() {
 
     @Test
     fun `Når en flere hendelser er gyldige og ugyldige skal gyldige lagres i db`() {
@@ -34,15 +35,17 @@ class KafkaInnkommendeFlereHendelserTest: KafkaListenerTest() {
         val hendsleJson1 = mapAnyToJson(loggMelding)
         val hendsleJson2 = mapAnyToJson(loggMelding.copy(mottaker = "123456789"))
         val hendsleNotValidert = mapAnyToJson(loggMelding.copy(mottaker = "12345"))
-        val hendsleUgydligJson = mockNoValidJson()
+        val hendsleUgydligJson = mockNoneValidLoggMeldingJson()
 
-        initAndRunContainer().also { runTest ->
+        initTestRun().also { runTest ->
             runTest.sendMsgOnDefaultTopic(hendsleJson1)
             runTest.sendMsgOnDefaultTopic(hendsleUgydligJson)
             runTest.sendMsgOnDefaultTopic(hendsleNotValidert)
             runTest.sendMsgOnDefaultTopic(hendsleJson2)
             runTest.waitForlatch(kafkaLoggMeldingConsumer)
         }
+
+        //debugPrintLogging()
 
         assertTrue(sjekkLoggingFinnes("Lagret melding med unik: ID: 1, person: 209033xxxxx, tema: PEN, mottaker: 938908909"))
         assertTrue(sjekkLoggingFinnes("Lagret melding med unik: ID: 2, person: 209033xxxxx, tema: PEN, mottaker: 123456789"))

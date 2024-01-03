@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion= "1.9.21"
 val prometeusVersion= "1.12.1"
-val springbootVersion= "3.1.5"
-val springkafkaVersion="3.0.12"
+val springbootVersion= "3.2.0"
+val springkafkaVersion="3.1.0"
 val springwebmvcpac4jVersion = "8.0.0-RC5"
 val springframeworkbomVersion = "6.1.1"
 val jacksonkotlinVersion= "2.16.0"
@@ -23,7 +23,7 @@ val junitplatformVersion = "1.10.1"
 val h2DbVersion = "2.2.224"
 
 plugins {
-    val pluginSpringBootVersion = "3.1.5"
+    val pluginSpringBootVersion = "3.2.0"
     val pluginKotlinVersion = "1.9.21"
 
     kotlin("jvm") version pluginKotlinVersion
@@ -35,7 +35,7 @@ plugins {
 }
 
 group = "no.nav.pensjon"
-java.sourceCompatibility = JavaVersion.VERSION_21
+java.sourceCompatibility = JavaVersion.VERSION_20
 
 repositories {
     mavenCentral()
@@ -117,7 +117,7 @@ tasks {
     withType<KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = listOf("-Xjsr305=strict")
-            jvmTarget = "21"
+            jvmTarget = "20"
         }
     }
 

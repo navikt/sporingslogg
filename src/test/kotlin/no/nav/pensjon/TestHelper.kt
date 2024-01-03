@@ -1,6 +1,5 @@
 package no.nav.pensjon
 
-import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import no.nav.pensjon.domain.LoggInnslag
@@ -67,16 +66,17 @@ object TestHelper {
             .writeValueAsString(data)
     }
 
-    fun mapAnyToJson(data: Any, nonempty: Boolean = false): String {
-        return if (nonempty) {
-            jacksonObjectMapper()
-                .registerModule(JavaTimeModule())
-                .setDefaultPropertyInclusion(JsonInclude.Include.NON_EMPTY)
-                .writerWithDefaultPrettyPrinter()
-                .writeValueAsString(data)
-        } else {
-            mapAnyToJson(data)
-        }
-    }
+//    fun mapAnyToJson(data: Any, nonempty: Boolean = false): String {
+//        return if (nonempty) {
+//            jacksonObjectMapper()
+//                .registerModule(JavaTimeModule())
+//                .setDefaultPropertyInclusion(JsonInclude.Include.NON_EMPTY)
+//                .writerWithDefaultPrettyPrinter()
+//                .writeValueAsString(data)
+//        } else {
+//            mapAnyToJson(data)
+//        }
+//    }
 
 }
+
