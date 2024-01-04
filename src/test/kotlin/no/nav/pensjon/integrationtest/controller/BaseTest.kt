@@ -5,6 +5,7 @@ import io.mockk.clearAllMocks
 import no.nav.pensjon.TestApplication
 import no.nav.pensjon.integrationtest.DataSourceTestConfig
 import no.nav.pensjon.integrationtest.KafkaTestConfig
+import no.nav.pensjon.integrationtest.kafka.TOPIC
 import no.nav.pensjon.tjeneste.LoggTjeneste
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
@@ -13,24 +14,22 @@ import org.junit.jupiter.api.AfterEach
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.kafka.support.KafkaHeaders.TOPIC
 import org.springframework.kafka.test.context.EmbeddedKafka
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 
-@Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @SpringBootTest(classes = [DataSourceTestConfig::class, KafkaTestConfig::class, TestApplication::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles(profiles = ["unsecured-webmvctest"])
-@EmbeddedKafka(topics = [TOPIC + "LESPOSTTST"])
+@ActiveProfiles(profiles = ["test"])
 @EnableMockOAuth2Server
 @AutoConfigureMockMvc
+@EmbeddedKafka(topics = [TOPIC + "LESPOSTTST"])
 abstract class BaseTest {
 
     @Autowired
-    protected lateinit var loggTjeneste: LoggTjeneste
+    protected lateinit var mockMvc: MockMvc
 
     @Autowired
-    protected lateinit var mockMvc: MockMvc
+    protected lateinit var loggTjeneste: LoggTjeneste
 
     @Autowired
     protected lateinit var server: MockOAuth2Server

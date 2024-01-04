@@ -15,7 +15,7 @@ import org.springframework.web.server.ResponseStatusException
 
 @RestController
 @Profile("!prod")
-class FinnController( private val loggTjeneste: LoggTjeneste, private val tokenHelper: TokenHelper) {
+class FinnController(private val loggTjeneste: LoggTjeneste, private val tokenHelper: TokenHelper) {
 
     private val log = LoggerFactory.getLogger(javaClass)
 

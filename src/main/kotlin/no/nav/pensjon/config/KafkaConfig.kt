@@ -18,7 +18,7 @@ import org.springframework.kafka.listener.ContainerProperties
 import java.time.Duration
 
 @EnableKafka
-@Profile("prod", "test")
+@Profile("prod", "dev")
 @Configuration
 class KafkaConfig(
     @param:Value("\${kafka.keystore.path}") private val keystorePath: String,

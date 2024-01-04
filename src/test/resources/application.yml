@@ -1,8 +1,8 @@
-ENV: 'local-test'
+ENV: 'test'
 
 spring:
   profiles:
-    active: 'local-test'
+    active: 'test'
 
 server:
   error:

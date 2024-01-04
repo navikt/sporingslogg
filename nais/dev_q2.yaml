@@ -58,7 +58,7 @@ spec:
     pool: nav-dev
   env:
     - name: SPRING_PROFILES_ACTIVE
-      value: test
+      value: dev
     - name: ENV
       value: q2
     - name: DBURL

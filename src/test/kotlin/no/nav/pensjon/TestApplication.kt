@@ -6,7 +6,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Profile
 
 @SpringBootApplication
-@Profile("unsecured-webmvctest")
+@Profile("test")
 class TestApplication : SpringBootServletInitializer() {
 
     fun main(args: Array<String>) {

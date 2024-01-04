@@ -9,7 +9,7 @@ import javax.sql.DataSource
 
 
 @Configuration
-@Profile("prod", "test")
+@Profile("prod", "dev")
 class DataSourceConfig(
     @param:Value("\${DBURL}") private val dburl: String,
     @param:Value("\${DBUSERNAME}") private val dbusername: String,

@@ -4,7 +4,6 @@ import ch.qos.logback.classic.Logger
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.read.ListAppender
 import io.mockk.clearAllMocks
-import no.nav.pensjon.TestHelper.mockNoneValidLoggMeldingJson
 import no.nav.pensjon.listener.KafkaLoggMeldingConsumer
 import no.nav.pensjon.tjeneste.LoggTjeneste
 import org.junit.jupiter.api.AfterEach
@@ -23,36 +22,40 @@ import java.util.concurrent.TimeUnit
 
 const val TOPIC = "aiven-sporingslogg-loggmeldingMottatt" //"aapen-sporingslogg-loggmeldingMottatt"
 
-/***
- * Tatt fra eessi-pensjon-journalforing
- * https://github.com/navikt/eessi-pensjon-journalforing/blob/master/src/test/kotlin/no/nav/eessi/pensjon/integrasjonstest/IntegrasjonsBase.kt
- */
-abstract class KafkaListenerTest {
+@Suppress("SpringJavaInjectionPointsAutowiringInspection")
+open class KafkaTests {
 
     @Autowired
-    private lateinit var embeddedKafka: EmbeddedKafkaBroker
+    protected lateinit var embeddedKafka: EmbeddedKafkaBroker
 
     @Autowired
-    private lateinit var consumerFactory: ConsumerFactory<String, String>
+    protected lateinit var consumerFactory: ConsumerFactory<String, String>
 
     @Autowired
-    private lateinit var producerFactory: ProducerFactory<String, String>
-
-    @Autowired
-    protected lateinit var loggTjeneste: LoggTjeneste
+    protected lateinit var producerFactory: ProducerFactory<String, String>
 
     @Autowired
     protected lateinit var kafkaLoggMeldingConsumer: KafkaLoggMeldingConsumer
+
+    @Autowired
+    protected lateinit var loggTjeneste: LoggTjeneste
 
     private val deugLogger: Logger = LoggerFactory.getLogger("no.nav.pensjon") as Logger
     private val listAppender = ListAppender<ILoggingEvent>()
 
     @AfterEach
     fun after() {
-        println("************************* CLEANING UP AFTER CLASS*****************************")
         clearAllMocks()
-        embeddedKafka.kafkaServers.forEach { it.shutdown() }
         listAppender.stop()
+        embeddedKafka.destroy()
+    }
+
+    protected fun sjekkLoggingFinnes(keywords: String): Boolean {
+        val logsList: List<ILoggingEvent> = listAppender.list
+        val result : String? = logsList.find { message ->
+            message.message.contains(keywords)
+        }?.message
+        return result?.contains(keywords) ?: false
     }
 
     protected fun debugPrintLogging() {
@@ -62,14 +65,6 @@ abstract class KafkaListenerTest {
             println(logEvent.message)
         }
         println("--******************************************--")
-    }
-
-    protected fun sjekkLoggingFinnes(keywords: String): Boolean {
-        val logsList: List<ILoggingEvent> = listAppender.list
-        val result : String? = logsList.find { message ->
-            message.message.contains(keywords)
-        }?.message
-        return result?.contains(keywords) ?: false
     }
 
     private fun settOppUtitlityConsumer(): KafkaMessageListenerContainer<String, String> {
@@ -86,34 +81,32 @@ abstract class KafkaListenerTest {
         return container
     }
 
-    protected fun initAndRunContainer(timeout: Long = 10): TestResult {
-        println("*************************  INIT START *****************************")
+    protected fun initTestRun(timeout: Long = 10L): TestResult {
+        println("*** INIT START ***")
 
         listAppender.start()
         deugLogger.addAppender(listAppender)
-
         val container = settOppUtitlityConsumer()
         container.start()
         ContainerTestUtils.waitForAssignment(container, embeddedKafka.partitionsPerTopic)
 
-        println("*************************  INIT DONE *****************************")
-        val template = KafkaTemplate(producerFactory).apply { defaultTopic = TOPIC }
+        val template = KafkaTemplate(producerFactory).apply { defaultTopic =  TOPIC }
+
         return TestResult(template, container, timeout)
     }
 
-    data class TestResult(
+    protected data class TestResult(
         val kafkaTemplate: KafkaTemplate<String, String>,
         val container: KafkaMessageListenerContainer<String, String>,
         val timeout: Long
     ) {
 
         fun sendMsgOnDefaultTopic(hendelseAsJson : String) {
-           kafkaTemplate.sendDefault(hendelseAsJson).get()
+            kafkaTemplate.sendDefault(hendelseAsJson).get()
         }
-
         fun waitForlatch(kafkaConsumer: KafkaLoggMeldingConsumer) = kafkaConsumer.getLatch().await(timeout, TimeUnit.SECONDS)
+
     }
 
-    protected fun mockNoValidJson() : String = mockNoneValidLoggMeldingJson()
 
 }
