@@ -1,5 +1,6 @@
 package no.nav.pensjon
 
+import com.fasterxml.jackson.databind.Module
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import no.nav.pensjon.domain.LoggInnslag
@@ -60,23 +61,12 @@ object TestHelper {
     fun base64LevertData(): String = "TGV2ZXJ0ZURhdGEgZXIga3VuIGZvciBkdW1teVRlc3RpbmcgYXYgc3BvcmluZ3Nsb2dnIFRlc3Q="
 
     fun mapAnyToJson(data: Any): String {
+        @Suppress("CAST_NEVER_SUCCEEDS")
         return jacksonObjectMapper()
-            .registerModule(JavaTimeModule())
+            .registerModule(JavaTimeModule() as Module)
             .writerWithDefaultPrettyPrinter()
             .writeValueAsString(data)
     }
-
-//    fun mapAnyToJson(data: Any, nonempty: Boolean = false): String {
-//        return if (nonempty) {
-//            jacksonObjectMapper()
-//                .registerModule(JavaTimeModule())
-//                .setDefaultPropertyInclusion(JsonInclude.Include.NON_EMPTY)
-//                .writerWithDefaultPrettyPrinter()
-//                .writeValueAsString(data)
-//        } else {
-//            mapAnyToJson(data)
-//        }
-//    }
 
 }
 
