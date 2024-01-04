@@ -69,7 +69,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Deploy to Q2
-        uses: nais/deploy/actions/deploy@v1
+        uses: nais/deploy/actions/deploy@v2
         env:
           "APIKEY": ${{ secrets.NAIS_DEPLOY_APIKEY }}
           "CLUSTER": dev-fss
@@ -83,7 +83,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Deploy to PROD
-        uses: nais/deploy/actions/deploy@v1
+        uses: nais/deploy/actions/deploy@v2
         env:
           "APIKEY": ${{ secrets.NAIS_DEPLOY_APIKEY }}
           "CLUSTER": prod-fss
