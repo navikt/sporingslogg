@@ -26,14 +26,20 @@ Disse meldinger skal lagres og gjøres tilgjengelig for brukere når de logger i
 
 ### Eksempel på hvordan melding skal se ut:
 
-`{
-"person" : "20903xxxxx",
-"mottaker" : "938908909",
-"tema" : "PEN",
-"behandlingsGrunnlag" : "Lovhjemmel samordningsloven § 27 (samordningsloven paragraf 27)",
-"uthentingsTidspunkt" : [ 2021, 10, 9, 10, 10 ],
-"leverteData" : "LeverteData er kun for dummyTesting av sporingslogg Test"
-}`
+```
+{
+"person": "12345678901",                           // Fnr/dnr for personen dataene gjelder
+"mottaker": "123456789",                           // Orgnr som dataene leveres ut til Skal være 9 sifre
+"tema": "ABC",                                     // Type data, som definert i https://modapp.adeo.no/kodeverksklient/viskodeverk???, Tema 3 tegn
+"behandlingsGrunnlag": "hjemmelbeskrivelse",       // Beskriver hjemmel/samtykke som er bakgrunn for at dataene utleveres TODO kodeverk e.l. Max 100 tegn
+"uthentingsTidspunkt": "2018-10-19T12:24:21.675",  // Tidspunkt for utlevering, ISO-format uten tidssone
+"leverteData": "<Base64-encodet JSON-melding>",    // Utleverte data, max 1.000.000 tegn (i praksis må hele loggmeldingen være under Kafkas grense på 1 MB)
+"samtykkeToken": "<JSON Web Token, encodet form>", // Samtykketoken produsert av Altinn, definert i https://altinn.github.io/docs/guides/samtykke/datakilde/bruk-av-token/ Max 1000 tegn
+"dataForespoersel": "<forespørselen som er brukt>", // Request/dok hvordan NAV hentet data, max 100.000 tegn
+"leverandoer": "123456789"                          // Orgnr til den som har utleveringsavtalen, benyttes ved delegering Skal være 9 sifre
+}
+```
+
 
 
 ### kontakt oss på NAV slack: 
