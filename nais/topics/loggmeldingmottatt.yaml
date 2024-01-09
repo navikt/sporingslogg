@@ -36,6 +36,10 @@ spec:
     - team: teamdagpenger
       application: dp-datadeling
       access: write
+    - team: pensjonsamhandling
+      application: tp
+      access: write
+
 #    - team: pensjon
 #      application: pensjon-q2
 #      access: write   #write
