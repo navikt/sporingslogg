@@ -39,6 +39,16 @@ spec:
     - team: pensjonsamhandling
       application: tp-q2
       access: write
+    - team: pensjonsamhandling
+      application: tp-q1
+      access: write
+    - team: pensjonsamhandling
+      application: tp-q5
+      access: write
+    - team: pensjonsamhandling
+      application: tp-q0
+      access: write
+
 
 #    - team: pensjon
 #      application: pensjon-q2
