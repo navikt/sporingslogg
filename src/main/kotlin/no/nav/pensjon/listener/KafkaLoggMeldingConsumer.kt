@@ -70,6 +70,8 @@ class KafkaLoggMeldingConsumer(
                     val melding = "ID: $loggId, person: ${loggMelding.scramblePerson()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
                     log.info("Lagret melding med unik: $melding")
 
+                    log.debug("Loggelding lagret: TEMA: ${loggMelding.tema}, Grunnlag: ${loggMelding.behandlingsGrunnlag}, Mottaker: ${loggMelding.mottaker}, Leverandør: ${loggMelding.leverandoer}, Request: ${loggMelding.dataForespoersel}")
+
                     acknowledgment.acknowledge()
                     log.info("*** Acket, klar for neste loggmelding.. .")
                 } catch (e: Exception) {

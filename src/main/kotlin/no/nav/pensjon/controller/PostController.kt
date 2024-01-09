@@ -1,5 +1,6 @@
 package no.nav.pensjon.controller
 
+import io.micrometer.core.instrument.Metrics
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import jakarta.annotation.PostConstruct
 import no.nav.pensjon.controller.LoggMeldingValidator.validateRequestAsResponseRequestExcption
@@ -39,6 +40,7 @@ class PostController(
         log.debug("Request: $request")
 
         return postController.measure {
+            log.info("*** Innkommende request")
             validateRequestAsResponseRequestExcption(request) //viktig må være først
 
             log.debug("LoggMelding Base64? = ${LoggMelding.checkForEncode(request)}")
@@ -46,12 +48,25 @@ class PostController(
 
             log.info("Følgende medling kommet inn: $loggMelding, systemBruker: ${tokenHelper.getSystemUserId()}")
 
-            val loggId = loggTjeneste.lagreLoggInnslag(LoggInnslag.fromLoggMelding(loggMelding))
+            val loggInnslag = LoggInnslag.fromLoggMelding(loggMelding)
+            val loggId = loggTjeneste.lagreLoggInnslag(loggInnslag)
             val melding = "ID: $loggId, person: ${loggMelding.person.scrable()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
 
             log.info("Lagret melding: $melding")
 
+            loggInnslag.tema?.let { countEnhet(it) } //metrics from who. .
+            log.debug("Loggelding lagret: TEMA: ${loggMelding.tema}, Grunnlag: ${loggMelding.behandlingsGrunnlag}, Mottaker: ${loggMelding.mottaker}, Leverandør: ${loggMelding.leverandoer}, Request: ${loggMelding.dataForespoersel}")
+
+            log.info("*** Innnkommende request END")
             return@measure loggId
+        }
+    }
+
+    private fun countEnhet(tema: String) {
+        try {
+            Metrics.counter("LoggInnslag",   "tema", tema).increment()
+        } catch (e: Exception) {
+            log.warn("Metrics feilet på enhet: $tema")
         }
     }
 
