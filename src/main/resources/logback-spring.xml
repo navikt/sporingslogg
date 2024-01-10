@@ -24,7 +24,7 @@
         </root>
     </springProfile>
 
-    <springProfile name="test">
+    <springProfile name="dev">
         <appender name="stdout_json" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
                 <pattern>%level %logger %msg %n</pattern>

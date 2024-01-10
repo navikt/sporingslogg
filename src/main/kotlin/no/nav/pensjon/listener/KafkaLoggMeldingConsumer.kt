@@ -43,7 +43,7 @@ class KafkaLoggMeldingConsumer(
     fun sporingsloggConsumer(hendelse: String, cr: ConsumerRecord<Int, String>, acknowledgment: Acknowledgment) {
         MDC.putCloseable("x_request_id", UUID.randomUUID().toString()).use {
             kafkaCounter.measure {
-                log.info("*** Innkommende hendelse. Offset: ${cr.offset()}, Partition: ${cr.partition()}, Key: ${cr.key()} ")
+                log.info("*** Innkommende hendelse. Offset: ${cr.offset()}, Partition: ${cr.partition()}")
 
                 val loggMelding: LoggMelding = try {
                     LoggMelding.fromJson(hendelse)

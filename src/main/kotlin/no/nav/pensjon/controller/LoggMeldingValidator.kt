@@ -14,6 +14,7 @@ object LoggMeldingValidator {
 
     private const val BEHANDLINGSGRUNNLAG_MAX_LENGTH: Int = 100
     private const val SAMTYKKE_TOKEN_MAX_LENGTH: Int = 1000
+    private const val DATAFORESPOERSEL_MAX_LENGTH = 100000
 
     fun validateRequest(sporingsloggRequest: LoggMelding) {
         personNrValidation(sporingsloggRequest)
@@ -23,6 +24,11 @@ object LoggMeldingValidator {
         levertDataValidation(sporingsloggRequest)
         uthentingsTidspunktValidation(sporingsloggRequest.uthentingsTidspunkt)
         samtykkeTokenValidation(sporingsloggRequest.samtykkeToken)
+        dataForespoerselValidation(sporingsloggRequest.dataForespoersel)
+    }
+
+    private fun dataForespoerselValidation(dataForespoersel: String?) {
+        if (dataForespoersel != null && dataForespoersel.length > DATAFORESPOERSEL_MAX_LENGTH) throw SporingsloggValidationException("dataForespoersel can not be longer than $DATAFORESPOERSEL_MAX_LENGTH")
     }
 
     fun validateRequestAsResponseRequestExcption(sporingsloggRequest: LoggMelding) {
