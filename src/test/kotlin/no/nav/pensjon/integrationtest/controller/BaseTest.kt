@@ -3,9 +3,10 @@ package no.nav.pensjon.integrationtest.controller
 import com.nimbusds.jose.JOSEObjectType
 import io.mockk.clearAllMocks
 import no.nav.pensjon.TestApplication
+import no.nav.pensjon.controller.TokenHelper.Issuer.SERVICEBRUKER
+import no.nav.pensjon.controller.TokenHelper.Issuer.TOKENDINGS
 import no.nav.pensjon.integrationtest.DataSourceTestConfig
 import no.nav.pensjon.integrationtest.KafkaTestConfig
-import no.nav.pensjon.integrationtest.kafka.TOPIC
 import no.nav.pensjon.tjeneste.LoggTjeneste
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.AfterEach
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.kafka.test.context.EmbeddedKafka
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 
@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.MockMvc
 @ActiveProfiles(profiles = ["test"])
 @EnableMockOAuth2Server
 @AutoConfigureMockMvc
-@EmbeddedKafka(topics = [TOPIC + "LESPOSTTST"])
+//@EmbeddedKafka(topics = [TOPIC + "LESPOSTTST"])
 abstract class BaseTest {
 
     @Autowired
@@ -39,9 +39,9 @@ abstract class BaseTest {
         clearAllMocks()
     }
 
-    fun mockTokenDings(subject: String): String = token("tokendings", subject.hashCode().toString(), "tokendings-test", mapOf("acr" to  "Level4", "pid" to subject))
+    fun mockTokenDings(subject: String): String = token(TOKENDINGS.name.lowercase(), subject.hashCode().toString(), "tokendings-test", mapOf("acr" to  "Level4", "pid" to subject))
 
-    fun mockServiceToken() = token("servicebruker",  "srvsporingslogg", "srvsporingslogg", emptyMap())
+    fun mockServiceToken() = token(SERVICEBRUKER.name.lowercase(),  "srvsporingslogg", "srvsporingslogg", emptyMap())
 
     private fun token(issuerId: String, subject: String, audience: String, claims: Map<String, Any>): String {
         return server.issueToken(
