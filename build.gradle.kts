@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion= "1.9.22"
 val prometeusVersion= "1.12.2"
-val springbootVersion= "3.2.1"
+val springbootVersion= "3.2.2"
 val springkafkaVersion="3.1.1"
 val springwebmvcpac4jVersion = "8.0.0"
 val springframeworkbomVersion = "6.1.3"
@@ -10,9 +10,9 @@ val jacksonkotlinVersion= "2.16.1"
 val oracle11Version="23.3.0.23.09"
 val slf4jVersion= "2.0.11"
 val logstashlogbackVersion="7.4"
-val tokensupportVersion = "3.2.0"
+val tokensupportVersion = "4.1.0"
 val tokensupporttestVersion = "2.0.5"
-val mockOAuth2ServerVersion = "2.1.0"
+val mockOAuth2ServerVersion = "2.1.1"
 val hibernateCoreJackartaVersion = "5.6.15.Final"
 val jakartaPersistenceApiVersion = "3.1.0"
 val jakartaAnnotationApiVersion = "2.1.1"
@@ -23,7 +23,7 @@ val junitplatformVersion = "1.10.1"
 val h2DbVersion = "2.2.224"
 
 plugins {
-    val pluginSpringBootVersion = "3.2.1"
+    val pluginSpringBootVersion = "3.2.2"
     val pluginKotlinVersion = "1.9.22"
 
     kotlin("jvm") version pluginKotlinVersion
@@ -31,7 +31,7 @@ plugins {
     kotlin("plugin.jpa") version pluginKotlinVersion
     id("org.springframework.boot") version pluginSpringBootVersion
     id("io.spring.dependency-management") version "1.1.4"
-    id("org.owasp.dependencycheck") version "9.0.8"
+    id("org.owasp.dependencycheck") version "9.0.9"
 }
 
 group = "no.nav.pensjon"

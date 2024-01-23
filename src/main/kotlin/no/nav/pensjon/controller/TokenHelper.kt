@@ -12,7 +12,7 @@ class TokenHelper(private val tokenValidationContextHolder: TokenValidationConte
     private val log = LoggerFactory.getLogger(javaClass)
 
     // se appliation.yam #no.nav.security.jwt. under issuer.xxxx
-    private enum class Issuer {
+    public enum class Issuer {
         DIFI,
         SERVICEBRUKER,
         TOKENDINGS;
@@ -20,7 +20,7 @@ class TokenHelper(private val tokenValidationContextHolder: TokenValidationConte
     }
 
     private fun getClaims(issuer: Issuer): String {
-        val context = tokenValidationContextHolder.tokenValidationContext
+        val context = tokenValidationContextHolder.getTokenValidationContext()
         if(context.issuers.isEmpty())
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, "No issuer found in context")
 
@@ -46,18 +46,38 @@ class TokenHelper(private val tokenValidationContextHolder: TokenValidationConte
      * delevis lånt fra https://github.com/navikt/pam-samtykke-api
      */
     private fun extractForTokendingsIssuer(issuer: Issuer = Issuer.TOKENDINGS): String {
-        tokenValidationContextHolder.tokenValidationContext.getClaims(issuer.lowercase())?.get("pid")?.toString()?.let {
-            return it
-        } ?: run {
-            //Fallback to subject claim, which will typically be used in tests, etc.
-            tokenValidationContextHolder.tokenValidationContext.getClaims(issuer.lowercase())?.subject?.toString()?.let {
-                return it
-            } ?: run {
+        val context = tokenValidationContextHolder.getTokenValidationContext()
+
+        try {
+            val tokenclaims = context.getClaims(issuer.lowercase())
+            return tokenclaims.get("pid").toString()
+
+        } catch (ex: IllegalArgumentException) {
+            log.warn("faild to find pid on $issuer", ex)
+            try {
+                val tokenclaims = context.getClaims(issuer.lowercase())
+                return tokenclaims.subject
+            } catch (ex: IllegalArgumentException) {
                 log.error("No valid token found for issuer: tokendings")
                 throw ResponseStatusException(HttpStatus.NOT_FOUND, "No valid token found")
             }
         }
     }
+
+    private fun extractForTokendingsIssuerOLD(issuer: Issuer = Issuer.TOKENDINGS): String {
+        tokenValidationContextHolder.getTokenValidationContext().getClaims(issuer.lowercase()).get("pid")?.toString()?.let {
+            return it
+        } ?: run {
+            //Fallback to subject claim, which will typically be used in tests, etc.
+            tokenValidationContextHolder.getTokenValidationContext().getClaims(issuer.lowercase()).subject?.toString()?.let {
+                return it
+            } ?: run {
+                log.error("No valid token found for issuer: $issuer")
+                throw ResponseStatusException(HttpStatus.NOT_FOUND, "No valid token found")
+            }
+        }
+    }
+
 
     fun getPid(): String = getClaims(Issuer.DIFI)
 

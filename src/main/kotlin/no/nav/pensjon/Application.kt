@@ -5,7 +5,7 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Profile
 
 @SpringBootApplication
-@Profile("!unsecured-webmvctest")
+@Profile("!test")
 class Application
 
     fun main(args: Array<String>) {

@@ -33,8 +33,6 @@ no.nav.security.jwt:
     servicebruker:
       discoveryurl: ${SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL}
       accepted_audience: 'srvpensjon,srvsporingslogg'
-      cookie_name: "idtoken"
     tokendings:
       discoveryurl: ${TOKEN_X_WELL_KNOWN_URL}
       accepted_audience: ${TOKEN_X_CLIENT_ID}
-      cookie_name: "idtoken"

@@ -7,6 +7,7 @@ import io.mockk.clearAllMocks
 import no.nav.pensjon.listener.KafkaLoggMeldingConsumer
 import no.nav.pensjon.tjeneste.LoggTjeneste
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.TestInstance
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.kafka.core.ConsumerFactory
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit
 const val TOPIC = "aiven-sporingslogg-loggmeldingMottatt" //"aapen-sporingslogg-loggmeldingMottatt"
 
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 open class KafkaTests {
 
     @Autowired
