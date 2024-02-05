@@ -9,6 +9,9 @@ on:
 jobs:
 
   deployTopicToQ2:
+    permissions:
+      contents: "read"
+      id-token: "write"  
     name: 'Deploy topics DEV'
     runs-on: ubuntu-latest
     steps:
@@ -16,7 +19,6 @@ jobs:
       - name: Deploy public-sporingslogg-loggmeldingMottatt-q2 to pensjonsamhandling namespace
         uses: nais/deploy/actions/deploy@v2
         env:
-          "APIKEY": ${{ secrets.NAIS_DEPLOY_APIKEY }}
           "CLUSTER": dev-gcp
           "RESOURCE": nais/topics/loggmeldingmottatt-q2.yaml
 
@@ -28,6 +30,5 @@ jobs:
       - name: Deploy public-sporingslogg-loggmeldingMottatt to pensjonsamhandling namespace
         uses: nais/deploy/actions/deploy@v2
         env:
-          "APIKEY": ${{ secrets.NAIS_DEPLOY_APIKEY }}
           "CLUSTER": prod-gcp
           "RESOURCE": nais/topics/loggmeldingmottatt.yaml
