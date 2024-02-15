@@ -9,6 +9,9 @@ on:
 
 jobs:
   deployToProd:
+    permissions:
+      contents: "read"
+      id-token: "write"  
     name: "Deploy to Prod"
     runs-on: ubuntu-latest
     steps:
@@ -16,7 +19,6 @@ jobs:
       - name: Deploy to prod-fss
         uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-fss
           RESOURCE: nais/prod.yaml
           IMAGE: "ghcr.io/navikt/sporingslogg/sporingslogg:${{ github.event.inputs.version }}"
