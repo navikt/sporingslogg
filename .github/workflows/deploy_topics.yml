@@ -23,6 +23,9 @@ jobs:
           "RESOURCE": nais/topics/loggmeldingmottatt-q2.yaml
 
   deployTopicToProd:
+    permissions:
+      contents: "read"
+      id-token: "write"
     name: 'Deploy topics PROD'
     runs-on: ubuntu-latest
     steps:

@@ -63,6 +63,9 @@ jobs:
           tags: ${{ env.IMAGE }}
 
   deployToQ2:
+    permissions:
+      contents: "read"
+      id-token: "write"
     name: 'Deploy NAIS Q2'
     needs: build_and_tag
     runs-on: ubuntu-latest
@@ -76,6 +79,9 @@ jobs:
           "IMAGE": ${{ needs.build_and_tag.outputs.image }}
 
   deployToProd:
+    permissions:
+      contents: "read"
+      id-token: "write"
     name: 'Deploy NAIS PROD'
     needs: build_and_tag
     runs-on: ubuntu-latest
