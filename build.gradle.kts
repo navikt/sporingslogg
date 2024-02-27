@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion= "1.9.22"
-val prometeusVersion= "1.12.2"
+val prometeusVersion= "1.12.3"
 val springbootVersion= "3.2.2"
 val springkafkaVersion="3.1.1"
 val springwebmvcpac4jVersion = "8.0.0"
