@@ -62,7 +62,7 @@ spec:
     - name: ENV
       value: p
     - name: DBURL
-      value: jdbc:oracle:thin:@a01dbfl043.adeo.no:1521/SPORINGSLOGG_P_HA
+      value: jdbc:oracle:thin:@dmv20-scan.adeo.no:1521/SPORINGSLOGG_P_HA
     - name: SPORINGSLOGG_AIVEN_KAFKA_TOPIC
       value: pensjonsamhandling.public-sporingslogg-loggmeldingmottatt
     - name: SPORINGSLOGG_AIVEN_KAFKA_GROUP
