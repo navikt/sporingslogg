@@ -30,7 +30,7 @@ plugins {
     kotlin("plugin.spring") version pluginKotlinVersion
     kotlin("plugin.jpa") version pluginKotlinVersion
     id("org.springframework.boot") version pluginSpringBootVersion
-    id("io.spring.dependency-management") version "1.1.4"
+    id("io.spring.dependency-management") version "1.1.6"
     id("org.owasp.dependencycheck") version "9.1.0"
 }
 
