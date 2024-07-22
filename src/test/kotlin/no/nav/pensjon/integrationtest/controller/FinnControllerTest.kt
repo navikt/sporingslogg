@@ -1,9 +1,11 @@
 package no.nav.pensjon.integrationtest.controller
 
+import io.mockk.clearAllMocks
 import no.nav.pensjon.TestHelper.mockLoggInnslag
 import no.nav.pensjon.domain.LoggMelding
 import no.nav.pensjon.util.fromJson2Any
 import no.nav.pensjon.util.typeRefs
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
@@ -11,6 +13,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 internal class FinnControllerTest: BaseTest() {
+
+    @AfterEach
+    override fun takeDown() {
+        mockSlett()
+        clearAllMocks()
+    }
 
     @Test
     fun `sjekk finnController for søk etter person`() {

@@ -2,12 +2,14 @@ package no.nav.pensjon.integrationtest.controller
 
 import com.nimbusds.jose.JOSEObjectType
 import io.mockk.clearAllMocks
+import jakarta.transaction.Transactional
 import no.nav.pensjon.TestApplication
 import no.nav.pensjon.controller.TokenHelper.Issuer.SERVICEBRUKER
 import no.nav.pensjon.controller.TokenHelper.Issuer.TOKENDINGS
 import no.nav.pensjon.integrationtest.DataSourceTestConfig
 import no.nav.pensjon.integrationtest.KafkaTestConfig
 import no.nav.pensjon.integrationtest.kafka.TOPIC
+import no.nav.pensjon.tjeneste.LoggRepository
 import no.nav.pensjon.tjeneste.LoggTjeneste
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
@@ -26,7 +28,7 @@ import org.springframework.test.web.servlet.MockMvc
 @EnableMockOAuth2Server
 @AutoConfigureMockMvc
 @EmbeddedKafka(topics = [TOPIC + "LESPOSTTST"])
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 abstract class BaseTest {
 
     @Autowired
@@ -38,8 +40,12 @@ abstract class BaseTest {
     @Autowired
     protected lateinit var server: MockOAuth2Server
 
+    @Autowired
+    protected lateinit var repository: LoggRepository
+
     @AfterEach
     fun takeDown() {
+        mockSlett()
         clearAllMocks()
     }
 
@@ -69,5 +75,8 @@ abstract class BaseTest {
             )
         ).serialize()
     }
+
+    @Transactional
+    fun mockSlett() = repository.deleteAll()
 
 }

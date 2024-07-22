@@ -1,8 +1,9 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
-val kotlinVersion= "1.9.23"
+val kotlinVersion= "2.0.0"
 val prometeusVersion= "1.12.5"
-val springbootVersion= "3.2.5"
+val springbootVersion= "3.3.1"
 val springkafkaVersion="3.2.2"
 val springwebmvcpac4jVersion = "8.0.0"
 val springframeworkbomVersion = "6.1.11"
@@ -23,8 +24,8 @@ val junitplatformVersion = "1.10.2"
 val h2DbVersion = "2.2.224"
 
 plugins {
-    val pluginSpringBootVersion = "3.2.4"
-    val pluginKotlinVersion = "1.9.23"
+    val pluginSpringBootVersion = "3.3.1"
+    val pluginKotlinVersion = "2.0.0"
 
     kotlin("jvm") version pluginKotlinVersion
     kotlin("plugin.spring") version pluginKotlinVersion
@@ -35,7 +36,7 @@ plugins {
 }
 
 group = "no.nav.pensjon"
-java.sourceCompatibility = JavaVersion.VERSION_20
+java.sourceCompatibility = JavaVersion.VERSION_21
 
 repositories {
     mavenCentral()
@@ -114,19 +115,28 @@ tasks {
         }
     }
 
-    withType<KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = listOf("-Xjsr305=strict")
-            jvmTarget = "20"
+
+    withType<KotlinJvmCompile>().configureEach {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
+            freeCompilerArgs.add("-Xjsr305=strict")
         }
     }
+
+//    withType<KotlinCompile> {
+//
+//        kotlinOptions {
+//            freeCompilerArgs = listOf("-Xjsr305=strict")
+//            jvmTarget = "20"
+//        }
+//    }
 
     withType<Jar> {
         archiveBaseName.set("sporingslogg")
     }
 
     withType<Wrapper> {
-        gradleVersion = "8.5"
+        gradleVersion = "8.9"
     }
 
 }
