@@ -14,16 +14,15 @@ import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 
 
-@Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @SpringBootTest( classes = [DataSourceTestConfig::class, KafkaTestConfig::class, TestApplication::class])
 @ActiveProfiles("test")
 @EnableMockOAuth2Server
 @DirtiesContext
 @EmbeddedKafka(topics = [TOPIC])
-class KafkaInnkommendeUGydligHendelseTest: KafkaTests(){
+internal class KafkaInnkommendeUGydligHendelseTest: KafkaTests(){
 
     @Test
-    fun `Når en hendsle av LoggMelding er ugydlig skal det ikke lagers`() {
+    fun `Naar en hendsle av LoggMelding er ugydlig skal det ikke lagers`() {
         val personIdent = "20903322123"
 
         assertEquals(0, loggTjeneste.hentAlleLoggInnslagForPerson(personIdent).size)

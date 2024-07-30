@@ -1,5 +1,6 @@
 package no.nav.pensjon.integrationtest.controller
 
+import no.nav.pensjon.integrationtest.BaseTests
 import no.nav.pensjon.metrics.MetricsHelper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -9,7 +10,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
-internal class ActuatorTest: BaseTest() {
+internal class ActuatorTest: BaseTests() {
 
     @Autowired
     private lateinit var metricsHelper: MetricsHelper

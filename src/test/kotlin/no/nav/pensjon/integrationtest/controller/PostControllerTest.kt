@@ -3,6 +3,7 @@ package no.nav.pensjon.integrationtest.controller
 import no.nav.pensjon.TestHelper.base64LevertData
 import no.nav.pensjon.TestHelper.mockLoggInnslag
 import no.nav.pensjon.TestHelper.mockLoggMeldingAsJson
+import no.nav.pensjon.integrationtest.BaseTests
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -10,7 +11,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
-internal class PostControllerTest: BaseTest() {
+internal class PostControllerTest: BaseTests() {
 
     @Test
     fun `sjekk for postcontroller gyldig loggmelding for post og lagring db`() {

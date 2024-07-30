@@ -1,35 +1,31 @@
-package no.nav.pensjon.integrationtest.controller
+package no.nav.pensjon.integrationtest
 
 import com.nimbusds.jose.JOSEObjectType
 import io.mockk.clearAllMocks
-import jakarta.transaction.Transactional
 import no.nav.pensjon.TestApplication
 import no.nav.pensjon.controller.TokenHelper.Issuer.SERVICEBRUKER
 import no.nav.pensjon.controller.TokenHelper.Issuer.TOKENDINGS
-import no.nav.pensjon.integrationtest.DataSourceTestConfig
-import no.nav.pensjon.integrationtest.KafkaTestConfig
 import no.nav.pensjon.integrationtest.kafka.TOPIC
-import no.nav.pensjon.tjeneste.LoggRepository
 import no.nav.pensjon.tjeneste.LoggTjeneste
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.kafka.test.context.EmbeddedKafka
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
+import kotlin.text.lowercase
+import kotlin.to
 
 @SpringBootTest(classes = [DataSourceTestConfig::class, KafkaTestConfig::class, TestApplication::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(profiles = ["test"])
 @EnableMockOAuth2Server
 @AutoConfigureMockMvc
 @EmbeddedKafka(topics = [TOPIC + "LESPOSTTST"])
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
-abstract class BaseTest {
+abstract class BaseTests {
 
     @Autowired
     protected lateinit var mockMvc: MockMvc
@@ -40,12 +36,9 @@ abstract class BaseTest {
     @Autowired
     protected lateinit var server: MockOAuth2Server
 
-    @Autowired
-    protected lateinit var repository: LoggRepository
 
     @AfterEach
     fun takeDown() {
-        mockSlett()
         clearAllMocks()
     }
 
@@ -75,8 +68,5 @@ abstract class BaseTest {
             )
         ).serialize()
     }
-
-    @Transactional
-    fun mockSlett() = repository.deleteAll()
 
 }

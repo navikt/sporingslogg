@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class ValideringTjenesteTest {
+internal class ValideringTjenesteTest {
 
     @Test
     fun `validate text shorter than max length`() {

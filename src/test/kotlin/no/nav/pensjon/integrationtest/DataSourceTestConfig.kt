@@ -10,7 +10,6 @@ class DataSourceTestConfig {
 
     @Bean("DataSource")
     fun createTestDataSource(): DataSource {
-        //log.debug("Configure Testing DataSource: $dburl usr: $dbusername")
         val dataSourceBuilder = DataSourceBuilder.create()
         dataSourceBuilder.driverClassName("org.h2.Driver")
         dataSourceBuilder.url("jdbc:h2:mem:mydbsporingslogg")
