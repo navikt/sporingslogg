@@ -11,9 +11,9 @@ val jacksonkotlinVersion= "2.17.2"
 val oracle11Version="23.4.0.24.05"
 val slf4jVersion= "2.0.13"
 val logstashlogbackVersion="8.0"
-val tokensupportVersion = "4.1.3"
+val tokensupportVersion = "5.0.1"
 val tokensupporttestVersion = "2.0.5"
-val mockOAuth2ServerVersion = "2.1.2"
+val mockOAuth2ServerVersion = "2.1.8"
 val hibernateCoreJackartaVersion = "5.6.15.Final"
 val jakartaPersistenceApiVersion = "3.1.0"
 val jakartaAnnotationApiVersion = "3.0.0"
@@ -107,8 +107,6 @@ tasks {
     withType<Test> {
         useJUnitPlatform()
         failFast = true
-        //maxParallelForks = 6
-        //forkEvery = 1
         testLogging {
             events("passed", "skipped", "failed")
             exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
@@ -122,14 +120,6 @@ tasks {
             freeCompilerArgs.add("-Xjsr305=strict")
         }
     }
-
-//    withType<KotlinCompile> {
-//
-//        kotlinOptions {
-//            freeCompilerArgs = listOf("-Xjsr305=strict")
-//            jvmTarget = "20"
-//        }
-//    }
 
     withType<Jar> {
         archiveBaseName.set("sporingslogg")

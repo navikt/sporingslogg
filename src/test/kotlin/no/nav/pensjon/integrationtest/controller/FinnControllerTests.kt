@@ -1,27 +1,20 @@
 package no.nav.pensjon.integrationtest.controller
 
-import io.mockk.clearAllMocks
 import no.nav.pensjon.TestHelper.mockLoggInnslag
 import no.nav.pensjon.domain.LoggMelding
+import no.nav.pensjon.integrationtest.BaseTests
 import no.nav.pensjon.util.fromJson2Any
 import no.nav.pensjon.util.typeRefs
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
-internal class FinnControllerTest: BaseTest() {
-
-    @AfterEach
-    override fun takeDown() {
-        mockSlett()
-        clearAllMocks()
-    }
+internal class FinnControllerTests: BaseTests() {
 
     @Test
-    fun `sjekk finnController for søk etter person`() {
+    fun `sjekk finnController for sok etter person`() {
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("13055212250"))
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("13055220123"))
         loggTjeneste.lagreLoggInnslag(mockLoggInnslag("17024101234"))
@@ -40,7 +33,7 @@ internal class FinnControllerTest: BaseTest() {
     }
 
     @Test
-    fun `sjekk finnController for søk etter person med ingen resultat`() {
+    fun `sjekk finnController for sok etter person med ingen resultat`() {
         val token: String = mockServiceToken()
         val test = "test"
 

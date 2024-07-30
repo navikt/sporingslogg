@@ -4,8 +4,8 @@ import ch.qos.logback.classic.Logger
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.read.ListAppender
 import io.mockk.clearAllMocks
+import no.nav.pensjon.integrationtest.BaseTests
 import no.nav.pensjon.listener.KafkaLoggMeldingConsumer
-import no.nav.pensjon.tjeneste.LoggTjeneste
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.TestInstance
 import org.slf4j.LoggerFactory
@@ -25,7 +25,7 @@ const val TOPIC = "aiven-sporingslogg-loggmeldingMottatt" //"aapen-sporingslogg-
 
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-open class KafkaTests {
+open class KafkaTests: BaseTests() {
 
     @Autowired
     protected lateinit var embeddedKafka: EmbeddedKafkaBroker
@@ -38,9 +38,6 @@ open class KafkaTests {
 
     @Autowired
     protected lateinit var kafkaLoggMeldingConsumer: KafkaLoggMeldingConsumer
-
-    @Autowired
-    protected lateinit var loggTjeneste: LoggTjeneste
 
     private val deugLogger: Logger = LoggerFactory.getLogger("no.nav.pensjon") as Logger
     private val listAppender = ListAppender<ILoggingEvent>()
@@ -60,14 +57,14 @@ open class KafkaTests {
         return result?.contains(keywords) ?: false
     }
 
-    protected fun debugPrintLogging() {
-        println("==******************************************==")
-        println("Size: ${listAppender.list.size}")
-        listAppender.list.map { logEvent ->
-            println(logEvent.message)
-        }
-        println("--******************************************--")
-    }
+//    protected fun debugPrintLogging() {
+//        println("==******************************************==")
+//        println("Size: ${listAppender.list.size}")
+//        listAppender.list.map { logEvent ->
+//            println(logEvent.message)
+//        }
+//        println("--******************************************--")
+//    }
 
     private fun settOppUtitlityConsumer(): KafkaMessageListenerContainer<String, String> {
         val consumerProperties = KafkaTestUtils.consumerProps(

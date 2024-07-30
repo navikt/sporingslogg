@@ -16,17 +16,16 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
 
 
-@Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @SpringBootTest( classes = [DataSourceTestConfig::class, KafkaTestConfig::class, TestApplication::class])
 @ActiveProfiles("test")
 @EnableMockOAuth2Server
 @DirtiesContext
 @EmbeddedKafka(topics = [TOPIC])
-class KafkaInnkommendeGydligHendelseTest: KafkaTests() {
+internal class KafkaInnkommendeGydligHendelseTest: KafkaTests() {
 
     @Test
     @Transactional
-    fun `Når en hendsle av LoggMelding er gyldig SÅ skal det lagres til db`() {
+    fun `Naar en hendsle av LoggMelding er gyldig Saa skal det lagres til db`() {
         val personIdent = "20903322123"
 
         val mockLoggMelding = mockLoggMelding(personIdent)

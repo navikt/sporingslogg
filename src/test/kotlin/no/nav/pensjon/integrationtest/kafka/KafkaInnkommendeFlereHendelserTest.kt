@@ -16,16 +16,15 @@ import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 
 
-@Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @SpringBootTest( classes = [DataSourceTestConfig::class, KafkaTestConfig::class, TestApplication::class])
 @ActiveProfiles("test")
 @EnableMockOAuth2Server
 @DirtiesContext
 @EmbeddedKafka(topics = [TOPIC])
-class KafkaInnkommendeFlereHendelserTest: KafkaTests() {
+internal class KafkaInnkommendeFlereHendelserTest: KafkaTests() {
 
     @Test
-    fun `Når en flere hendelser er gyldige og ugyldige skal gyldige lagres i db`() {
+    fun `Naar en flere hendelser er gyldige og ugyldige skal gyldige lagres i db`() {
         val personIdent = "20903322123"
 
         val sanitycheck = loggTjeneste.hentAlleLoggInnslagForPerson(personIdent)

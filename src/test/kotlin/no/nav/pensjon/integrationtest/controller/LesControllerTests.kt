@@ -2,6 +2,7 @@ package no.nav.pensjon.integrationtest.controller
 
 import no.nav.pensjon.TestHelper.mockLoggInnslag
 import no.nav.pensjon.domain.LoggMelding
+import no.nav.pensjon.integrationtest.BaseTests
 import no.nav.pensjon.util.fromJson2Any
 import no.nav.pensjon.util.typeRefs
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -10,7 +11,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
-internal class LesControllerTest: BaseTest() {
+internal class LesControllerTests: BaseTests() {
 
     @Test
     fun `sjekk for lescontroller gyldig person funnet return liste over data`() {
