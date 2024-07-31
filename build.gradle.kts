@@ -14,8 +14,7 @@ val logstashlogbackVersion="8.0"
 val tokensupportVersion = "5.0.1"
 val tokensupporttestVersion = "2.0.5"
 val mockOAuth2ServerVersion = "2.1.8"
-val hibernateCoreJackartaVersion = "5.6.15.Final"
-val jakartaPersistenceApiVersion = "3.1.0"
+val hibernateCoreVersion = "6.5.2.Final"
 val jakartaAnnotationApiVersion = "3.0.0"
 val jakartaInjectApiVersion = "2.0.1"
 val mockkVersion = "1.13.12"
@@ -84,10 +83,8 @@ dependencies {
     implementation("io.micrometer:micrometer-registry-prometheus:$prometeusVersion")
 
     // DB
-    implementation("jakarta.persistence:jakarta.persistence-api:$jakartaPersistenceApiVersion")
     implementation("com.oracle.database.jdbc:ojdbc11:$oracle11Version")
-    implementation("org.hibernate:hibernate-core-jakarta:$hibernateCoreJackartaVersion")
-
+    implementation("org.hibernate.orm:hibernate-core:$hibernateCoreVersion")
     // test
     testImplementation("com.ninja-squad:springmockk:$springmockkVersion")
     testImplementation("org.pac4j:spring-webmvc-pac4j:$springwebmvcpac4jVersion")
