@@ -68,6 +68,8 @@ jobs:
       id-token: "write"
     name: 'Deploy NAIS Q2'
     needs: build_and_tag
+    outputs:
+      image: ${{ needs.build_and_tag.outputs.image }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -98,7 +100,7 @@ jobs:
       contents: "read"
       id-token: "write"
     name: 'Deploy NAIS PROD'
-    needs: build_and_tag
+    needs: deployToQ2
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -107,7 +109,7 @@ jobs:
         env:
           "CLUSTER": prod-fss
           "RESOURCE": nais/prod.yaml
-          "IMAGE": ${{ needs.build_and_tag.outputs.image }}
+          "IMAGE": ${{ needs.deployToQ2.outputs.image }}
 
   deployTopicToProd:
     permissions:
