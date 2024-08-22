@@ -78,6 +78,6 @@ spec:
     - name: "OTEL_LOGS_EXPORTER"
       value: "otlp"
     - name: "OTEL_RESOURCE_ATTRIBUTES"
-      value: "service.name=sam,deployment.environment=q2"
+      value: "service.name=sporingslogg,deployment.environment=q2"
     - name: "OTEL_TRACES_EXPORTER"
       value: "otlp"
