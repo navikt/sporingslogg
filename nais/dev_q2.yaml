@@ -71,3 +71,13 @@ spec:
       value: https://oidc-ver2.difi.no/idporten-oidc-provider/.well-known/openid-configuration
     - name: SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL
       value: https://security-token-service.nais.preprod.local/.well-known/openid-configuration
+    - name: "OTEL_EXPORTER_OTLP_ENDPOINT"
+      value: "https://elastic-apm.adeo.no"
+    - name: "OTEL_METRICS_EXPORTER"
+      value: "otlp"
+    - name: "OTEL_LOGS_EXPORTER"
+      value: "otlp"
+    - name: "OTEL_RESOURCE_ATTRIBUTES"
+      value: "service.name=sporingslogg,deployment.environment=q2"
+    - name: "OTEL_TRACES_EXPORTER"
+      value: "otlp"
