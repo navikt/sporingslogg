@@ -1,37 +1,37 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
-val kotlinVersion= "2.0.10"
-val prometeusVersion= "1.13.2"
-val springbootVersion= "3.3.2"
-val springkafkaVersion="3.2.2"
+val kotlinVersion= "2.0.20"
+val prometeusVersion= "1.13.4"
+val springbootVersion= "3.3.3"
+val springkafkaVersion="3.2.3"
 val springwebmvcpac4jVersion = "8.0.0"
-val springframeworkbomVersion = "6.1.11"
+val springframeworkbomVersion = "6.1.13"
 val jacksonkotlinVersion= "2.17.2"
 val oracle11Version="23.5.0.24.07"
 val slf4jVersion= "2.0.15"
 val logstashlogbackVersion="8.0"
-val tokensupportVersion = "5.0.1"
+val tokensupportVersion = "5.0.2"
 val tokensupporttestVersion = "2.0.5"
-val mockOAuth2ServerVersion = "2.1.8"
+val mockOAuth2ServerVersion = "2.1.9"
 val hibernateCoreVersion = "6.6.0.Final"
 val jakartaAnnotationApiVersion = "3.0.0"
 val jakartaInjectApiVersion = "2.0.1"
 val mockkVersion = "1.13.12"
 val springmockkVersion = "4.0.2"
-val junitplatformVersion = "1.10.3"
-val h2DbVersion = "2.3.230"
+val junitplatformVersion = "1.11.0"
+val h2DbVersion = "2.3.232"
 
 plugins {
-    val pluginSpringBootVersion = "3.3.2"
-    val pluginKotlinVersion = "2.0.10"
+    val pluginSpringBootVersion = "3.3.3"
+    val pluginKotlinVersion = "2.0.20"
 
     kotlin("jvm") version pluginKotlinVersion
     kotlin("plugin.spring") version pluginKotlinVersion
     kotlin("plugin.jpa") version pluginKotlinVersion
     id("org.springframework.boot") version pluginSpringBootVersion
     id("io.spring.dependency-management") version "1.1.6"
-    id("org.owasp.dependencycheck") version "10.0.3"
+    id("org.owasp.dependencycheck") version "10.0.4"
 }
 
 group = "no.nav.pensjon"

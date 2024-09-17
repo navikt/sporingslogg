@@ -5,11 +5,13 @@ import no.nav.pensjon.domain.LoggMelding
 import no.nav.pensjon.integrationtest.BaseTests
 import no.nav.pensjon.util.fromJson2Any
 import no.nav.pensjon.util.typeRefs
+import org.hamcrest.CoreMatchers.`is`
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 
 internal class LesControllerTests: BaseTests() {
 
@@ -27,6 +29,9 @@ internal class LesControllerTests: BaseTests() {
                 .header("Authorization", "Bearer $token")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(jsonPath("$.size()", `is`(1)))
+            .andExpect(jsonPath("$.[0].samtykkeToken", `is`("DummyToken")))
+            .andExpect(jsonPath("$.[0].mottaker", `is`("938908909")))
             .andReturn()
 
         val result = response.response.getContentAsString(charset("UTF-8"))
@@ -38,6 +43,7 @@ internal class LesControllerTests: BaseTests() {
 
         assertEquals(1, list.size)
         assertEquals(expected, list.first().toString())
+
 
     }
 
@@ -64,6 +70,36 @@ internal class LesControllerTests: BaseTests() {
 
     @Test
     fun `sjekk for lescontroller gyldig person fra tokenX funnet return liste over data`() {
+        val personIdent = "01086112250"
+        val token: String = mockTokenDings(personIdent)
+
+        loggTjeneste.lagreLoggInnslag(mockLoggInnslag(personIdent))
+        val preChecklist = loggTjeneste.hentAlleLoggInnslagForPerson(personIdent)
+        assertEquals(2, preChecklist.size)
+
+        val response = mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/les")
+                .header("Authorization", "Bearer $token")
+                .header("X-Request-Id", "f9815125-d4a3-TOKENX-TEST")
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        val result = response.response.getContentAsString(charset("UTF-8"))
+        val list: List<LoggMelding> =  fromJson2Any(result, typeRefs())
+
+        val expected = """
+            LoggMelding [person=010861xxxxx, mottaker=938908909, tema=PEN, behandlingsGrunnlag=Lovhjemmel samordningsloven § 27 (samordningsloven paragraf 27), uthentingsTidspunkt=2021-10-09T10:10, leverteData=TGV2ZXJ0ZURhdGEgZXIga3VuIGZvciBkdW1teVRlc3RpbmcgYXYgc3BvcmluZ3Nsb2dnIFRlc3Q=, samtykkeToken=DummyToken, dataForespoersel=Foresporsel, leverandoer=lever]
+        """.trimIndent()
+
+        assertEquals(2, list.size)
+        assertEquals(expected, list.first().toString())
+
+    }
+
+
+    @Test
+    fun `sjekk for hentLoggMelding er gyldig`() {
         val personIdent = "01086112250"
         val token: String = mockTokenDings(personIdent)
 

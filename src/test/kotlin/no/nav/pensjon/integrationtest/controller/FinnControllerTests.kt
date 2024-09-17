@@ -35,8 +35,6 @@ internal class FinnControllerTests: BaseTests() {
     @Test
     fun `sjekk finnController for sok etter person med ingen resultat`() {
         val token: String = mockServiceToken()
-        val test = "test"
-
         val response = mockMvc.perform(
             MockMvcRequestBuilders.get("/sporingslogg/api/test/finn/010203404")
                 .header("Authorization", "Bearer $token")
@@ -46,8 +44,6 @@ internal class FinnControllerTests: BaseTests() {
 
         val result = response.response.getContentAsString(charset("UTF-8"))
         assertEquals("[]", result)
-
-        assertEquals("test", test)
 
     }
 
