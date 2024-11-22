@@ -12,8 +12,8 @@ import javax.sql.DataSource
 @Profile("prod", "dev")
 class DataSourceConfig(
     @param:Value("\${DBURL}") private val dburl: String,
-    @param:Value("\${DBUSERNAME}") private val dbusername: String,
-    @param:Value("\${DBPASSWORD}") private val dbpassword: String
+    @param:Value("\${oracle.user}") private val dbusername: String,
+    @param:Value("\${oracle.password}") private val dbpassword: String
     ) {
 
     @Bean("DataSource")
