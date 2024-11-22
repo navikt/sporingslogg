@@ -6,6 +6,8 @@ metadata:
   labels:
     team: pensjonsamhandling
 spec:
+  envFrom:
+    - secret: sporingslogg-q2
   tokenx:
     enabled: true
   accessPolicy:
@@ -46,13 +48,6 @@ spec:
     requests:
       cpu: 1000m
       memory: 1Gi
-  vault:
-    enabled: true
-    paths:
-      - kvPath: /oracle/data/dev/creds/sporingslogg_q2-user
-        mountPath: /secrets/oracle_creds
-      - kvPath: /serviceuser/data/dev/srvsporingslogg
-        mountPath: /secrets/serviceuser
   webproxy: true
   kafka:
     pool: nav-dev
