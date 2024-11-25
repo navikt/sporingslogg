@@ -18,8 +18,8 @@ DBURL: 'jdbc:h2:mem:mydbsporingslogg'
 DBUSERNAME: 'sa'
 DBPASSWORD: ''
 
-SRVUSERNAME: "srvsporingslogg"
-SRVPASSWORD: "password"
+#SRVUSERNAME: "srvsporingslogg"
+#SRVPASSWORD: "password"
 
 kafka:
   security.protocol: SSL
