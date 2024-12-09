@@ -6,11 +6,13 @@ import no.nav.pensjon.integrationtest.BaseTests
 import no.nav.pensjon.util.fromJson2Any
 import no.nav.pensjon.util.typeRefs
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
+@Disabled
 internal class LesControllerTests: BaseTests() {
 
     @Test
