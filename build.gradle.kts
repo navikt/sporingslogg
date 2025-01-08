@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 val kotlinVersion= "2.1.0"
 val prometeusVersion= "1.14.2"
-val springbootVersion= "3.3.5"
+val springbootVersion= "3.4.1"
 val springkafkaVersion="3.3.0"
 val springwebmvcpac4jVersion = "8.0.0"
 val springframeworkbomVersion = "6.2.1"
@@ -23,7 +23,7 @@ val junitplatformVersion = "1.11.3"
 val h2DbVersion = "2.3.232"
 
 plugins {
-    val pluginSpringBootVersion = "3.3.5"
+    val pluginSpringBootVersion = "3.4.1"
     val pluginKotlinVersion = "2.1.0"
 
     kotlin("jvm") version pluginKotlinVersion
