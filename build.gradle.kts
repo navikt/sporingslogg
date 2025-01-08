@@ -24,7 +24,7 @@ val h2DbVersion = "2.3.232"
 
 plugins {
     val pluginSpringBootVersion = "3.3.5"
-    val pluginKotlinVersion = "2.0.21"
+    val pluginKotlinVersion = "2.1.0"
 
     kotlin("jvm") version pluginKotlinVersion
     kotlin("plugin.spring") version pluginKotlinVersion
