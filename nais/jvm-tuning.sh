@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # taken from https://github.com/navikt/eessi-pensjon-fagmodul/blob/master/init-scripts/ep-jvm-tuning.sh
 
 # MaxRAMPercentage will default to 25 if not set ... check using:
@@ -28,3 +27,4 @@ DEFAULT_JVM_OPTS="${DEFAULT_JVM_OPTS} -XX:+UseParallelGC"
 # DEFAULT_JVM_OPTS="${DEFAULT_JVM_OPTS} -XX:+UseG1GC"
 
 export DEFAULT_JVM_OPTS
+echo "JVM Tuning exported"
