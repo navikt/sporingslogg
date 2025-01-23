@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # taken from https://github.com/navikt/eessi-pensjon-fagmodul/blob/master/init-scripts/ep-jvm-tuning.sh
 
 # MaxRAMPercentage will default to 25 if not set ... check using:
@@ -5,7 +6,7 @@
 # (an alternative is to set Xmx and Xms)
 # 75 is a good starting point, but you might set it even higher
 
-DEFAULT_JVM_OPTS="${DEFAULT_JVM_OPTS} -XX:MaxRAMPercentage=85"
+DEFAULT_JVM_OPTS="${DEFAULT_JVM_OPTS} -XX:MaxRAMPercentage=80"
 
 # No of processors, check what the JVM sees using:
 #   kubectl exec -c <container> <pod> -- bash -c 'echo "System.out.println(Runtime.getRuntime().availableProcessors());"|jshell -s - 2>/dev/null' 2>/dev/null
