@@ -1,6 +1,6 @@
 package no.nav.pensjon.integrationtest.controller
 
-import no.nav.pensjon.TestHelper.mockLoggInnslag
+import no.nav.pensjon.TestHelper.mockLoggMelding
 import no.nav.pensjon.domain.LoggMelding
 import no.nav.pensjon.integrationtest.BaseTests
 import no.nav.pensjon.util.fromJson2Any
@@ -18,7 +18,7 @@ internal class LesControllerTests: BaseTests() {
         val personIdent = "11886512250"
         val token: String = mockTokenDings(personIdent)
 
-        loggTjeneste.lagreLoggInnslag(mockLoggInnslag(personIdent))
+        loggTjeneste.lagreLoggInnslag(mockLoggMelding(personIdent, samtykke = "DummyToken"))
         val preChecklist = loggTjeneste.hentAlleLoggInnslagForPerson(personIdent)
         assertEquals(1, preChecklist.size)
 
@@ -33,7 +33,7 @@ internal class LesControllerTests: BaseTests() {
         val list: List<LoggMelding> =  fromJson2Any(result, typeRefs())
 
         val expected = """
-            LoggMelding [person=118865xxxxx, mottaker=938908909, tema=PEN, behandlingsGrunnlag=Lovhjemmel samordningsloven § 27 (samordningsloven paragraf 27), uthentingsTidspunkt=2021-10-09T10:10, leverteData=TGV2ZXJ0ZURhdGEgZXIga3VuIGZvciBkdW1teVRlc3RpbmcgYXYgc3BvcmluZ3Nsb2dnIFRlc3Q=, samtykkeToken=DummyToken, dataForespoersel=Foresporsel, leverandoer=lever]
+            LoggMelding [person=118865xxxxx, mottaker=938908909, tema=PEN, behandlingsGrunnlag=Lovhjemmel samordningsloven § 27 (samordningsloven paragraf 27), uthentingsTidspunkt=2021-10-09T10:10, leverteData=TGV2ZXJ0ZURhdGEgZXIga3VuIGZvciBkdW1teVRlc3RpbmcgYXYgc3BvcmluZ3Nsb2dnIFRlc3Q=, samtykkeToken=DummyToken, dataForespoersel=null, leverandoer=null]
         """.trimIndent()
 
         assertEquals(1, list.size)
@@ -45,7 +45,7 @@ internal class LesControllerTests: BaseTests() {
     fun `sjekk for lescontroller ingen persondata funnet return tom liste` () {
 
         val token: String = mockTokenDings("20883234332")
-        loggTjeneste.lagreLoggInnslag(mockLoggInnslag("1188651431"))
+        loggTjeneste.lagreLoggInnslag(mockLoggMelding("1188651431"))
 
         val response = mockMvc.perform(
             MockMvcRequestBuilders.get("/api/les")
@@ -67,7 +67,7 @@ internal class LesControllerTests: BaseTests() {
         val personIdent = "01086112250"
         val token: String = mockTokenDings(personIdent)
 
-        loggTjeneste.lagreLoggInnslag(mockLoggInnslag(personIdent))
+        loggTjeneste.lagreLoggInnslag(mockLoggMelding(personIdent, samtykke = "DummyToken"))
         val preChecklist = loggTjeneste.hentAlleLoggInnslagForPerson(personIdent)
         assertEquals(1, preChecklist.size)
 
@@ -83,11 +83,35 @@ internal class LesControllerTests: BaseTests() {
         val list: List<LoggMelding> =  fromJson2Any(result, typeRefs())
 
         val expected = """
-            LoggMelding [person=010861xxxxx, mottaker=938908909, tema=PEN, behandlingsGrunnlag=Lovhjemmel samordningsloven § 27 (samordningsloven paragraf 27), uthentingsTidspunkt=2021-10-09T10:10, leverteData=TGV2ZXJ0ZURhdGEgZXIga3VuIGZvciBkdW1teVRlc3RpbmcgYXYgc3BvcmluZ3Nsb2dnIFRlc3Q=, samtykkeToken=DummyToken, dataForespoersel=Foresporsel, leverandoer=lever]
+            LoggMelding [person=010861xxxxx, mottaker=938908909, tema=PEN, behandlingsGrunnlag=Lovhjemmel samordningsloven § 27 (samordningsloven paragraf 27), uthentingsTidspunkt=2021-10-09T10:10, leverteData=TGV2ZXJ0ZURhdGEgZXIga3VuIGZvciBkdW1teVRlc3RpbmcgYXYgc3BvcmluZ3Nsb2dnIFRlc3Q=, samtykkeToken=DummyToken, dataForespoersel=null, leverandoer=null]
         """.trimIndent()
 
         assertEquals(1, list.size)
         assertEquals(expected, list.first().toString())
+
+    }
+
+    @Test
+    fun `sjekk for lescontroller gyldig person fra tokenX funnet return tom liste uten samtykketoken`() {
+        val personIdent = "01116112250"
+        val token: String = mockTokenDings(personIdent)
+
+        loggTjeneste.lagreLoggInnslag(mockLoggMelding(personIdent, samtykke = null))
+        val preChecklist = loggTjeneste.hentAlleLoggInnslagForPerson(personIdent)
+        assertEquals(0, preChecklist.size)
+
+        val response = mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/les")
+                .header("Authorization", "Bearer $token")
+                .header("X-Request-Id", "f9815125-d4a3-TOKENX-TEST")
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        val result = response.response.getContentAsString(charset("UTF-8"))
+        val list: List<LoggMelding> =  fromJson2Any(result, typeRefs())
+
+        assertEquals(0, list.size)
 
     }
 

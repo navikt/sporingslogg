@@ -4,6 +4,7 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import jakarta.annotation.PostConstruct
 import jakarta.transaction.Transactional
 import no.nav.pensjon.domain.LoggInnslag
+import no.nav.pensjon.domain.LoggMelding
 import no.nav.pensjon.metrics.MetricsHelper
 import no.nav.pensjon.tjeneste.ValideringTjeneste.validerIkkeBlank
 import no.nav.pensjon.tjeneste.ValideringTjeneste.validerMaxLengde
@@ -34,7 +35,8 @@ class LoggTjeneste(
         log.info("LoggTjeneste klar..")
     }
 
-    fun lagreLoggInnslag(loggInnslag: LoggInnslag): Long {
+    fun lagreLoggInnslag(loggMelding: LoggMelding): Long {
+        val loggInnslag = LoggInnslag.fromLoggMelding(loggMelding)
         log.debug("Lagrer for person " + loggInnslag.person.scrable() + ", mottaker: " + loggInnslag.mottaker + ", tema: " + loggInnslag.tema)
 
         return validerOgLagre.measure {

@@ -5,7 +5,6 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import jakarta.annotation.PostConstruct
 import no.nav.pensjon.controller.LoggMeldingValidator.validateRequest
 import no.nav.pensjon.controller.SporingsloggValidationException
-import no.nav.pensjon.domain.LoggInnslag
 import no.nav.pensjon.domain.LoggMelding
 import no.nav.pensjon.metrics.MetricsHelper
 import no.nav.pensjon.tjeneste.LoggTjeneste
@@ -62,10 +61,9 @@ class KafkaLoggMeldingConsumer(
                 }
 
                 try {
-                    val loggInnslag = LoggInnslag.fromLoggMelding(LoggMelding.checkForAndEncode(loggMelding))
-                    val loggId = loggTjeneste.lagreLoggInnslag(loggInnslag)
+                    val loggId = loggTjeneste.lagreLoggInnslag(LoggMelding.checkForAndEncode(loggMelding))
 
-                    loggInnslag.tema?.let { countEnhet(it) } //metrics from who. .
+                    loggMelding.tema?.let { countEnhet(it) } //metrics from who. .
 
                     val melding = "ID: $loggId, person: ${loggMelding.scramblePerson()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
                     log.info("Lagret melding med unik: $melding")

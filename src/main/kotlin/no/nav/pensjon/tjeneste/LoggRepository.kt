@@ -11,7 +11,7 @@ interface LoggRepository: JpaRepository<LoggInnslag, Long> {
 
     @Query(
         value = "from LoggInnslag as l " +
-                " where l.person = :personIdent"
+                " where l.person = :personIdent and l.samtykkeToken is not null "
     )
     fun hantAlleLoggInnslagForPerson(@Param("personIdent") personIdent: String): List<LoggInnslag>
 
