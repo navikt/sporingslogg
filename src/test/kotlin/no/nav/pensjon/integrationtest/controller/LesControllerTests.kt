@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 internal class LesControllerTests: BaseTests() {
 
     @Test
-    fun `sjekk for lescontroller gyldig person funnet return liste over data`() {
+    fun `lescontroller gyldig person funnet return liste over data`() {
         val personIdent = "11886512250"
         val token: String = mockTokenDings(personIdent)
 
@@ -42,7 +42,7 @@ internal class LesControllerTests: BaseTests() {
     }
 
     @Test
-    fun `sjekk for lescontroller ingen persondata funnet return tom liste` () {
+    fun `lescontroller ingen persondata funnet return tom liste` () {
 
         val token: String = mockTokenDings("20883234332")
         loggTjeneste.lagreLoggInnslag(mockLoggMelding("1188651431"))
@@ -63,7 +63,7 @@ internal class LesControllerTests: BaseTests() {
 
 
     @Test
-    fun `sjekk for lescontroller gyldig person fra tokenX funnet return liste over data`() {
+    fun `lescontroller gyldig person fra tokenX funnet return liste over data`() {
         val personIdent = "01086112250"
         val token: String = mockTokenDings(personIdent)
 
@@ -92,7 +92,7 @@ internal class LesControllerTests: BaseTests() {
     }
 
     @Test
-    fun `sjekk for lescontroller gyldig person fra tokenX funnet return tom liste uten samtykketoken`() {
+    fun `lescontroller gyldig person fra tokenX funnet return tom liste uten samtykketoken`() {
         val personIdent = "01116112250"
         val token: String = mockTokenDings(personIdent)
 

@@ -21,8 +21,9 @@ internal class FinnControllerTests: BaseTests() {
         val token: String = mockServiceToken()
 
         val response = mockMvc.perform(
-            MockMvcRequestBuilders.get("/sporingslogg/api/test/finn/130552")
+            MockMvcRequestBuilders.get("/sporingslogg/api/test/finn/")
                 .header("Authorization", "Bearer $token")
+                .header("ident", "130552")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
@@ -38,8 +39,9 @@ internal class FinnControllerTests: BaseTests() {
         val test = "test"
 
         val response = mockMvc.perform(
-            MockMvcRequestBuilders.get("/sporingslogg/api/test/finn/010203404")
+            MockMvcRequestBuilders.get("/sporingslogg/api/test/finn/")
                 .header("Authorization", "Bearer $token")
+                .header("ident", "010203404")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
@@ -57,8 +59,9 @@ internal class FinnControllerTests: BaseTests() {
         val token: String = mockServiceToken()
 
         val response = mockMvc.perform(
-            MockMvcRequestBuilders.get("/sporingslogg/api/test/hent/03055212288")
+            MockMvcRequestBuilders.get("/sporingslogg/api/test/hent/")
                 .header("Authorization", "Bearer $token")
+                .header("ident", "03055212288")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
@@ -81,8 +84,9 @@ internal class FinnControllerTests: BaseTests() {
         val token: String = mockServiceToken()
 
         val response = mockMvc.perform(
-            MockMvcRequestBuilders.get("/sporingslogg/api/test/antall/01053212288")
+            MockMvcRequestBuilders.get("/sporingslogg/api/test/antall/")
                 .header("Authorization", "Bearer $token")
+                .header("ident", "01053212288")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
