@@ -30,7 +30,7 @@ internal class KafkaInnkommendeFlereHendelserTest: KafkaTests() {
         val sanitycheck = loggTjeneste.hentAlleLoggInnslagForPerson(personIdent)
         assertEquals(0, sanitycheck.size)
 
-        val loggMelding = mockLoggMelding(personIdent)
+        val loggMelding = mockLoggMelding(personIdent, samtykke = "DummyToken")
         val hendsleJson1 = mapAnyToJson(loggMelding)
         val hendsleJson2 = mapAnyToJson(loggMelding.copy(mottaker = "123456789"))
         val hendsleNotValidert = mapAnyToJson(loggMelding.copy(mottaker = "12345"))

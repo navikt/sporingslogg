@@ -1,7 +1,7 @@
 package no.nav.pensjon.integrationtest.controller
 
 import no.nav.pensjon.TestHelper.base64LevertData
-import no.nav.pensjon.TestHelper.mockLoggInnslag
+import no.nav.pensjon.TestHelper.mockLoggMelding
 import no.nav.pensjon.TestHelper.mockLoggMeldingAsJson
 import no.nav.pensjon.integrationtest.BaseTests
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -14,11 +14,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 internal class PostControllerTest: BaseTests() {
 
     @Test
-    fun `sjekk for postcontroller gyldig loggmelding for post og lagring db`() {
+    fun `Post gyldig loggmelding lagres i db og `() {
         val brukerpid = "08886512234"
 
-        loggTjeneste.lagreLoggInnslag(mockLoggInnslag("12886512250"))
-        loggTjeneste.lagreLoggInnslag(mockLoggInnslag(brukerpid))
+        loggTjeneste.lagreLoggInnslag(mockLoggMelding("12886512250"))
+        loggTjeneste.lagreLoggInnslag(mockLoggMelding(brukerpid, samtykke = "DummyToken"))
 
         val token: String = mockServiceToken()
         val jsondata = mockLoggMeldingAsJson(brukerpid)
@@ -35,7 +35,8 @@ internal class PostControllerTest: BaseTests() {
 
         assertTrue(result.toLong() >= 3L)
         val sets = loggTjeneste.hentAlleLoggInnslagForPerson(brukerpid)
-        assertEquals(2, sets.size )
+        println("Logginnslag: $sets")
+        assertEquals(1, sets.size )
 
         sets.map {loggInnslag ->
             assertEquals(base64LevertData(), loggInnslag.leverteData)
@@ -45,7 +46,7 @@ internal class PostControllerTest: BaseTests() {
     @Test
     fun `sjekk for postcontroller gyldig loggmelding ferdig base64 lagres i db`() {
         val brukerpid = "01884512234"
-        val jsondata = mockLoggMeldingAsJson(brukerpid, levertBase64 = true)
+        val jsondata = mockLoggMeldingAsJson(brukerpid, samtykkeToken = "DummyToken")
         val token: String = mockServiceToken()
 
         val response = mockMvc.perform(

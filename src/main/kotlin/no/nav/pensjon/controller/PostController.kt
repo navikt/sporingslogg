@@ -4,7 +4,6 @@ import io.micrometer.core.instrument.Metrics
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import jakarta.annotation.PostConstruct
 import no.nav.pensjon.controller.LoggMeldingValidator.validateRequestAsResponseRequestExcption
-import no.nav.pensjon.domain.LoggInnslag
 import no.nav.pensjon.domain.LoggMelding
 import no.nav.pensjon.metrics.MetricsHelper
 import no.nav.pensjon.tjeneste.LoggTjeneste
@@ -48,13 +47,12 @@ class PostController(
 
             log.info("Følgende medling kommet inn: $loggMelding, systemBruker: ${tokenHelper.getSystemUserId()}")
 
-            val loggInnslag = LoggInnslag.fromLoggMelding(loggMelding)
-            val loggId = loggTjeneste.lagreLoggInnslag(loggInnslag)
+            val loggId = loggTjeneste.lagreLoggInnslag(loggMelding)
             val melding = "ID: $loggId, person: ${loggMelding.person.scrable()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
 
             log.info("Lagret melding: $melding")
 
-            loggInnslag.tema?.let { countEnhet(it) } //metrics from who. .
+            loggMelding.tema?.let { countEnhet(it) } //metrics from who. .
             log.debug("Loggelding lagret: TEMA: ${loggMelding.tema}, Grunnlag: ${loggMelding.behandlingsGrunnlag}, Mottaker: ${loggMelding.mottaker}, Leverandør: ${loggMelding.leverandoer}, Request: ${loggMelding.dataForespoersel}")
 
             log.info("*** Innnkommende request END")

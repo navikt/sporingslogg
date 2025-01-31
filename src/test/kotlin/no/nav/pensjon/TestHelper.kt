@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 
 object TestHelper {
 
-    fun mockLoggInnslag(ident: String = "11886512234") : LoggInnslag {
+    fun mockLoggInnslag(ident: String = "11886512234", samtykke: String? = "DummyToken") : LoggInnslag {
         val tidspunkt  = LocalDateTime.of(2021, 10, 9, 10, 10)
         return LoggInnslag(
             person = ident,
@@ -18,13 +18,13 @@ object TestHelper {
             hjemmel = "Lovhjemmel samordningsloven § 27 (samordningsloven paragraf 27)",
             uthentingsTidspunkt = tidspunkt,
             leverteData = base64LevertData(),
-            samtykkeToken =  "DummyToken",
+            samtykkeToken =  samtykke,
             foresporsel = "Foresporsel",
             leverandor = "lever"
         )
     }
 
-    fun mockLoggMelding(ident: String = "11886512234", mottaker: String = "938908909", tema: String = "PEN", levertBase64: Boolean = false): LoggMelding {
+    fun mockLoggMelding(ident: String = "11886512234", mottaker: String = "938908909", tema: String = "PEN", samtykke: String? = null): LoggMelding {
         val tidspunkt  = LocalDateTime.of(2021, 10, 9, 10, 10)
         return LoggMelding(
             id = null,
@@ -33,14 +33,15 @@ object TestHelper {
             tema = tema,
             behandlingsGrunnlag = "Lovhjemmel samordningsloven § 27 (samordningsloven paragraf 27)",
             uthentingsTidspunkt = tidspunkt,
-            leverteData = if (levertBase64) base64LevertData() else "LeverteData er kun for dummyTesting av sporingslogg Test",
-            samtykkeToken = null,
+            leverteData = base64LevertData(),
+            samtykkeToken = samtykke,
             leverandoer = null,
             dataForespoersel = null
         )
     }
 
-    fun mockLoggMeldingAsJson(ident: String = "11886512234", mottaker: String = "938908909", tema: String = "PEN",  levertBase64: Boolean = false) = mapAnyToJson(mockLoggMelding(ident, mottaker, tema, levertBase64))
+    fun mockLoggMeldingAsJson(ident: String = "11886512234", mottaker: String = "938908909", tema: String = "PEN", samtykkeToken: String? = null) =
+        mapAnyToJson(mockLoggMelding(ident, mottaker, tema, samtykke = samtykkeToken))
 
 
     fun mockNoneValidLoggMeldingJson() : String {

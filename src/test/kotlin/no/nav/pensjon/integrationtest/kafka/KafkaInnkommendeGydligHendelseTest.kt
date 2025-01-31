@@ -28,7 +28,7 @@ internal class KafkaInnkommendeGydligHendelseTest: KafkaTests() {
     fun `Naar en hendsle av LoggMelding er gyldig Saa skal det lagres til db`() {
         val personIdent = "20903322123"
 
-        val mockLoggMelding = mockLoggMelding(personIdent)
+        val mockLoggMelding = mockLoggMelding(personIdent, samtykke = "DummyToken")
         val hendsleJson = mapAnyToJson(mockLoggMelding)
 
 
