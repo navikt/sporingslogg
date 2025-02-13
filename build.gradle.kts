@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
-val kotlinVersion= "2.1.0"
+val kotlinVersion= "2.1.10"
 val prometeusVersion= "1.14.4"
-val springbootVersion= "3.4.1"
+val springbootVersion= "3.4.2"
 val springkafkaVersion="3.3.2"
 val springwebmvcpac4jVersion = "8.0.0"
 val springframeworkbomVersion = "6.2.2"
@@ -14,7 +14,7 @@ val logstashlogbackVersion="8.0"
 val tokensupportVersion = "5.0.16"
 val tokensupporttestVersion = "2.0.5"
 val mockOAuth2ServerVersion = "2.1.10"
-val hibernateCoreVersion = "6.6.5.Final"
+val hibernateCoreVersion = "6.6.7.Final"
 val jakartaAnnotationApiVersion = "3.0.0"
 val jakartaInjectApiVersion = "2.0.1"
 val mockkVersion = "1.13.16"
@@ -23,8 +23,8 @@ val junitplatformVersion = "1.11.4"
 val h2DbVersion = "2.3.232"
 
 plugins {
-    val pluginSpringBootVersion = "3.4.1"
-    val pluginKotlinVersion = "2.1.0"
+    val pluginSpringBootVersion = "3.4.2"
+    val pluginKotlinVersion = "2.1.10"
 
     kotlin("jvm") version pluginKotlinVersion
     kotlin("plugin.spring") version pluginKotlinVersion
