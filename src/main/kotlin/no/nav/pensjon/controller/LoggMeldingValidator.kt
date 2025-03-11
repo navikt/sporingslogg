@@ -12,7 +12,7 @@ object LoggMeldingValidator {
     private const val MOTTAKER_NR_LENGTH: Int = 9
     private const val TEMA_LENGTH: Int = 3
 
-    private const val BEHANDLINGSGRUNNLAG_MAX_LENGTH: Int = 100
+    private const val BEHANDLINGSGRUNNLAG_MAX_LENGTH: Int = 110
     private const val SAMTYKKE_TOKEN_MAX_LENGTH: Int = 1000
     private const val DATAFORESPOERSEL_MAX_LENGTH = 100000
 
