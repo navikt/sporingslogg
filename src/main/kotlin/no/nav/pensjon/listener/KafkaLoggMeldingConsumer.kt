@@ -53,9 +53,10 @@ class KafkaLoggMeldingConsumer(
                 }
 
                 try {
+                    log.info("Prøver å validere innkommende melding, tema: ${loggMelding.tema}")
                     validateRequest(loggMelding)
                 } catch (sve: SporingsloggValidationException) {
-                    log.error("Mottatt sporingsmelding kan ikke valideres, må evt rettes og sendes inn på nytt.", sve)
+                    log.error("Mottatt sporingsmelding kan ikke valideres, må evt rettes og sendes inn på nytt. feil: ${sve.message}", sve)
                     acknowledgment.acknowledge()
                     return@measure
                 }
