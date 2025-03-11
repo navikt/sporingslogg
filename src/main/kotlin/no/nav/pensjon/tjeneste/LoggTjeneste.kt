@@ -48,7 +48,7 @@ class LoggTjeneste(
         validerIkkeBlank(loggInnslag.tema, "tema")
         validerMaxLengde(loggInnslag.tema, 3, "tema")
         validerIkkeBlank(loggInnslag.hjemmel, "hjemmel")
-        validerMaxLengde(loggInnslag.hjemmel, 100, "hjemmel")
+        validerMaxLengde(loggInnslag.hjemmel, 110, "hjemmel")
         validerIkkeBlank(loggInnslag.leverteData, "data")
         validerMaxLengde(loggInnslag.leverteData, 1000000, "data")
         validerMaxLengde(loggInnslag.samtykkeToken, 1000, "samtykketoken")
