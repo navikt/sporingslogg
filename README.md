@@ -12,15 +12,15 @@ Disse meldinger skal lagres og gjøres tilgjengelig for brukere når de logger i
 ```
 
 * Lytter på kafka strøm og lagrer i db
-* Rest tjeneste hvor bruker kan hente opp sine data fra db
 * Rest tjeneste hvor systemer kan lagre i db (i stedet for kafka)
 
+* Rest tjeneste hvor bruker kan hente opp sine data fra db
+ - kun orginale hendelser hvor samtykke er med vil videre bli levert ut til nav.no
 
-### Sporingslogg har følgende plan ut 2022.
+### Applikasjon sporingslogg vil fortsette å ACK meldinger selv om:
+* Feiler ved konvertering fra Json hendelse (json er ikke korrekt se under hvordan melding skal se ut)
+* Feiler ved validering av hendelsen påkrevde felt, størrelse på feil o.l 
 
-* plan er å flytte til gcp.
-* flytte db fra oracle fss til postgresql gcp
-* plan kafka om å flytte til gcp. (aiven)
 
 
 ### Eksempel på hvordan melding skal se ut:
