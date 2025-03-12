@@ -10,6 +10,7 @@ import no.nav.pensjon.tjeneste.LoggTjeneste
 import no.nav.pensjon.util.scrable
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping
@@ -35,27 +36,26 @@ class PostController(
     @PostMapping("sporingslogg/api/post", produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     @ProtectedWithClaims(issuer = "servicebruker")
     fun postLoggMelding(@RequestBody request: LoggMelding) : Long {
-
-        log.debug("Request: $request")
-
         return postController.measure {
+            MDC.put("tema", request.tema)
             log.info("*** Innkommende request")
+
             validateRequestAsResponseRequestExcption(request) //viktig må være først
 
             log.debug("LoggMelding Base64? = ${LoggMelding.checkForEncode(request)}")
             val loggMelding = LoggMelding.checkForAndEncode(request) //Check for base64 encode if plain text
 
-            log.info("Følgende medling kommet inn: $loggMelding, systemBruker: ${tokenHelper.getSystemUserId()}")
+            log.info("Følgende medling kommet inn: ${loggMelding.tema}, systemBruker: ${tokenHelper.getSystemUserId()}")
 
             val loggId = loggTjeneste.lagreLoggInnslag(loggMelding)
-            val melding = "ID: $loggId, person: ${loggMelding.person.scrable()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
+            val meldingid = "ID: $loggId, person: ${loggMelding.person.scrable()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
 
-            log.info("Lagret melding: $melding")
+            log.info("Lagret melding: $meldingid")
 
             loggMelding.tema?.let { countEnhet(it) } //metrics from who. .
-            log.debug("Loggelding lagret: TEMA: ${loggMelding.tema}, Grunnlag: ${loggMelding.behandlingsGrunnlag}, Mottaker: ${loggMelding.mottaker}, Leverandør: ${loggMelding.leverandoer}, Request: ${loggMelding.dataForespoersel}")
 
             log.info("*** Innnkommende request END")
+            MDC.remove("tema")
             return@measure loggId
         }
     }

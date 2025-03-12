@@ -56,9 +56,20 @@ class KafkaLoggMeldingConsumer(
                 val loggMelding: LoggMelding = try {
                     LoggMelding.fromJson(hendelse)
                 } catch (e: Exception) {
+                    if (temaJson(hendelse) == "AAP") {
+                        log.info("Ekstra step teama = AAP")
+                        try {
+                            LoggMelding.fromJsonSkipFail(hendelse)
+                        } catch (ex: Exception) {
+                            log.error("Mottatt sporingsmelding kan ikke deserialiseres, må evt rettes og sendes inn på nytt.", e)
+                            acknowledgment.acknowledge()
+                            return@measure
+                        }
+                    }
                     log.error("Mottatt sporingsmelding kan ikke deserialiseres, må evt rettes og sendes inn på nytt.", e)
                     acknowledgment.acknowledge()
                     return@measure
+
                 }
 
                 try {

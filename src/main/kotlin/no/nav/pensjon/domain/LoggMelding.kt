@@ -49,6 +49,7 @@ data class LoggMelding(
         }
 
         fun fromJson(json: String): LoggMelding = fromJson2Any(json, typeRefs())
+        fun fromJsonSkipFail(json: String): LoggMelding = fromJson2Any(json, typeRefs(), false)
 
         fun fromLoggInnslag(loggInnslag: LoggInnslag): LoggMelding {
             return LoggMelding(
