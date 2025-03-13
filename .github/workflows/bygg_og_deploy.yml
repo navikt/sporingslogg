@@ -1,9 +1,9 @@
 name: Bygg og deploy
 
-on:
-  push:
-    branches:
-      - master
+#on:
+#  push:
+#    branches:
+#      - master
 
 jobs:
   build_and_tag:
