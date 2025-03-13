@@ -38,19 +38,6 @@ jobs:
       - name: Build and test with Gradle
         run: ./gradlew build --stacktrace
 
-      # SETTER DATO OG COMMIT VARIABEL
-      - name: Set date & hash
-        run: |
-          export TZ=CET
-          echo "DATE=$(date "+%Y-%m-%d--%H-%M-%S")" >> $GITHUB_ENV
-          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-      # SETTER IMAGE VARIABEL
-      - name: Set ImageDate
-        id: setimage
-        run: |
-          echo "IMAGE_DATE=${{ env.DATE }}-${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
-          echo "IMAGE_DATE=${{ env.DATE }}-${{ env.COMMIT_HASH }}" >> $GITHUB_OUTPUT
-
       - name: Nais docker-build
         uses: nais/docker-build-push@v0
         id: docker-push
@@ -58,7 +45,6 @@ jobs:
           team: pensjonsamhandling
           tag: ${{ github.event.repository.name }}
           pull: true
-          #image_suffix: ${{ env.IMAGE_DATE }}
 
       - name: 'Deploy image'
         run: echo "IMAGE=${{ steps.docker-push.outputs.image }}"
@@ -96,33 +82,33 @@ jobs:
           "CLUSTER": dev-gcp
           "RESOURCE": nais/topics/loggmeldingmottatt-q2.yaml
 
-#  deployToProd:
-#    permissions:
-#      contents: "read"
-#      id-token: "write"
-#    name: 'Deploy NAIS PROD'
-#    needs: deployToQ2
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - name: Deploy to PROD
-#        uses: nais/deploy/actions/deploy@v2
-#        env:
-#          "CLUSTER": prod-fss
-#          "RESOURCE": nais/prod.yaml
-#          "IMAGE": ${{ needs.deployToQ2.outputs.image }}
-#
-#  deployTopicToProd:
-#    permissions:
-#      contents: "read"
-#      id-token: "write"
-#    name: 'Deploy topics PROD'
-#    needs: deployToProd
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - name: Deploy public-sporingslogg-loggmeldingMottatt to pensjonsamhandling namespace
-#        uses: nais/deploy/actions/deploy@v2
-#        env:
-#          "CLUSTER": prod-gcp
-#          "RESOURCE": nais/topics/loggmeldingmottatt.yaml
+  deployToProd:
+    permissions:
+      contents: "read"
+      id-token: "write"
+    name: 'Deploy NAIS PROD'
+    needs: deployToQ2
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to PROD
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          "CLUSTER": prod-fss
+          "RESOURCE": nais/prod.yaml
+          "IMAGE": ${{ needs.deployToQ2.outputs.image }}
+
+  deployTopicToProd:
+    permissions:
+      contents: "read"
+      id-token: "write"
+    name: 'Deploy topics PROD'
+    needs: deployToProd
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy public-sporingslogg-loggmeldingMottatt to pensjonsamhandling namespace
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          "CLUSTER": prod-gcp
+          "RESOURCE": nais/topics/loggmeldingmottatt.yaml

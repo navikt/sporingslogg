@@ -1,4 +1,4 @@
-name: Bygg og deploy
+name: Bygg og deploy sandbox v2
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
       id-token: write
       checks: write
     outputs:
-      image: ${{ steps.setimage.outputs.IMAGE }}
+      image: ${{ steps.docker-push.outputs.image }}
     steps:
       # PULL REPO
       - name: Pull repo
@@ -37,34 +37,14 @@ jobs:
       - name: Build and test with Gradle
         run: ./gradlew build --stacktrace
 
-      # LOGGIN TO GHCR
-      - name: Login GHCR
-        uses: docker/login-action@v3.3.0
+      - name: Nais docker-build
+        uses: nais/docker-build-push@v0
+        id: docker-push
         with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      # SETTER DATO OG COMMIT VARIABEL
-      - name: Set date & hash
-        run: |
-          export TZ=CET
-          echo "DATE=$(date "+%Y-%m-%d--%H-%M-%S")" >> $GITHUB_ENV
-          echo "COMMIT_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
-      # SETTER IMAGE VARIABEL
-      - name: Set Image
-        id: setimage
-        run: | 
-          echo "IMAGE=ghcr.io/${{ github.repository }}/sporingslogg:${{ env.DATE }}---${{ env.COMMIT_HASH }}---sandbox" >> $GITHUB_ENV
-          echo "IMAGE=ghcr.io/${{ github.repository }}/sporingslogg:${{ env.DATE }}---${{ env.COMMIT_HASH }}---sandbox" >> $GITHUB_OUTPUT
-
-      # PUBLISH DOCKER IMAGE
-      - name: Build and push docker image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: ${{ env.IMAGE }}
+          team: pensjonsamhandling
+          tag: ${{ github.event.repository.name }}
+          pull: true
+          image_suffix: "sandbox"
 
   deployToQ2:
     permissions:
