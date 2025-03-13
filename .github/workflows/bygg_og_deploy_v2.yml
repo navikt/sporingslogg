@@ -43,9 +43,9 @@ jobs:
         run: |
           export TZ=CET
           echo "DATE=$(date "+%Y-%m-%d--%H-%M-%S")" >> $GITHUB_ENV
-          echo "COMMIT_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       # SETTER IMAGE VARIABEL
-      - name: Set Image
+      - name: Set ImageDate
         id: setimage
         run: |
           echo "IMAGE_DATE=${{ env.DATE }}-${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
@@ -56,9 +56,9 @@ jobs:
         id: docker-push
         with:
           team: pensjonsamhandling
-          tag: ${{ github.repository }}
+          tag: ${{ github.event.repository.name }}
           pull: true
-          image_suffix: ${{ env.DATE }}${{ env.COMMIT_HASH }}
+          image_suffix: ${{ env.IMAGE_DATE }}
 
       - name: 'Deploy image'
         run: echo "IMAGE=${{ steps.docker-push.outputs.image }}"
@@ -80,7 +80,7 @@ jobs:
 #          CLUSTER: dev-fss
 #          RESOURCE: nais/dev_q2.yaml
 #          IMAGE: ${{ needs.build_and_tag.outputs.image }}
-#
+
 #  deployTopicToQ2:
 #    permissions:
 #      contents: "read"
