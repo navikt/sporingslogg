@@ -58,43 +58,43 @@ jobs:
           team: pensjonsamhandling
           tag: ${{ github.event.repository.name }}
           pull: true
-          image_suffix: ${{ env.IMAGE_DATE }}
+          #image_suffix: ${{ env.IMAGE_DATE }}
 
       - name: 'Deploy image'
         run: echo "IMAGE=${{ steps.docker-push.outputs.image }}"
 
-#  deployToQ2:
-#    permissions:
-#      contents: "read"
-#      id-token: "write"
-#    name: 'Deploy NAIS Q2'
-#    needs: build_and_tag
-#    outputs:
-#      image: ${{ needs.build_and_tag.outputs.image }}
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - name: Deploy to Q2
-#        uses: nais/deploy/actions/deploy@v2
-#        env:
-#          CLUSTER: dev-fss
-#          RESOURCE: nais/dev_q2.yaml
-#          IMAGE: ${{ needs.build_and_tag.outputs.image }}
+  deployToQ2:
+    permissions:
+      contents: "read"
+      id-token: "write"
+    name: 'Deploy NAIS Q2'
+    needs: build_and_tag
+    outputs:
+      image: ${{ needs.build_and_tag.outputs.image }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Q2
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-fss
+          RESOURCE: nais/dev_q2.yaml
+          IMAGE: ${{ needs.build_and_tag.outputs.image }}
 
-#  deployTopicToQ2:
-#    permissions:
-#      contents: "read"
-#      id-token: "write"
-#    name: 'Deploy topics DEV'
-#    needs: deployToQ2
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - name: Deploy public-sporingslogg-loggmeldingMottatt-q2 to pensjonsamhandling namespace
-#        uses: nais/deploy/actions/deploy@v2
-#        env:
-#          "CLUSTER": dev-gcp
-#          "RESOURCE": nais/topics/loggmeldingmottatt-q2.yaml
+  deployTopicToQ2:
+    permissions:
+      contents: "read"
+      id-token: "write"
+    name: 'Deploy topics DEV'
+    needs: deployToQ2
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy public-sporingslogg-loggmeldingMottatt-q2 to pensjonsamhandling namespace
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          "CLUSTER": dev-gcp
+          "RESOURCE": nais/topics/loggmeldingmottatt-q2.yaml
 
 #  deployToProd:
 #    permissions:
