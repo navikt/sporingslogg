@@ -48,28 +48,16 @@ class KafkaLoggMeldingConsumer(
     )
     fun sporingsloggConsumer(hendelse: String, cr: ConsumerRecord<Int, String>, acknowledgment: Acknowledgment) {
         MDC.putCloseable("x_request_id", UUID.randomUUID().toString()).use {
-            MDC.put("tema",temaJson(hendelse))
-
             kafkaCounter.measure {
+                MDC.put("tema",temaJson(hendelse))
                 log.info("*** Innkommende hendelse. Offset: ${cr.offset()}, Partition: ${cr.partition()}")
 
                 val loggMelding: LoggMelding = try {
                     LoggMelding.fromJson(hendelse)
                 } catch (e: Exception) {
-                    if (temaJson(hendelse) == "AAP") {
-                        log.info("Ekstra step teama = AAP")
-                        try {
-                            LoggMelding.fromJsonSkipFail(hendelse)
-                        } catch (ex: Exception) {
-                            log.error("Mottatt sporingsmelding kan ikke deserialiseres, må evt rettes og sendes inn på nytt.", e)
-                            acknowledgment.acknowledge()
-                            return@measure
-                        }
-                    }
                     log.error("Mottatt sporingsmelding kan ikke deserialiseres, må evt rettes og sendes inn på nytt.", e)
                     acknowledgment.acknowledge()
                     return@measure
-
                 }
 
                 try {
@@ -100,6 +88,7 @@ class KafkaLoggMeldingConsumer(
                     Thread.sleep(3000L) //sleep 3sek..
                     throw Exception("Feilet ved lagre LoggInnslag", e)
                 }
+                MDC.remove("tema")
             }
         }
         latch.countDown()

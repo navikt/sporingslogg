@@ -47,7 +47,6 @@ object TestHelper {
     fun mockNoneValidLoggMeldingJson() : String {
         return """
             {
-              "id": 12,
               "title": "Brown Perfume",
               "description": "Royal_Mirage Sport Brown Perfu",
               "price": 40,
@@ -58,6 +57,20 @@ object TestHelper {
         """.trimIndent()
     }
 
+    fun mockNoneValidAAPMelding(): String {
+        return """
+         {
+           "person" : "17468742829",
+           "mottaker" : "938908909",
+           "tema" : "AAP",
+           "behandlingsGrunnlag" : "Lovhjemmel samordningsloven § 27 (samordningsloven paragraf 27)",
+           "uthentingsTidspunkt" : "2018-10-19T12:24:21.675",
+           "leverteData" : "${base64LevertData()}",
+           "leverandoer" : "123213123",
+           "saksId" : "4335134"
+          }           
+        """.trimIndent()
+    }
 
     fun base64LevertData(): String = "TGV2ZXJ0ZURhdGEgZXIga3VuIGZvciBkdW1teVRlc3RpbmcgYXYgc3BvcmluZ3Nsb2dnIFRlc3Q="
 

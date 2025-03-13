@@ -87,4 +87,7 @@ class LoggTjeneste(
     @Transactional
     fun countAlleLoggInnslagForPerson(ident: String): Int = loggRepository.countAlleLoggInnslagForPerson(ident)
 
+    @Transactional
+    fun countAlleLogginnslag() = loggRepository.count()
+
 }

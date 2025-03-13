@@ -1,11 +1,11 @@
 package no.nav.pensjon.util
 
 import com.fasterxml.jackson.core.JsonParseException
-import com.fasterxml.jackson.core.JsonProcessingException
 import no.nav.pensjon.TestHelper.mockLoggMeldingAsJson
 import no.nav.pensjon.TestHelper.mockNoneValidLoggMeldingJson
 import no.nav.pensjon.domain.LoggMelding
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -46,9 +46,8 @@ class UtilTest {
     fun `from noneValid Json to LoggMelding`() {
 
         val json = mockNoneValidLoggMeldingJson()
-        assertThrows<JsonProcessingException> {
-           LoggMelding.fromJson(json)
-        }
+        val obj = LoggMelding.fromJson(json)
+        assertNotNull(obj)
     }
 
     @Test

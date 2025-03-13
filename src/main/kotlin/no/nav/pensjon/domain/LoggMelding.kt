@@ -1,5 +1,6 @@
 package no.nav.pensjon.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import no.nav.pensjon.util.fromJson2Any
 import no.nav.pensjon.util.scrable
@@ -10,6 +11,7 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class LoggMelding(
     val id: String?,
     val person: String?,
