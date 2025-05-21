@@ -17,8 +17,11 @@ spec:
   accessPolicy:
     inbound:
       rules:
-        - application: dsop-api
+        - application: dsop-api # Fjernes når tms-personopplysninger-api har tatt over
           namespace: personbruker
+          cluster: dev-gcp
+        - application: tms-personopplysninger-api  # Tar over for dsop-api
+          namespace: min-side
           cluster: dev-gcp
         - application: pensjon-pen-q0
           namespace: pensjon-q0
