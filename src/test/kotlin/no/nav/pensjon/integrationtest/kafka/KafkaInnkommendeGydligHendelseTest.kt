@@ -5,7 +5,6 @@ import no.nav.pensjon.TestHelper.mapAnyToJson
 import no.nav.pensjon.TestHelper.mockLoggMelding
 import no.nav.pensjon.integrationtest.DataSourceTestConfig
 import no.nav.pensjon.integrationtest.KafkaTestConfig
-import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest( classes = [DataSourceTestConfig::class, KafkaTestConfig::class, TestApplication::class])
 @ActiveProfiles("test")
-@EnableMockOAuth2Server
 @DirtiesContext
 @EmbeddedKafka(topics = [TOPIC])
 internal class KafkaInnkommendeGydligHendelseTest: KafkaTests() {
