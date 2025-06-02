@@ -4,7 +4,6 @@ import no.nav.pensjon.TestApplication
 import no.nav.pensjon.TestHelper.mockNoneValidLoggMeldingJson
 import no.nav.pensjon.integrationtest.DataSourceTestConfig
 import no.nav.pensjon.integrationtest.KafkaTestConfig
-import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -16,7 +15,6 @@ import org.springframework.test.context.ActiveProfiles
 
 @SpringBootTest( classes = [DataSourceTestConfig::class, KafkaTestConfig::class, TestApplication::class])
 @ActiveProfiles("test")
-@EnableMockOAuth2Server
 @DirtiesContext
 @EmbeddedKafka(topics = [TOPIC])
 internal class KafkaInnkommendeUGydligHendelseTest: KafkaTests(){
@@ -26,7 +24,6 @@ internal class KafkaInnkommendeUGydligHendelseTest: KafkaTests(){
         val personIdent = "20903322123"
 
         assertEquals(0, loggTjeneste.hentAlleLoggInnslagForPerson(personIdent).size)
-
         val hendsleJson = mockNoneValidLoggMeldingJson()
 
         //send msg
@@ -35,8 +32,8 @@ internal class KafkaInnkommendeUGydligHendelseTest: KafkaTests(){
                 it.waitForlatch(kafkaLoggMeldingConsumer)
             }
 
-
-        assertTrue(sjekkLoggingFinnes("Mottatt sporingsmelding kan ikke valideres, må evt rettes og sendes inn på nytt."))
+        //assertTrue(sjekkLoggingFinnes("Mottatt sporingsmelding kan ikke deserialiseres, må evt rettes og sendes inn på nytt."))
+        assertTrue(sjekkLoggingFinnes("Mottatt sporingsmelding kan ikke valideres, må evt rettes og sendes inn på nytt. feil:"))
         assertEquals(0, loggTjeneste.hentAlleLoggInnslagForPerson(personIdent).size)
 
     }

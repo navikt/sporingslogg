@@ -10,12 +10,12 @@ class DataSourceTestConfig {
 
     @Bean("DataSource")
     fun createTestDataSource(): DataSource {
-        val dataSourceBuilder = DataSourceBuilder.create()
-        dataSourceBuilder.driverClassName("org.h2.Driver")
-        dataSourceBuilder.url("jdbc:h2:mem:mydbsporingslogg")
-        dataSourceBuilder.username("sa")
-        dataSourceBuilder.password("")
-        return dataSourceBuilder.build()
+        return DataSourceBuilder.create()
+            .driverClassName("org.h2.Driver")
+            .url("jdbc:h2:mem:mydbsporingslogg")
+            .username("sa")
+            .password("")
+            .build()
     }
 
 }

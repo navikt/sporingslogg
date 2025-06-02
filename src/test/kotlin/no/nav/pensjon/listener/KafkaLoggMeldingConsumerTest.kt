@@ -9,11 +9,9 @@ import no.nav.pensjon.TestHelper.mockLoggMeldingAsJson
 import no.nav.pensjon.TestHelper.mockNoneValidLoggMeldingJson
 import no.nav.pensjon.tjeneste.LoggTjeneste
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.kafka.support.Acknowledgment
-import java.sql.SQLException
 
 internal class KafkaLoggMeldingConsumerTest {
 
@@ -51,14 +49,13 @@ internal class KafkaLoggMeldingConsumerTest {
 
     }
 
-    @Test
-    @Disabled
-    fun testingAvConsumerSomFeilerVedLagring2() {
-        val hendelse = mockLoggMeldingAsJson(tema = "NYK!")
-        every { loggTjeneste.lagreLoggInnslag(any()) } throws SQLException("ORA-12899: verdien er for stor for kolonnen")
-        kafkaLoggMeldingConsumer.sporingsloggConsumer(hendelse, mockk(relaxed = true), acknowledgment)
-        verify(exactly = 1) { acknowledgment.acknowledge() }
-    }
+//    @Test
+//    fun testingAvConsumerSomFeilerVedLagring2() {
+//        val hendelse = mockLoggMeldingAsJson(tema = "NYK")
+//        every { loggTjeneste.lagreLoggInnslag(any()) } throws SQLException("ORA-12899: verdien er for stor for kolonnen")
+//        kafkaLoggMeldingConsumer.sporingsloggConsumer(hendelse, mockk(relaxed = true), acknowledgment)
+//        verify(exactly = 1) { acknowledgment.acknowledge() }
+//    }
 
     @Test
     fun testingFeiletAvConsumer() {
