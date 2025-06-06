@@ -78,3 +78,6 @@ spec:
       destinations:
         - id: grafana-lgtm
         - id: elastic-apm
+    logging:
+      destinations:
+        - id: loki
