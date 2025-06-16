@@ -46,11 +46,10 @@ spec:
     cpuThresholdPercentage: 80
   resources:
     limits:
-      cpu: 1000m
-      memory: 1200Mi
+      memory: 850Mi
     requests:
-      cpu: 500m
-      memory: 500Mi
+      cpu: 50m
+      memory: 550Mi
   webproxy: true
   kafka:
     pool: nav-prod
