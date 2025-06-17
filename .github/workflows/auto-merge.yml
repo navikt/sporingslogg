@@ -16,8 +16,7 @@ jobs:
       - name: Check for dependencies label
         id: label_check
         run: |
-          labels="${{ toJson(github.event.pull_request.labels) }}"
-          if echo "$labels" | grep -q '"name": "dependencies"'; then
+          if echo "${{ join(github.event.pull_request.labels.*.name, ' ') }}" | grep -w "dependencies"; then
             echo "has_dependencies_label=true" >> $GITHUB_OUTPUT
           else
             echo "has_dependencies_label=false" >> $GITHUB_OUTPUT
