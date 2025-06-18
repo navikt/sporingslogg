@@ -4,22 +4,23 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, labeled]
 
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
-  automerge:
+  automergecheck:
     if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
+    outputs:
+      label: steps.label_check.outputs.LABEL
+      patch: steps.check.outputs.PATCH
     steps:
       - name: Check for dependencies label
         id: label_check
         run: |
           if echo "${{ join(github.event.pull_request.labels.*.name, ' ') }}" | grep -w "dependencies"; then
-            echo "has_dependencies_label=true" >> $GITHUB_OUTPUT
+              echo "LABEL=true"
+              echo "has_dependencies_label=true" >> $GITHUB_OUTPUT
           else
-            echo "has_dependencies_label=false" >> $GITHUB_OUTPUT
+              echo "LABEL=false"
+              echo "has_dependencies_label=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Check if PR is a patch update
@@ -37,22 +38,38 @@ jobs:
             to_patch=${BASH_REMATCH[6]}
 
             if [[ "$from_major" == "$to_major" && "$from_minor" == "$to_minor" && "$from_patch" != "$to_patch" ]]; then
+              echo "PATCH=true" 
               echo "patch_update=true" >> $GITHUB_OUTPUT
             else
+              echo "PATCH=false" 
               echo "patch_update=false" >> $GITHUB_OUTPUT
             fi
           else
+            echo "PATCH=false" 
             echo "patch_update=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Print output
-        run: |
-          echo steps.check.outputs.patch_update
-          echo steps.label_check.outputs.has_dependencies_label
+  printOutput:
+    name: Print Output
+    needs: automergecheck
+    runs-on: ubuntu-latest
+    steps:
+        - name: Print output
+          run: |
+            echo label : ${{ needs.automerge.outputs.label }}
+            echo patch : ${{ needs.automerge.outputs.patch }}
 
-      - name: Enable auto-merge
-        if: steps.check.outputs.patch_update == 'true' && steps.label_check.outputs.has_dependencies_label == 'true'
-        run: gh pr merge "$PR_URL" --auto --merge
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
+  automerge:
+    name: Auto Merge dependabot
+    needs: printOutput
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+        - name: Enable auto-merge
+          if: steps.check.outputs.patch_update == 'true' && steps.label_check.outputs.has_dependencies_label == 'true'
+          run: gh pr merge "$PR_URL" --auto --merge
+          env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            PR_URL: ${{ github.event.pull_request.html_url }}
