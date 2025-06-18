@@ -12,10 +12,11 @@ on:
 
 jobs:
   build_and_tag:
-    if: (github.event_name == 'workflow_run' &&
+    if: |
+      ((github.event_name == 'workflow_run' &&
        github.event.workflow_run.conclusion == 'success' &&
        github.event.workflow_run.actor.login == 'dependabot[bot]') ||
-      github.event_name == 'workflow_dispatch'
+      github.event_name == 'workflow_dispatch')
     name: 'Build and tag'
     runs-on: ubuntu-latest
     permissions:
