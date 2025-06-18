@@ -9,16 +9,16 @@ jobs:
     if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
     outputs:
-      label: steps.label_check.outputs.LABEL
-      patch: steps.check.outputs.PATCH
+      label: steps.label_check.outputs.label
+      patch: steps.check.outputs.patch
     steps:
       - name: Check for dependencies label
         id: label_check
         run: |
           if echo "${{ join(github.event.pull_request.labels.*.name, ' ') }}" | grep -w "dependencies"; then
-              echo "LABEL=true"
+              echo "label=${{ true }}"
           else
-              echo "LABEL=false"
+              echo "label=${{false }}"
           fi
 
       - name: Check if PR is a patch update
@@ -36,12 +36,12 @@ jobs:
             to_patch=${BASH_REMATCH[6]}
 
             if [[ "$from_major" == "$to_major" && "$from_minor" == "$to_minor" && "$from_patch" != "$to_patch" ]]; then
-              echo "PATCH=true" 
+              echo "PATCH=${{ true }}" 
             else
-              echo "PATCH=false" 
+              echo "PATCH=${{ false }}" 
             fi
           else
-            echo "PATCH=false" 
+            echo "PATCH=${{ false }}" 
           fi
 
   printOutput:
