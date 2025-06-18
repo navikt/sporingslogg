@@ -27,8 +27,8 @@ jobs:
         run: |
           title="${{ github.event.pull_request.title }}"
           
-          # Match title like: Bump xxx from x.y.z to x.y.w (same x and y, z != w)
-          if [[ "$title" =~ ^Bump\ .*\ from\ ([0-9]+)\.([0-9]+)\.([0-9]+)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+          # Match title like: (B|b)ump xxx from x.y.z to x.y.w (same x and y, z != w)
+          if [[ "$title" =~ ^(B|b)ump\ .*\ from\ ([0-9]+)\.([0-9]+)\.([0-9]+)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
             from_major=${BASH_REMATCH[1]}
             from_minor=${BASH_REMATCH[2]}
             from_patch=${BASH_REMATCH[3]}

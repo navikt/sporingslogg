@@ -8,8 +8,6 @@ updates:
       timezone: Europe/Oslo
     allow:
       - dependency-type: "direct"
-    commit-message:
-      prefix: "deps"
     open-pull-requests-limit: 10
   - package-ecosystem: github-actions
     directory: "/"
