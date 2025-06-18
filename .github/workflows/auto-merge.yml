@@ -45,6 +45,11 @@ jobs:
             echo "patch_update=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Print output
+        run: |
+          echo steps.check.outputs.patch_update
+          echo steps.label_check.outputs.has_dependencies_label
+
       - name: Enable auto-merge
         if: steps.check.outputs.patch_update == 'true' && steps.label_check.outputs.has_dependencies_label == 'true'
         run: gh pr merge "$PR_URL" --auto --merge

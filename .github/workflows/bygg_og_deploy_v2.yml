@@ -1,10 +1,10 @@
 name: Bygg og deploy v2
 
 on:
-  workflow_run:
-    workflows: ["Auto-merge Dependabot Patch Updates"]
-    types:
-      - completed
+#  workflow_run:
+#    workflows: ["Auto-merge Dependabot Patch Updates"]
+#    types:
+#      - completed
   workflow_dispatch:
   push:
     branches:
