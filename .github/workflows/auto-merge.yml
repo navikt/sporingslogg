@@ -17,10 +17,8 @@ jobs:
         run: |
           if echo "${{ join(github.event.pull_request.labels.*.name, ' ') }}" | grep -w "dependencies"; then
               echo "LABEL=true"
-              //echo "has_dependencies_label=true" >> $GITHUB_OUTPUT
           else
               echo "LABEL=false"
-              //echo "has_dependencies_label=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Check if PR is a patch update
@@ -39,14 +37,11 @@ jobs:
 
             if [[ "$from_major" == "$to_major" && "$from_minor" == "$to_minor" && "$from_patch" != "$to_patch" ]]; then
               echo "PATCH=true" 
-              //echo "patch_update=true" >> $GITHUB_OUTPUT
             else
               echo "PATCH=false" 
-              //echo "patch_update=false" >> $GITHUB_OUTPUT
             fi
           else
             echo "PATCH=false" 
-            //echo "patch_update=false" >> $GITHUB_OUTPUT
           fi
 
   printOutput:
