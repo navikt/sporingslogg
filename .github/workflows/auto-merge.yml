@@ -8,17 +8,14 @@ jobs:
   automergecheck:
     if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
-    outputs:
-      label: steps.label_check.outputs.label
-      patch: steps.check.outputs.patch
     steps:
       - name: Check for dependencies label
         id: label_check
         run: |
           if echo "${{ join(github.event.pull_request.labels.*.name, ' ') }}" | grep -w "dependencies"; then
-              echo "label=${{ true }}"
+              echo "has_dependencies_label=true" >> $GITHUB_OUTPUT          
           else
-              echo "label=${{false }}"
+              echo "has_dependencies_label=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Check if PR is a patch update
@@ -36,35 +33,30 @@ jobs:
             to_patch=${BASH_REMATCH[6]}
 
             if [[ "$from_major" == "$to_major" && "$from_minor" == "$to_minor" && "$from_patch" != "$to_patch" ]]; then
-              echo "PATCH=${{ true }}" 
+              echo "patch_update=true" >> $GITHUB_OUTPUT          
             else
-              echo "PATCH=${{ false }}" 
+              echo "patch_update=false" >> $GITHUB_OUTPUT
             fi
           else
-            echo "PATCH=${{ false }}" 
+            echo "patch_update=false" >> $GITHUB_OUTPUT          
           fi
 
-  printOutput:
-    name: Print Output
-    needs: automergecheck
-    runs-on: ubuntu-latest
-    steps:
-        - name: Print output
-          run: |
-            echo label : ${{ needs.automergecheck.outputs.label }}
-            echo patch : ${{ needs.automergecheck.outputs.patch }}
+      - name: Print output
+        id: printout
+        run: |
+            echo label : ${{ steps.check.outputs.patch_update }}
+            echo patch : ${{ steps.label_check.outputs.has_dependencies_label }}
 
-  automerge:
-    name: Auto Merge dependabot
-    needs: printOutput
-    permissions:
-      contents: write
-      pull-requests: write
-    runs-on: ubuntu-latest
-    steps:
-        - name: Enable auto-merge
-          run: | 
-            echo "Hello!"
+      - name: Enable auto-merge
+        id: merge
+        run: | 
+          echo "Hello!"
+          
+          if ( steps.check.outputs.patch_update == 'true' && steps.label_check.outputs.has_dependencies_label == 'true') then
+            echo "HI! ALL GO GO!!"
+          else
+            echo "NOT GO NO GO NOT!!"
+          fi
 
 #          if: needs.automergecheck.outputs.label == 'true' && needs.automergecheck.outputs.patch == 'true'
 #          run: gh pr merge "$PR_URL" --auto --merge
