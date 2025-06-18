@@ -17,10 +17,10 @@ jobs:
         run: |
           if echo "${{ join(github.event.pull_request.labels.*.name, ' ') }}" | grep -w "dependencies"; then
               echo "LABEL=true"
-              echo "has_dependencies_label=true" >> $GITHUB_OUTPUT
+              //echo "has_dependencies_label=true" >> $GITHUB_OUTPUT
           else
               echo "LABEL=false"
-              echo "has_dependencies_label=false" >> $GITHUB_OUTPUT
+              //echo "has_dependencies_label=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Check if PR is a patch update
@@ -39,14 +39,14 @@ jobs:
 
             if [[ "$from_major" == "$to_major" && "$from_minor" == "$to_minor" && "$from_patch" != "$to_patch" ]]; then
               echo "PATCH=true" 
-              echo "patch_update=true" >> $GITHUB_OUTPUT
+              //echo "patch_update=true" >> $GITHUB_OUTPUT
             else
               echo "PATCH=false" 
-              echo "patch_update=false" >> $GITHUB_OUTPUT
+              //echo "patch_update=false" >> $GITHUB_OUTPUT
             fi
           else
             echo "PATCH=false" 
-            echo "patch_update=false" >> $GITHUB_OUTPUT
+            //echo "patch_update=false" >> $GITHUB_OUTPUT
           fi
 
   printOutput:
@@ -56,8 +56,8 @@ jobs:
     steps:
         - name: Print output
           run: |
-            echo label : ${{ needs.automerge.outputs.label }}
-            echo patch : ${{ needs.automerge.outputs.patch }}
+            echo label : ${{ needs.automergecheck.outputs.label }}
+            echo patch : ${{ needs.automergecheck.outputs.patch }}
 
   automerge:
     name: Auto Merge dependabot
@@ -68,8 +68,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - name: Enable auto-merge
-          if: steps.check.outputs.patch_update == 'true' && steps.label_check.outputs.has_dependencies_label == 'true'
-          run: gh pr merge "$PR_URL" --auto --merge
-          env:
-            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            PR_URL: ${{ github.event.pull_request.html_url }}
+          run: | 
+            echo "Hello!"
+
+#          if: needs.automergecheck.outputs.label == 'true' && needs.automergecheck.outputs.patch == 'true'
+#          run: gh pr merge "$PR_URL" --auto --merge
+#          env:
+#            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#            PR_URL: ${{ github.event.pull_request.html_url }}
