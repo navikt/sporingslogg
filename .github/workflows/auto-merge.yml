@@ -29,7 +29,7 @@ jobs:
         id: check
         env:
           TITLE: ${{ github.event.pull_request.title }}
-        run: | 
+        run: |
           echo "req title: $TITLE"
           
           # Match title like: Bump xxx from x.y.z to x.y.w (same x and y, z != w)
@@ -60,8 +60,8 @@ jobs:
         run: |
            echo "patch : $CHECK"
            echo "label : $LABEL_CHECK"
-
-          if ( $CHECK == 'true' && $LABEL_CHECK == 'true') then
+               
+          if [[ "$CHECK" == "true" && "$LABEL_CHECK" == "true" ]]; then  
             echo "merge. success"
             gh pr merge "$PR_URL" --auto --merge
           else
