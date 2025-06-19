@@ -58,8 +58,8 @@ jobs:
           CHECK: ${{ steps.check.outputs.patch_update }}
           LABEL_CHECK: ${{ steps.label_check.outputs.has_dependencies_label }}
         run: |
-           echo "patch : $CHECK"
-           echo "label : $LABEL_CHECK"
+          echo "patch : $CHECK"
+          echo "label : $LABEL_CHECK"
                
           if [[ "$CHECK" == "true" && "$LABEL_CHECK" == "true" ]]; then  
             echo "merge. success"
