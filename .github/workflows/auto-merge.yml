@@ -38,13 +38,13 @@ jobs:
             to_major=${BASH_REMATCH[4]}
             to_minor=${BASH_REMATCH[5]}
             to_patch=${BASH_REMATCH[6]}
-            echo "bash_rematch0 = ${BASH_REMATCH[0]}"
-            echo "bash_rematch1 = ${BASH_REMATCH[1]}"
-            echo "bash_rematch2 = ${BASH_REMATCH[2]}"
-            echo "bash_rematch3 = ${BASH_REMATCH[3]}"
-            echo "bash_rematch4 = ${BASH_REMATCH[4]}"
-            echo "bash_rematch5 = ${BASH_REMATCH[5]}"
-            echo "bash_rematch6 = ${BASH_REMATCH[6]}"
+#            echo "bash_rematch0 = ${BASH_REMATCH[0]}"
+#            echo "bash_rematch1 = ${BASH_REMATCH[1]}"
+#            echo "bash_rematch2 = ${BASH_REMATCH[2]}"
+#            echo "bash_rematch3 = ${BASH_REMATCH[3]}"
+#            echo "bash_rematch4 = ${BASH_REMATCH[4]}"
+#            echo "bash_rematch5 = ${BASH_REMATCH[5]}"
+#            echo "bash_rematch6 = ${BASH_REMATCH[6]}"
 
             if [[ "$from_major" == "$to_major" && "$from_minor" == "$to_minor" && "$from_patch" != "$to_patch" ]]; then
               echo "patch"
@@ -63,28 +63,8 @@ jobs:
         run: gh pr merge "$PR_URL" --auto --merge
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_URL: $
+          PR_URL: ${{ github.event.pull_request.html_url }}
 
       - name: Failed auto-merge
         if: steps.check.outputs.patch_update == 'false' || steps.label_check.outputs.has_dependencies_label == 'false'
         run: exit 1
-
-#      - name: Enable auto-merge
-#        env:
-#          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          PR_URL: ${{ github.event.pull_request.html_url }}
-#        run: |
-#          check="${{ steps.check.outputs.patch_update  }}"
-#          label="${{ steps.label_check.outputs.has_dependencies_label }}"
-#
-#          echo "patch : $check"
-#          echo "label : $label"
-#
-#          if [[ "$check" == "true" && "$label" == "true" ]]; then
-#            gh pr merge "$PR_URL" --auto --merge
-#            echo "merge. success"
-#          else
-##           to not execute bygg_og_deploy
-#            echo "no merge. fail"
-#            exit 1
-#          fi
