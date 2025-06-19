@@ -39,14 +39,23 @@ jobs:
           echo "req title: $TITLE"
          
           if [[ "$TITLE" =~ ^(deps: )?[Bb]ump .* from ([0-9]+)\.([0-9]+)\.([0-9]+) to ([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "Matched: ${BASH_REMATCH[@]}"
+            echo "Matched0: ${BASH_REMATCH[0]}"
+            echo "Matched1: ${BASH_REMATCH[1]}"
+
             from_major=${BASH_REMATCH[2]}
             from_minor=${BASH_REMATCH[3]}
             from_patch=${BASH_REMATCH[4]}
             to_major=${BASH_REMATCH[5]}
             to_minor=${BASH_REMATCH[6]}
             to_patch=${BASH_REMATCH[7]}
-          
-            echo "Matched: ${BASH_REMATCH[@]}"
+
+            echo "from_major: $from_major"
+            echo "from_minor: $from_minor"
+            echo "from_patch: $from_patch"
+            echo "to_major  : $to_major"
+            echo "to_minor  : $to_minor"
+            echo "to_patch  : $to_patch"
           
             if [[ "$from_major" == "$to_major" && "$from_minor" == "$to_minor" && "$from_patch" != "$to_patch" ]]; then
               echo "patch_update=true" >> $GITHUB_OUTPUT
