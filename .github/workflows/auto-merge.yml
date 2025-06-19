@@ -36,36 +36,23 @@ jobs:
         env:
           TITLE: ${{ github.event.pull_request.title }}
         run: | 
-          set -x
           echo "req title: $TITLE"
-         
-          if [[ "$TITLE" =~ ^(deps: )?[Bb]ump .* from ([0-9]+)\.([0-9]+)\.([0-9]+) to ([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
-            echo "Matched: ${BASH_REMATCH[@]}"
-            echo "Matched0: ${BASH_REMATCH[0]}"
-            echo "Matched1: ${BASH_REMATCH[1]}"
-
-            from_major=${BASH_REMATCH[2]}
-            from_minor=${BASH_REMATCH[3]}
-            from_patch=${BASH_REMATCH[4]}
-            to_major=${BASH_REMATCH[5]}
-            to_minor=${BASH_REMATCH[6]}
-            to_patch=${BASH_REMATCH[7]}
-
-            echo "from_major: $from_major"
-            echo "from_minor: $from_minor"
-            echo "from_patch: $from_patch"
-            echo "to_major  : $to_major"
-            echo "to_minor  : $to_minor"
-            echo "to_patch  : $to_patch"
           
+          # Match title like: Bump xxx from x.y.z to x.y.w (same x and y, z != w)
+          if [[ "$TITLE" =~ ^(B|b)ump\ .*\ from\ ([0-9]+)\.([0-9]+)\.([0-9]+)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            from_major=${BASH_REMATCH[1]}
+            from_minor=${BASH_REMATCH[2]}
+            from_patch=${BASH_REMATCH[3]}
+            to_major=${BASH_REMATCH[4]}
+            to_minor=${BASH_REMATCH[5]}
+            to_patch=${BASH_REMATCH[6]}
+
             if [[ "$from_major" == "$to_major" && "$from_minor" == "$to_minor" && "$from_patch" != "$to_patch" ]]; then
               echo "patch_update=true" >> $GITHUB_OUTPUT
             else
-              echo "not correct patch"
               echo "patch_update=false" >> $GITHUB_OUTPUT
             fi
           else
-            echo "not correct title"
             echo "patch_update=false" >> $GITHUB_OUTPUT
           fi
 
