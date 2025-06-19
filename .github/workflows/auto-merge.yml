@@ -18,7 +18,6 @@ jobs:
           LABELS: ${{ join(github.event.pull_request.labels.*.name, ' ') }}
         run: |
           echo "All labels: $LABELS"
-
           if echo "$LABELS" | grep -w "dependencies"; then
           echo "has_dependencies_label=true" >> $GITHUB_OUTPUT
           else
@@ -38,32 +37,21 @@ jobs:
             to_major=${BASH_REMATCH[4]}
             to_minor=${BASH_REMATCH[5]}
             to_patch=${BASH_REMATCH[6]}
-#            echo "bash_rematch0 = ${BASH_REMATCH[0]}"
-#            echo "bash_rematch1 = ${BASH_REMATCH[1]}"
-#            echo "bash_rematch2 = ${BASH_REMATCH[2]}"
-#            echo "bash_rematch3 = ${BASH_REMATCH[3]}"
-#            echo "bash_rematch4 = ${BASH_REMATCH[4]}"
-#            echo "bash_rematch5 = ${BASH_REMATCH[5]}"
-#            echo "bash_rematch6 = ${BASH_REMATCH[6]}"
-
             if [[ "$from_major" == "$to_major" && "$from_minor" == "$to_minor" && "$from_patch" != "$to_patch" ]]; then
-              echo "patch"
               echo "patch_update=true" >> $GITHUB_OUTPUT
             else
-              echo "no patch"
               echo "patch_update=false" >> $GITHUB_OUTPUT
             fi
           else
-            echo "title not match" 
             echo "patch_update=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Enable auto-merge
         if: steps.check.outputs.patch_update == 'true' && steps.label_check.outputs.has_dependencies_label == 'true'
-        run: gh pr merge "$PR_URL" --auto --merge
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr merge "$PR_URL" --auto --merge
 
       - name: Failed auto-merge
         if: steps.check.outputs.patch_update == 'false' || steps.label_check.outputs.has_dependencies_label == 'false'
