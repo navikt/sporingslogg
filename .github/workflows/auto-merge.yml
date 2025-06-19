@@ -25,12 +25,6 @@ jobs:
           echo "has_dependencies_label=false" >> $GITHUB_OUTPUT
           fi
 
-#          if echo "$LABELS" | grep -w "dependencies"; then
-#              echo "has_dependencies_label=true" >> $GITHUB_OUTPUT
-#          else
-#              echo "has_dependencies_label=false" >> $GITHUB_OUTPUT
-#          fi
-
       - name: Check if PR is a patch update
         id: check
         env:
@@ -39,7 +33,7 @@ jobs:
           echo "req title: $TITLE"
           
           # Match title like: Bump xxx from x.y.z to x.y.w (same x and y, z != w)
-          if [[ "$TITLE" =~ ^(B|b)ump\ .*\ from\ ([0-9]+)\.([0-9]+)\.([0-9]+)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+          if [[ "$TITLE" =~ ^[Bb]ump .* from ([0-9]+)\.([0-9]+)\.([0-9]+)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
             from_major=${BASH_REMATCH[1]}
             from_minor=${BASH_REMATCH[2]}
             from_patch=${BASH_REMATCH[3]}
@@ -64,18 +58,15 @@ jobs:
 
       - name: Enable auto-merge
         id: merge
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
         run: | 
-          echo "Hello!"
-          
           if ( steps.check.outputs.patch_update == 'true' && steps.label_check.outputs.has_dependencies_label == 'true') then
-            echo "HI! ALL GO GO!!"
+            echo "merge. success"
+            gh pr merge "$PR_URL" --auto --merge
           else
-            echo "NOT GO NO GO NOT!!"
+#           to not execute bygg_og_deploy
+            echo "no merge. fail" 
             exit 1
           fi
-
-#          if: needs.automergecheck.outputs.label == 'true' && needs.automergecheck.outputs.patch == 'true'
-#          run: gh pr merge "$PR_URL" --auto --merge
-#          env:
-#            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#            PR_URL: ${{ github.event.pull_request.html_url }}

@@ -11,15 +11,6 @@ on:
       - master
 
 jobs:
-  debug-event:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Log relevant GitHub event values
-      run: |
-        echo "event_name: ${{ github.event_name }}"
-        echo "workflow_run.conclusion: ${{ github.event.workflow_run.conclusion || 'undefined' }}"
-        echo "workflow_run.actor.login: ${{ github.event.workflow_run.actor.login || 'undefined' }}"
-
   build_and_tag:
     if: ${{ github.event.name == 'workflow_dispatch' || github.event_name == 'push' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.actor.login == 'dependabot[bot]')}}
     name: 'Build and tag'
