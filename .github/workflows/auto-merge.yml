@@ -8,7 +8,7 @@ permissions:
   contents: write
   pull-requests: write
 jobs:
-  automergecheck:
+  automerge:
     if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
@@ -27,13 +27,11 @@ jobs:
 
       - name: Check if PR is a patch update
         id: check
-        env:
-          TITLE: ${{ github.event.pull_request.title }}
         run: |
-          echo "title: $TITLE"
+          title="${{ github.event.pull_request.title }}"
           
           # Match title like: Bump xxx from x.y.z to x.y.w (same x and y, z != w)
-          if [[ "$TITLE" =~ ^[Bb]ump .* from ([0-9]+)\.([0-9]+)\.([0-9]+)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+          if [[ "$title" =~ ^[Bb]ump .* from ([0-9]+)\.([0-9]+)\.([0-9]+)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
             from_major=${BASH_REMATCH[1]}
             from_minor=${BASH_REMATCH[2]}
             from_patch=${BASH_REMATCH[3]}
@@ -51,22 +49,32 @@ jobs:
           fi
 
       - name: Enable auto-merge
-        id: merge
+        if: steps.check.outputs.patch_update == 'true' && steps.label_check.outputs.has_dependencies_label == 'true'
+        run: gh pr merge "$PR_URL" --auto --merge
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
-        run: |
-          check="${{ steps.check.outputs.patch_update  }}"
-          label="${{ steps.label_check.outputs.has_dependencies_label }}"
-               
-          echo "patch : $check"
-          echo "label : $label"
-               
-          if [[ "$check" == "true" && "$label" == "true" ]]; then  
-            echo "merge. success"
-            gh pr merge "$PR_URL" --auto --merge
-          else
-#           to not execute bygg_og_deploy
-            echo "no merge. fail" 
-            exit 1
-          fi
+          PR_URL: $
+
+      - name: Failed auto-merge
+        if: steps.check.outputs.patch_update == 'false' || steps.label_check.outputs.has_dependencies_label == 'false'
+        run: exit 1
+
+#      - name: Enable auto-merge
+#        env:
+#          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          PR_URL: ${{ github.event.pull_request.html_url }}
+#        run: |
+#          check="${{ steps.check.outputs.patch_update  }}"
+#          label="${{ steps.label_check.outputs.has_dependencies_label }}"
+#
+#          echo "patch : $check"
+#          echo "label : $label"
+#
+#          if [[ "$check" == "true" && "$label" == "true" ]]; then
+#            gh pr merge "$PR_URL" --auto --merge
+#            echo "merge. success"
+#          else
+##           to not execute bygg_og_deploy
+#            echo "no merge. fail"
+#            exit 1
+#          fi
