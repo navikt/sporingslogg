@@ -36,24 +36,23 @@ jobs:
         run: |
           title="${{ github.event.pull_request.title }}"
           
-          # Match title like: (B|b)ump xxx from x.y.z to x.y.w (same x and y, z != w)
-          if [[ "$title" =~ ^(deps:\ )?[Bb]ump .* from ([0-9]+)\.([0-9]+)\.([0-9]+)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
-            from_major=${BASH_REMATCH[1]}
-            from_minor=${BASH_REMATCH[2]}
-            from_patch=${BASH_REMATCH[3]}
-            to_major=${BASH_REMATCH[4]}
-            to_minor=${BASH_REMATCH[5]}
-            to_patch=${BASH_REMATCH[6]}
-
+          if [[ "$title" =~ ^(deps:\ )?[Bb]ump\ .* from ([0-9]+)\.([0-9]+)\.([0-9]+)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            from_major=${BASH_REMATCH[2]}
+            from_minor=${BASH_REMATCH[3]}
+            from_patch=${BASH_REMATCH[4]}
+            to_major=${BASH_REMATCH[5]}
+            to_minor=${BASH_REMATCH[6]}
+            to_patch=${BASH_REMATCH[7]}
+        
             if [[ "$from_major" == "$to_major" && "$from_minor" == "$to_minor" && "$from_patch" != "$to_patch" ]]; then
-              echo "patch_update=true" >> $GITHUB_OUTPUT          
+              echo "patch_update=true" >> $GITHUB_OUTPUT
             else
               echo "not correct patch"
               echo "patch_update=false" >> $GITHUB_OUTPUT
             fi
           else
             echo "not correct title"
-            echo "patch_update=false" >> $GITHUB_OUTPUT          
+            echo "patch_update=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Print output
