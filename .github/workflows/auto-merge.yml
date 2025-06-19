@@ -35,7 +35,8 @@ jobs:
         id: check
         env:
           TITLE: ${{ github.event.pull_request.title }}
-        run: |
+        run: | 
+          set -x
           echo "req title: $TITLE"
          
           if [[ "$TITLE" =~ ^(deps: )?[Bb]ump .* from ([0-9]+)\.([0-9]+)\.([0-9]+) to ([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
