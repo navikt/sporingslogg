@@ -31,7 +31,7 @@ jobs:
           title="${{ github.event.pull_request.title }}"
           
           # Match title like: Bump xxx from x.y.z to x.y.w (same x and y, z != w)
-          if [[ "$title" =~ ^[Bb]ump .* from ([0-9]+)\.([0-9]+)\.([0-9]+)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+          if [[ "$title" =~ ^(B|b)ump\ .*\ from\ ([0-9]+)\.([0-9]+)\.([0-9]+)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
             from_major=${BASH_REMATCH[1]}
             from_minor=${BASH_REMATCH[2]}
             from_patch=${BASH_REMATCH[3]}
@@ -40,12 +40,12 @@ jobs:
             to_patch=${BASH_REMATCH[6]}
 
             if [[ "$from_major" == "$to_major" && "$from_minor" == "$to_minor" && "$from_patch" != "$to_patch" ]]; then
-            echo "patch_update=true" >> $GITHUB_OUTPUT
+              echo "patch_update=true" >> $GITHUB_OUTPUT
             else
-            echo "patch_update=false" >> $GITHUB_OUTPUT
+              echo "patch_update=false" >> $GITHUB_OUTPUT
             fi
           else
-          echo "patch_update=false" >> $GITHUB_OUTPUT
+            echo "patch_update=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Enable auto-merge
