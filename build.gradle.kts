@@ -23,7 +23,7 @@ val junitplatformVersion = "1.13.1"
 val h2DbVersion = "2.3.232"
 
 plugins {
-    val pluginSpringBootVersion = "3.5.0"
+    val pluginSpringBootVersion = "3.5.2"
     val pluginKotlinVersion = "2.1.21"
 
     kotlin("jvm") version pluginKotlinVersion
