@@ -2,7 +2,7 @@ name: Auto-merge Dependabot Patch Updates
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, labeled]
+    types: [opened, synchronize, labeled]
 
 permissions:
   contents: write
@@ -11,7 +11,24 @@ jobs:
   automerge:
     if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
+    env:
+      PR_URL: ${{ github.event.pull_request.html_url }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Check for merged
+        run: |
+          MERGED=$(gh pr view "$PR_NUMBER" --json merged --jq '.merged')
+          
+          if [ "$MERGED" = "true" ]; then
+            echo "PR $PR_NUMBER already merged exiting..."
+            exit 1
+          else
+            echo "Continue merging PR: $PR_URL"
+          fi
+
       - name: Check for dependencies label
         id: label_check
         env:
@@ -37,12 +54,16 @@ jobs:
             to_major=${BASH_REMATCH[4]}
             to_minor=${BASH_REMATCH[5]}
             to_patch=${BASH_REMATCH[6]}
+            echo "Parsed version bump:"
+            echo "  From: $from_major.$from_minor.$from_patch"
+            echo "  To:   $to_major.$to_minor.$to_patch"
             if [[ "$from_major" == "$to_major" && "$from_minor" == "$to_minor" && "$from_patch" != "$to_patch" ]]; then
               echo "patch_update=true" >> $GITHUB_OUTPUT
             else
               echo "patch_update=false" >> $GITHUB_OUTPUT
             fi
           else
+            echo "No match for patch update regex"
             echo "patch_update=false" >> $GITHUB_OUTPUT
           fi
 
@@ -51,7 +72,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ github.event.pull_request.html_url }}
-        run: gh pr merge "$PR_URL" --auto --merge
+        run: gh pr merge "$PR_NUMBER" --auto --merge
 
       - name: Failed auto-merge
         if: steps.check.outputs.patch_update == 'false' || steps.label_check.outputs.has_dependencies_label == 'false'
