@@ -21,7 +21,7 @@ jobs:
 
       - name: Check for merged
         run: |
-          MERGED=$(gh pr view "$PR_NUMBER" --json merged --jq '.merged')
+          MERGED=$(gh pr view "$PR_NUMBER" --json mergedAt --jq '.merged')
           
           if [ "$MERGED" = "true" ]; then
             echo "PR $PR_NUMBER already merged exiting..."
