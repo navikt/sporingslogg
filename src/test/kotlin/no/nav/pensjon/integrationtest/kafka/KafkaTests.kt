@@ -25,7 +25,7 @@ const val TOPIC = "aiven-sporingslogg-loggmeldingMottatt" //"aapen-sporingslogg-
 
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-open class KafkaTests: BaseTests() {
+class KafkaTests: BaseTests() {
 
     @Autowired
     protected lateinit var embeddedKafka: EmbeddedKafkaBroker
@@ -39,14 +39,14 @@ open class KafkaTests: BaseTests() {
     @Autowired
     protected lateinit var kafkaLoggMeldingConsumer: KafkaLoggMeldingConsumer
 
-    private val deugLogger: Logger = LoggerFactory.getLogger("no.nav.pensjon") as Logger
+    private val debugLogger: Logger = LoggerFactory.getLogger("no.nav.pensjon") as Logger
     private val listAppender = ListAppender<ILoggingEvent>()
 
     @AfterEach
     fun after() {
-        clearAllMocks()
         listAppender.stop()
         embeddedKafka.destroy()
+        clearAllMocks()
     }
 
     protected fun sjekkLoggingFinnes(keywords: String): Boolean {
@@ -84,7 +84,8 @@ open class KafkaTests: BaseTests() {
         println("*** INIT START ***")
 
         listAppender.start()
-        deugLogger.addAppender(listAppender)
+        //debugLogger.clear(MockkClear.AFTER)
+        debugLogger.addAppender(listAppender)
         val container = settOppUtitlityConsumer()
         container.start()
         ContainerTestUtils.waitForAssignment(container, embeddedKafka.partitionsPerTopic)

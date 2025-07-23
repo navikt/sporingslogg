@@ -35,12 +35,6 @@ internal class KafkaInnkommendeFlereHendelserTest: KafkaTests() {
         val hendsleUgydligJson = mockNoneValidLoggMeldingJson()
         val hendsleAAPUgydligJson = mockNoneValidAAPMelding()
 
-//        println("******************************************")
-//        println("")
-//        println(mockNoneValidAAPMelding())
-//        println("")
-//        println("******************************************")
-
         initTestRun().also { runTest ->
             runTest.sendMsgOnDefaultTopic(hendsleJson1)
             runTest.sendMsgOnDefaultTopic(hendsleUgydligJson)
@@ -50,7 +44,7 @@ internal class KafkaInnkommendeFlereHendelserTest: KafkaTests() {
             runTest.waitForlatch(kafkaLoggMeldingConsumer)
         }
 
-//        debugPrintLogging()
+        //debugPrintLogging()
 
         assertTrue(sjekkLoggingFinnes("Lagret melding med unik: ID: 1, person: 209033xxxxx, tema: PEN, mottaker: 938908909"))
         assertTrue(sjekkLoggingFinnes("Mottatt sporingsmelding kan ikke valideres, må evt rettes og sendes inn på nytt."))
