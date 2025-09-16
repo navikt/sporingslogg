@@ -48,8 +48,6 @@ dependencies {
     implementation("org.springframework.kafka:spring-kafka:${springkafkaVersion}")
     implementation("com.oracle.database.jdbc:ojdbc11:${oracle11Version}")
     implementation("org.hibernate.orm:hibernate-core:${hibernateCoreVersion}")
-    implementation("org.hibernate:hibernate-validator:8.0.3.Final")
-
     implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationApiVersion")
     implementation("jakarta.inject:jakarta.inject-api:$jakartaInjectApiVersion")
     implementation("jakarta.persistence:jakarta.persistence-api:3.2.0")
@@ -58,11 +56,12 @@ dependencies {
     implementation("net.logstash.logback:logstash-logback-encoder:${logstashlogbackVersion}")
     implementation("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
     implementation("io.micrometer:micrometer-registry-prometheus:${prometeusVersion}")
+    implementation("no.nav.security:token-validation-core")
     implementation("no.nav.security:token-validation-spring:$tokensupportVersion")
     implementation("no.nav.security:token-validation-jaxrs:$tokensupportVersion")
     implementation("no.nav.security:token-client-spring:$tokensupportVersion")
     // mock - test
-    testImplementation("no.nav.security:token-validation-test-support:${tokensupporttestVersion}")
+    implementation("no.nav.security:token-validation-test-support:${tokensupporttestVersion}")
     testImplementation("no.nav.security:mock-oauth2-server:${mockOAuth2ServerVersion}")
     testImplementation("no.nav.security:token-validation-spring-test:${tokensupportVersion}")
     testImplementation("com.ninja-squad:springmockk:${springmockkVersion}")
