@@ -42,14 +42,14 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-actuator")
-    implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.kafka:spring-kafka:${springkafkaVersion}")
     implementation("com.oracle.database.jdbc:ojdbc11:${oracle11Version}")
     implementation("org.hibernate.orm:hibernate-core:${hibernateCoreVersion}")
+    implementation("org.hibernate:hibernate-validator:8.0.3.Final")
+
     implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationApiVersion")
     implementation("jakarta.inject:jakarta.inject-api:$jakartaInjectApiVersion")
     implementation("jakarta.persistence:jakarta.persistence-api:3.2.0")
