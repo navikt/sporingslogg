@@ -63,6 +63,7 @@ dependencies {
     implementation("no.nav.security:token-client-spring:$tokensupportVersion")
     // mock - test
     implementation("no.nav.security:token-validation-test-support:${tokensupporttestVersion}")
+    implementation("org.apache.commons:commons-lang3:3.18.0")
     testImplementation("no.nav.security:mock-oauth2-server:${mockOAuth2ServerVersion}")
     testImplementation("no.nav.security:token-validation-spring-test:${tokensupportVersion}")
     testImplementation("com.ninja-squad:springmockk:${springmockkVersion}")
@@ -106,7 +107,7 @@ tasks {
 
     configurations.all {
         resolutionStrategy.eachDependency {
-            if (requested.group == "org.apache.commons" && requested.module.name == "commons-lang") {
+            if (requested.group == "org.apache.commons" && requested.module.toString() == "commons-lang") {
                 useVersion(commonsLang3Version)
             }
         }
