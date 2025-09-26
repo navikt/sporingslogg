@@ -19,6 +19,7 @@ val mockkVersion = "1.14.5"
 val springmockkVersion = "4.0.2"
 val junitplatformVersion = "1.13.4"
 val h2DbVersion = "2.3.232"
+val commonsLang3Version = "3.18.0"
 
 plugins {
     kotlin("jvm") version "2.2.20"
@@ -101,6 +102,14 @@ tasks {
 
     withType<Wrapper> {
         gradleVersion = "9.0.0"
+    }
+
+    configurations.all {
+        resolutionStrategy.eachDependency {
+            if (requested.group == "org.apache.commons" && requested.module.name == "commons-lang") {
+                useVersion(commonsLang3Version)
+            }
+        }
     }
 
 }
