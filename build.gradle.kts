@@ -18,7 +18,7 @@ val springwebmvcpac4jVersion = "8.0.1"
 val mockkVersion = "1.14.6"
 val springmockkVersion = "4.0.2"
 val junitplatformVersion = "1.13.4"
-val h2DbVersion = "2.3.232"
+val h2DbVersion = "2.4.240"
 val commonsLang3Version = "3.18.0"
 
 plugins {
