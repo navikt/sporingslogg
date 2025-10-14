@@ -34,9 +34,6 @@ jobs:
         id: label_check
         env:
           LABELS: ${{ join(github.event.pull_request.labels.*.name, ' ') }}
-#        run: |
-#        env:
-#          LABELS: ${{ join(github.event.pull_request.labels.*.name, ' ') }}
         run: |
           echo "All labels: $LABELS"
           first_label=$(echo "$LABELS" | awk '{print $1}')
@@ -46,19 +43,12 @@ jobs:
           else
            echo "has_dependencies_label=false" >> $GITHUB_OUTPUT
           fi
-#          echo "All labels: $LABELS"
-#          if echo "$LABELS" | grep -w "dependencies"; then
-#          echo "has_dependencies_label=true" >> $GITHUB_OUTPUT
-#          else
-#          echo "has_dependencies_label=false" >> $GITHUB_OUTPUT
-#          fi
 
       - name: Check if PR is a patch update
         id: check
         run: |
-          title="${{ github.event.pull_request.title }}"
-          
-          # Match title like: Bump xxx from x.y.z to x.y.w (same x and y, z != w), allowing optional suffixes like .Final
+         title="${{ github.event.pull_request.title }}"
+        # Match title like: Bump xxx from x.y.z to x.y.w (same x and y, z != w), allowing optional suffixes like .Final
           if [[ "$title" =~ ^[Bb]ump\ .*\ from\ ([0-9]+)\.([0-9]+)\.([0-9]+)([^\ ]*)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)([^\ ]*)$ ]]; then
           from_major=${BASH_REMATCH[1]}
           from_minor=${BASH_REMATCH[2]}
@@ -83,28 +73,6 @@ jobs:
           echo "No match for patch update regex"
           echo "patch_update=false" >> $GITHUB_OUTPUT
           fi
-#          title="${{ github.event.pull_request.title }}"
-#
-#          # Match title like: Bump xxx from x.y.z to x.y.w (same x and y, z != w)
-#          if [[ "$title" =~ ^[Bb]ump\ .*\ from\ ([0-9]+)\.([0-9]+)\.([0-9]+)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
-#            from_major=${BASH_REMATCH[1]}
-#            from_minor=${BASH_REMATCH[2]}
-#            from_patch=${BASH_REMATCH[3]}
-#            to_major=${BASH_REMATCH[4]}
-#            to_minor=${BASH_REMATCH[5]}
-#            to_patch=${BASH_REMATCH[6]}
-#            echo "Parsed version bump:"
-#            echo "  From: $from_major.$from_minor.$from_patch"
-#            echo "  To:   $to_major.$to_minor.$to_patch"
-#            if [[ "$from_major" == "$to_major" && "$from_minor" == "$to_minor" && "$from_patch" != "$to_patch" ]]; then
-#              echo "patch_update=true" >> $GITHUB_OUTPUT
-#            else
-#              echo "patch_update=false" >> $GITHUB_OUTPUT
-#            fi
-#          else
-#            echo "No match for patch update regex"
-#            echo "patch_update=false" >> $GITHUB_OUTPUT
-#          fi
 
       - name: Check auto-merge value
         run: | 
