@@ -68,10 +68,14 @@ jobs:
             echo "patch_update=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Check auto-merge value
+        run: | 
+          echo "patch_update=${{ steps.check.outputs.patch_update }}"
+          echo "has_dependencies_label=${{ steps.label_check.outputs.has_dependencies_label }}"
+
       - name: Enable auto-merge
         if: steps.check.outputs.patch_update == 'true' && steps.label_check.outputs.has_dependencies_label == 'true'
         run: gh pr merge "$PR_NUMBER" --auto --merge
-
       - name: Failed auto-merge
         if: steps.check.outputs.patch_update == 'false' || steps.label_check.outputs.has_dependencies_label == 'false'
         run: exit 1
