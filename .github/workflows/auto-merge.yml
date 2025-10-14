@@ -7,6 +7,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+
 jobs:
   automerge:
     if: github.actor == 'dependabot[bot]'
@@ -22,13 +23,13 @@ jobs:
       - name: Check for merged
         run: |
           MERGED=$(gh pr view "$PR_NUMBER" --json mergedAt --jq '.merged')
-          
           if [ "$MERGED" = "true" ]; then
             echo "PR $PR_NUMBER already merged exiting..."
             exit 1
           else
             echo "Continue merging PR: $PR_URL"
           fi
+
       - name: Check for dependencies label
         id: label_check
         env:
@@ -38,46 +39,51 @@ jobs:
           first_label=$(echo "$LABELS" | awk '{print $1}')
           echo "First label: $first_label"
           if [[ "$first_label" == "dependencies" ]]; then
-           echo "has_dependencies_label=true" >> $GITHUB_OUTPUT
+            echo "has_dependencies_label=true" >> $GITHUB_ENV
           else
-           echo "has_dependencies_label=false" >> $GITHUB_OUTPUT
+            echo "has_dependencies_label=false" >> $GITHUB_ENV
           fi
+
       - name: Check if PR is a patch update
         id: check
         run: |
-         title="${{ github.event.pull_request.title }}"
-        # Match title like: Bump xxx from x.y.z to x.y.w (same x and y, z != w), allowing optional suffixes like .Final
-         if [[ "$title" =~ ^[Bb]ump\ .*\ from\ ([0-9]+)\.([0-9]+)\.([0-9]+)([^\ ]*)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)([^\ ]*)$ ]]; then
-          from_major=${BASH_REMATCH[1]}
-          from_minor=${BASH_REMATCH[2]}
-          from_patch=${BASH_REMATCH[3]}
-          from_suffix=${BASH_REMATCH[4]}  # optional suffix (like .Final)
-          to_major=${BASH_REMATCH[5]}
-          to_minor=${BASH_REMATCH[6]}
-          to_patch=${BASH_REMATCH[7]}
-          to_suffix=${BASH_REMATCH[8]}  # optional suffix (like .Final)
-         
-          echo "Parsed version bump:"
-          echo "  From: $from_major.$from_minor.$from_patch$from_suffix"
-          echo "  To:   $to_major.$to_minor.$to_patch$to_suffix"
+          title="${{ github.event.pull_request.title }}"
+          
+          # Match title like: Bump xxx from x.y.z to x.y.w (same x and y, z != w), allowing optional suffixes like .Final
+          if [[ "$title" =~ ^[Bb]ump\ .*\ from\ ([0-9]+)\.([0-9]+)\.([0-9]+)([a-zA-Z0-9\.]*)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)([a-zA-Z0-9\.]*)$ ]]; then
+            from_major=${BASH_REMATCH[1]}
+            from_minor=${BASH_REMATCH[2]}
+            from_patch=${BASH_REMATCH[3]}
+            from_suffix=${BASH_REMATCH[4]}  # optional suffix (like .Final)
+            to_major=${BASH_REMATCH[5]}
+            to_minor=${BASH_REMATCH[6]}
+            to_patch=${BASH_REMATCH[7]}
+            to_suffix=${BASH_REMATCH[8]}  # optional suffix (like .Final)
+          
+            echo "Parsed version bump:"
+            echo "  From: $from_major.$from_minor.$from_patch$from_suffix"
+            echo "  To:   $to_major.$to_minor.$to_patch$to_suffix"
 
-        # Check if it's a patch update (same major and minor, different patch)
-          if [[ "$from_major" == "$to_major" && "$from_minor" == "$to_minor" && "$from_patch" != "$to_patch" ]]; then
-           echo "patch_update=true" >> $GITHUB_OUTPUT
+            # Check if it's a patch update (same major and minor, different patch)
+            if [[ "$from_major" == "$to_major" && "$from_minor" == "$to_minor" && "$from_patch" != "$to_patch" ]]; then
+              echo "patch_update=true" >> $GITHUB_ENV
+            else
+              echo "patch_update=false" >> $GITHUB_ENV
+            fi
           else
-           echo "patch_update=false" >> $GITHUB_OUTPUT
+            echo "No match for patch update regex"
+            echo "patch_update=false" >> $GITHUB_ENV
           fi
-         else
-          echo "No match for patch update regex"
-          echo "patch_update=false" >> $GITHUB_OUTPUT
-         fi
+
       - name: Check auto-merge value
-        run: | 
-          echo "patch_update=${{ steps.check.outputs.patch_update }}"
-          echo "has_dependencies_label=${{ steps.label_check.outputs.has_dependencies_label }}"
+        run: |
+          echo "patch_update=${{ env.patch_update }}"
+          echo "has_dependencies_label=${{ env.has_dependencies_label }}"
+
       - name: Enable auto-merge
-        if: steps.check.outputs.patch_update == 'true' && steps.label_check.outputs.has_dependencies_label == 'true'
+        if: env.patch_update == 'true' && env.has_dependencies_label == 'true'
         run: gh pr merge "$PR_NUMBER" --auto --merge
+
       - name: Failed auto-merge
-        if: steps.check.outputs.patch_update == 'false' || steps.label_check.outputs.has_dependencies_label == 'false'
+        if: env.patch_update == 'false' || env.has_dependencies_label == 'false'
         run: exit 1
