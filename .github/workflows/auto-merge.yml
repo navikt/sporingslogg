@@ -29,7 +29,6 @@ jobs:
           else
             echo "Continue merging PR: $PR_URL"
           fi
-
       - name: Check for dependencies label
         id: label_check
         env:
@@ -43,13 +42,12 @@ jobs:
           else
            echo "has_dependencies_label=false" >> $GITHUB_OUTPUT
           fi
-
       - name: Check if PR is a patch update
         id: check
         run: |
          title="${{ github.event.pull_request.title }}"
         # Match title like: Bump xxx from x.y.z to x.y.w (same x and y, z != w), allowing optional suffixes like .Final
-          if [[ "$title" =~ ^[Bb]ump\ .*\ from\ ([0-9]+)\.([0-9]+)\.([0-9]+)([^\ ]*)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)([^\ ]*)$ ]]; then
+         if [[ "$title" =~ ^[Bb]ump\ .*\ from\ ([0-9]+)\.([0-9]+)\.([0-9]+)([^\ ]*)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)([^\ ]*)$ ]]; then
           from_major=${BASH_REMATCH[1]}
           from_minor=${BASH_REMATCH[2]}
           from_patch=${BASH_REMATCH[3]}
@@ -58,27 +56,25 @@ jobs:
           to_minor=${BASH_REMATCH[6]}
           to_patch=${BASH_REMATCH[7]}
           to_suffix=${BASH_REMATCH[8]}  # optional suffix (like .Final)
-          
+         
           echo "Parsed version bump:"
           echo "  From: $from_major.$from_minor.$from_patch$from_suffix"
           echo "  To:   $to_major.$to_minor.$to_patch$to_suffix"
 
         # Check if it's a patch update (same major and minor, different patch)
           if [[ "$from_major" == "$to_major" && "$from_minor" == "$to_minor" && "$from_patch" != "$to_patch" ]]; then
-          echo "patch_update=true" >> $GITHUB_OUTPUT
+           echo "patch_update=true" >> $GITHUB_OUTPUT
           else
-          echo "patch_update=false" >> $GITHUB_OUTPUT
+           echo "patch_update=false" >> $GITHUB_OUTPUT
           fi
-          else
+         else
           echo "No match for patch update regex"
           echo "patch_update=false" >> $GITHUB_OUTPUT
-          fi
-
+         fi
       - name: Check auto-merge value
         run: | 
           echo "patch_update=${{ steps.check.outputs.patch_update }}"
           echo "has_dependencies_label=${{ steps.label_check.outputs.has_dependencies_label }}"
-
       - name: Enable auto-merge
         if: steps.check.outputs.patch_update == 'true' && steps.label_check.outputs.has_dependencies_label == 'true'
         run: gh pr merge "$PR_NUMBER" --auto --merge
