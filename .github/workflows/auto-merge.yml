@@ -34,14 +34,18 @@ jobs:
         id: label_check
         env:
           LABELS: ${{ join(github.event.pull_request.labels.*.name, ' ') }}
+#        run: |
+#        env:
+#          LABELS: ${{ join(github.event.pull_request.labels.*.name, ' ') }}
         run: |
-            echo "All labels: $LABELS"
-            first_label=$(echo "$LABELS" | awk '{print $1}')
-            if [ "$first_label" == "dependencies" ]; then
-            echo "has_dependencies_label=true" >> $GITHUB_OUTPUT
-            else
-            echo "has_dependencies_label=false" >> $GITHUB_OUTPUT
-            fi
+          echo "All labels: $LABELS"
+          first_label=$(echo "$LABELS" | awk '{print $1}')
+          echo "First label: $first_label"
+          if [[ "$first_label" == "dependencies" ]]; then
+           echo "has_dependencies_label=true" >> $GITHUB_OUTPUT
+          else
+           echo "has_dependencies_label=false" >> $GITHUB_OUTPUT
+          fi
 #          echo "All labels: $LABELS"
 #          if echo "$LABELS" | grep -w "dependencies"; then
 #          echo "has_dependencies_label=true" >> $GITHUB_OUTPUT
