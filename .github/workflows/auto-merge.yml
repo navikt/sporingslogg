@@ -57,9 +57,9 @@ jobs:
         id: check
         run: |
           title="${{ github.event.pull_request.title }}"
-      
+          
           # Match title like: Bump xxx from x.y.z to x.y.w (same x and y, z != w), allowing optional suffixes like .Final
-          if [[ "$title" =~ ^[Bb]ump\ .*\ from\ ([0-9]+)\.([0-9]+)\.([0-9]+)([a-zA-Z0-9]*)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)([a-zA-Z0-9]*)$ ]]; then
+          if [[ "$title" =~ ^[Bb]ump\ .*\ from\ ([0-9]+)\.([0-9]+)\.([0-9]+)([^\ ]*)\ to\ ([0-9]+)\.([0-9]+)\.([0-9]+)([^\ ]*)$ ]]; then
           from_major=${BASH_REMATCH[1]}
           from_minor=${BASH_REMATCH[2]}
           from_patch=${BASH_REMATCH[3]}
@@ -72,8 +72,8 @@ jobs:
           echo "Parsed version bump:"
           echo "  From: $from_major.$from_minor.$from_patch$from_suffix"
           echo "  To:   $to_major.$to_minor.$to_patch$to_suffix"
-          
-          # Check if it's a patch update (same major and minor, different patch)
+
+        # Check if it's a patch update (same major and minor, different patch)
           if [[ "$from_major" == "$to_major" && "$from_minor" == "$to_minor" && "$from_patch" != "$to_patch" ]]; then
           echo "patch_update=true" >> $GITHUB_OUTPUT
           else
