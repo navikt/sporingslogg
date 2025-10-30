@@ -24,7 +24,7 @@ object TestHelper {
         )
     }
 
-    fun mockLoggMelding(ident: String = "11886512234", mottaker: String = "938908909", tema: String = "PEN", samtykke: String? = null): LoggMelding {
+    fun mockLoggMelding(ident: String = "11886512234", mottaker: String = "938908909", tema: String = "PEN", samtykke: String? = null, data: String? = base64LevertData()): LoggMelding {
         val tidspunkt  = LocalDateTime.of(2021, 10, 9, 10, 10)
         return LoggMelding(
             id = null,
@@ -33,15 +33,15 @@ object TestHelper {
             tema = tema,
             behandlingsGrunnlag = "Lovhjemmel samordningsloven § 27 (samordningsloven paragraf 27)",
             uthentingsTidspunkt = tidspunkt,
-            leverteData = base64LevertData(),
+            leverteData = data,
             samtykkeToken = samtykke,
             leverandoer = null,
             dataForespoersel = null
         )
     }
 
-    fun mockLoggMeldingAsJson(ident: String = "11886512234", mottaker: String = "938908909", tema: String = "PEN", samtykkeToken: String? = null) =
-        mapAnyToJson(mockLoggMelding(ident, mottaker, tema, samtykke = samtykkeToken))
+    fun mockLoggMeldingAsJson(ident: String = "11886512234", mottaker: String = "938908909", tema: String = "PEN", samtykkeToken: String? = null, data: String? = base64LevertData()) =
+        mapAnyToJson(mockLoggMelding(ident, mottaker, tema, samtykke = samtykkeToken,  data = data))
 
 
     fun mockNoneValidLoggMeldingJson() : String {
@@ -57,7 +57,7 @@ object TestHelper {
         """.trimIndent()
     }
 
-    fun mockNoneValidAAPMelding(): String {
+    fun mockNoneValidAAPMelding(levertData: String = base64LevertData()): String {
         return """
          {
            "person" : "17468742829",
@@ -65,7 +65,7 @@ object TestHelper {
            "tema" : "AAP",
            "behandlingsGrunnlag" : "Lovhjemmel samordningsloven § 27 (samordningsloven paragraf 27)",
            "uthentingsTidspunkt" : "2018-10-19T12:24:21.675",
-           "leverteData" : "${base64LevertData()}",
+           "leverteData" : "$levertData",
            "leverandoer" : "123213123",
            "saksId" : "4335134"
           }           

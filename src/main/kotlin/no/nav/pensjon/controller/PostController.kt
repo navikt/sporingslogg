@@ -47,8 +47,14 @@ class PostController(
 
             log.info("Følgende medling kommet inn: ${loggMelding.tema}, systemBruker: ${tokenHelper.getSystemUserId()}")
 
-            val loggId = loggTjeneste.lagreLoggInnslag(loggMelding)
-            val meldingid = "ID: $loggId, person: ${loggMelding.person.scrable()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
+            val loggIds = if (loggTjeneste.validateDataTooBigForSingleInnslag(loggMelding)) {
+                 loggTjeneste.lagreFlereLoggInnslag(loggMelding)
+            }  else {
+                val loggId = loggTjeneste.lagreLoggInnslag(loggMelding)
+                listOf(loggId)
+            }
+
+            val meldingid = "ID: $loggIds, person: ${loggMelding.person.scrable()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
 
             log.info("Lagret melding: $meldingid")
 
@@ -56,7 +62,7 @@ class PostController(
 
             log.info("*** Innnkommende request END")
             MDC.remove("tema")
-            return@measure loggId
+            return@measure loggIds.first()
         }
     }
 

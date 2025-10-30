@@ -66,6 +66,32 @@ internal class PostControllerTest: BaseTests() {
     }
 
     @Test
+    fun `sjekk for postcontroller gyldig loggmelding med formye data lagres i db i flere innslag`() {
+        val brukerpid = "01884512234"
+        val data = base64LevertData().repeat(1000)
+
+        val jsondata = mockLoggMeldingAsJson(brukerpid, samtykkeToken = "DummyToken", data = base64LevertData() + data)
+        val token: String = mockServiceToken()
+
+        val response = mockMvc.perform(
+            MockMvcRequestBuilders.post("/sporingslogg/api/post")
+                .header("Authorization", "Bearer $token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content( jsondata ))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        val result = response.response.getContentAsString(charset("UTF-8"))
+        println("result: $result")
+
+        //assertTrue(result.toLong() >= 1L)
+
+        val sets = loggTjeneste.hentAlleLoggInnslagForPerson(brukerpid)
+        assertEquals(2, sets.size )
+        println("Logginnslag: $sets")
+    }
+
+    @Test
     fun `sjekk postcontroller ugyldig loggmelding sendes inn`() {
         val brukerpid = "08886512234"
         val jsondata = mockLoggMeldingAsJson(brukerpid, mottaker = "123123")
