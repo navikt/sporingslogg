@@ -41,11 +41,8 @@ class PostController(
             log.info("*** Innkommende request")
 
             validateRequestAsResponseRequestExcption(request) //viktig må være først
-
             //log.debug("LoggMelding Base64? = ${LoggMelding.checkForEncode(request)}")
-            log.debug("prebase size: ${request.leverteData!!.length}")
             val loggMelding = LoggMelding.checkForAndEncode(request) //Check for base64 encode if plain text
-            log.debug("base64 datasize: ${loggMelding.leverteData!!.length}")
 
             log.info("Følgende medling kommet inn: ${loggMelding.tema}, systemBruker: ${tokenHelper.getSystemUserId()}")
 

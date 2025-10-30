@@ -38,10 +38,10 @@ class LoggTjeneste(
     fun validateDataTooBigForSingleInnslag(loggMelding: LoggMelding): Boolean {
         try {
             validerMaxLengde(loggMelding.leverteData, 1000000, "data")
-            log.debug("**** Data er under 1MB, kan lagres som enkel innslag. size: ${loggMelding.leverteData!!.length}")
+            //log.debug("**** Data er under 1MB, kan lagres som enkel innslag. size: ${loggMelding.leverteData!!.length}")
             return false
         } catch (ie: IllegalArgumentException) {
-            log.debug("**** Data over 1MB. lagres som flere innslag. size: ${loggMelding.leverteData!!.length}")
+            //log.debug("**** Data over 1MB. lagres som flere innslag. size: ${loggMelding.leverteData!!.length}")
             return true
         }
     }
