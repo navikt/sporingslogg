@@ -38,16 +38,20 @@ class LoggTjeneste(
     fun validateDataTooBigForSingleInnslag(loggMelding: LoggMelding): Boolean {
         try {
             validerMaxLengde(loggMelding.leverteData, 1000000, "data")
-            log.debug("Data er under 1MB, kan lagres som enkel innslag")
+            log.debug("**** Data er under 1MB, kan lagres som enkel innslag. size: ${loggMelding.leverteData!!.length}")
             return false
         } catch (ie: IllegalArgumentException) {
-            log.debug("Data over 1MB. lagres som flere innslag")
+            log.debug("**** Data over 1MB. lagres som flere innslag. size: ${loggMelding.leverteData!!.length}")
             return true
         }
     }
 
     fun lagreFlereLoggInnslag(loggMelding: LoggMelding): List<Long> {
-        val datalist = loggMelding.leverteData!!.chunked(1000000)
+        val datasize = loggMelding.leverteData!!.length
+        val datalist = loggMelding.leverteData.chunked(1000000)
+        val datalistsize = datalist.map { it.length }.sum()
+        log.debug("orginal datasize : $datasize ")
+        log.debug("Lager flere logginnslag med data over 1000000 sum size: $datalistsize")
 
         val logmeldinger = datalist.map { utlevertData ->
             loggMelding.copy(leverteData = utlevertData)

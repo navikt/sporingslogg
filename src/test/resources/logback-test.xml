@@ -7,7 +7,7 @@
     </appender>
     <logger name="io" level="INFO"/>
     <logger name="org" level="INFO"/>
-    <logger name="org.hibernate" level="DEBUG"/>
+    <logger name="org.hibernate" level="INFO"/>
     <logger name="com" level="INFO"/>
     <logger name="org.apache.zookeeper" level="OFF"/>
     <logger name="kafka" level="OFF" />

@@ -68,9 +68,11 @@ internal class PostControllerTest: BaseTests() {
     @Test
     fun `sjekk for postcontroller gyldig loggmelding med formye data lagres i db i flere innslag`() {
         val brukerpid = "01884512234"
-        val data = base64LevertData().repeat(1000)
 
+        val datatekst = "Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit"
+        val data = datatekst.repeat(4000)
         val jsondata = mockLoggMeldingAsJson(brukerpid, samtykkeToken = "DummyToken", data = base64LevertData() + data)
+
         val token: String = mockServiceToken()
 
         val response = mockMvc.perform(
@@ -82,13 +84,10 @@ internal class PostControllerTest: BaseTests() {
             .andReturn()
 
         val result = response.response.getContentAsString(charset("UTF-8"))
-        println("result: $result")
-
-        //assertTrue(result.toLong() >= 1L)
-
         val sets = loggTjeneste.hentAlleLoggInnslagForPerson(brukerpid)
         assertEquals(2, sets.size )
-        println("Logginnslag: $sets")
+        val innslagdatasize = (sets.first().leverteData!!.length + sets.last().leverteData!!.length)
+
     }
 
     @Test
