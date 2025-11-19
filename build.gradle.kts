@@ -63,7 +63,7 @@ dependencies {
     implementation("no.nav.security:token-client-spring:$tokensupportVersion")
     // mock - test
     implementation("no.nav.security:token-validation-test-support:${tokensupporttestVersion}")
-    implementation("org.apache.commons:commons-lang3:3.19.0")
+    implementation("org.apache.commons:commons-lang3:3.20.0")
     testImplementation("no.nav.security:mock-oauth2-server:${mockOAuth2ServerVersion}")
     testImplementation("no.nav.security:token-validation-spring-test:${tokensupportVersion}")
     testImplementation("com.ninja-squad:springmockk:${springmockkVersion}")
