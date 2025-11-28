@@ -90,7 +90,9 @@ class KafkaTests: BaseTests() {
         container.start()
         ContainerTestUtils.waitForAssignment(container, embeddedKafka.partitionsPerTopic)
 
-        val template = KafkaTemplate(producerFactory).apply { defaultTopic =  TOPIC }
+        val template = KafkaTemplate(producerFactory).apply {
+            setDefaultTopic(TOPIC)
+        }
 
         return TestResult(template, container, timeout)
     }

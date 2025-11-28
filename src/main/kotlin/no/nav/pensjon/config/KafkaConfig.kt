@@ -40,7 +40,8 @@ class KafkaConfig(
     @Bean
     fun aivenKafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, String> {
         val factory = ConcurrentKafkaListenerContainerFactory<String, String>()
-        factory.consumerFactory = aivenKafkaConsumerFactory()
+        factory.setConsumerFactory(aivenKafkaConsumerFactory())
+//        factory.consumerFactory =
         factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL
         factory.containerProperties.setAuthExceptionRetryInterval(Duration.ofSeconds(4L))
         return factory
