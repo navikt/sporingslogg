@@ -8,6 +8,10 @@ metadata:
 spec:
   envFrom:
     - secret: sporingslogg
+  azure:
+    application:
+      allowAllUsers: false
+      enabled: true
   tokenx:
     enabled: true
   accessPolicy:

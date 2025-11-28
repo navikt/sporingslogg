@@ -11,6 +11,9 @@ server:
 TOKEN_X_WELL_KNOWN_URL: http://localhost:${mock-oauth2-server.port}/tokendings/.well-known/openid-configuration
 TOKEN_X_CLIENT_ID: 'tokendings-test'
 
+AZURE_APP_WELL_KNOWN_URL: http://localhost:${mock-oauth2-server.port}/entraid/.well-known/openid-configuration
+AZURE_APP_CLIENT_ID: 'entraid-test'
+
 DIFI_TOKEN_CONFIGURATION_URL: "http://localhost"
 SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL: http://localhost:${mock-oauth2-server.port}/servicebruker/.well-known/openid-configuration
 
@@ -36,3 +39,6 @@ no.nav.security.jwt:
     tokendings:
       discoveryurl: ${TOKEN_X_WELL_KNOWN_URL}
       accepted_audience: ${TOKEN_X_CLIENT_ID}
+    entraid:
+      discovery-url: ${AZURE_APP_WELL_KNOWN_URL}
+      accepted_audience: ${AZURE_APP_CLIENT_ID}
