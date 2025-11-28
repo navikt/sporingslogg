@@ -67,20 +67,6 @@ class TokenHelper(private val tokenValidationContextHolder: TokenValidationConte
         }
     }
 
-//    private fun extractForTokendingsIssuerOLD(issuer: Issuer = Issuer.TOKENDINGS): String {
-//        tokenValidationContextHolder.getTokenValidationContext().getClaims(issuer.lowercase()).get("pid")?.toString()?.let {
-//            return it
-//        } ?: run {
-//            //Fallback to subject claim, which will typically be used in tests, etc.
-//            tokenValidationContextHolder.getTokenValidationContext().getClaims(issuer.lowercase()).subject?.toString()?.let {
-//                return it
-//            } ?: run {
-//                log.error("No valid token found for issuer: $issuer")
-//                throw ResponseStatusException(HttpStatus.NOT_FOUND, "No valid token found")
-//            }
-//        }
-//    }
-
 
     fun getPid(): String = getClaims(Issuer.DIFI)
 

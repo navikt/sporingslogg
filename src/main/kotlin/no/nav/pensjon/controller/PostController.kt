@@ -34,8 +34,6 @@ class PostController(
     }
 
     @PostMapping("sporingslogg/api/post", produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    //@ProtectedWithClaims(issuer = "servicebruker")
-    //@ProtectedWithClaims(issuer = "entraid")
     @Protected
     fun postLoggMelding(@RequestBody request: LoggMelding) : Long {
         return postController.measure {
