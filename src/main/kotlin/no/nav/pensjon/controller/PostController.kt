@@ -8,7 +8,7 @@ import no.nav.pensjon.domain.LoggMelding
 import no.nav.pensjon.metrics.MetricsHelper
 import no.nav.pensjon.tjeneste.LoggTjeneste
 import no.nav.pensjon.util.scrable
-import no.nav.security.token.support.core.api.ProtectedWithClaims
+import no.nav.security.token.support.core.api.Protected
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,7 +34,9 @@ class PostController(
     }
 
     @PostMapping("sporingslogg/api/post", produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    @ProtectedWithClaims(issuer = "servicebruker")
+    //@ProtectedWithClaims(issuer = "servicebruker")
+    //@ProtectedWithClaims(issuer = "entraid")
+    @Protected
     fun postLoggMelding(@RequestBody request: LoggMelding) : Long {
         return postController.measure {
             MDC.put("tema", request.tema)
@@ -45,7 +47,8 @@ class PostController(
             log.debug("LoggMelding Base64? = ${LoggMelding.checkForEncode(request)}")
             val loggMelding = LoggMelding.checkForAndEncode(request) //Check for base64 encode if plain text
 
-            log.info("Følgende medling kommet inn: ${loggMelding.tema}, systemBruker: ${tokenHelper.getSystemUserId()}")
+            //log.info("Følgende medling kommet inn: ${loggMelding.tema}, systemBruker: ${tokenHelper.getSystemUserId()}")
+            log.info("Følgende medling kommet inn: ${loggMelding.tema}, ident: ${tokenHelper.getSystemUserOrEntraId()}")
 
             val loggId = loggTjeneste.lagreLoggInnslag(loggMelding)
             val meldingid = "ID: $loggId, person: ${loggMelding.person.scrable()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
