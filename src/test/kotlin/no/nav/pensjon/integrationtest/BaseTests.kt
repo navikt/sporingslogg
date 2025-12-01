@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.kafka.test.context.EmbeddedKafka
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
+import java.util.UUID
 import kotlin.text.lowercase
 import kotlin.to
 
@@ -68,5 +69,36 @@ abstract class BaseTests {
             )
         ).serialize()
     }
+
+    fun mockEntraIdToken(): String = token2(
+        issuerId = "entraid",
+        audience = listOf("tp", "entraid-test"),
+        claims = mapOf(
+            "azp_name" to UUID.randomUUID().toString(),
+            "idtyp" to "app",
+            "azp_name" to "MockOAuth2Server",
+        )
+    )
+
+    private fun token2(
+        issuerId: String,
+        audience: List<String>,
+        subject: String = UUID.randomUUID().toString(),
+        claims: Map<String, Any>): String {
+
+        return server.issueToken(
+            issuerId = issuerId,
+            clientId = "test-client",
+            tokenCallback = DefaultOAuth2TokenCallback(
+                issuerId = issuerId,
+                typeHeader = JOSEObjectType.JWT.type,
+                audience = audience,
+                subject = subject,
+                claims = claims,
+                expiry = 3322L
+            )
+        ).serialize()
+    }
+
 
 }
