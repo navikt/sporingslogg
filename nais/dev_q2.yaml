@@ -35,6 +35,9 @@ spec:
         - application: pensjon-pen-q5
           namespace: pensjon-q5
           cluster: dev-fss
+        - application: pensjonssimulator
+          namespace: pensjonskalkulator
+          cluster: dev-gcp
   image: {{ image }}
   port: 8080
   ingresses:
