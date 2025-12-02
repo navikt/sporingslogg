@@ -26,6 +26,9 @@ spec:
         - application: tms-personopplysninger-api  # Tar over for dsop-api
           namespace: min-side
           cluster: prod-gcp
+        - application: pensjonssimulator
+          namespace: pensjonskalkulator
+          cluster: prod-gcp
   image: {{ image }}
   port: 8080
   ingresses:
