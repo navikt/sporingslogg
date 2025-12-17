@@ -63,6 +63,7 @@ dependencies {
     implementation("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
     implementation("io.micrometer:micrometer-registry-prometheus:${prometeusVersion}")
 
+    implementation("org.hibernate.validator:hibernate-validator:9.1.0.Final")
     implementation("no.nav.security:token-validation-core")
     implementation("no.nav.security:token-validation-spring:$tokensupportVersion")
     implementation("no.nav.security:token-validation-jaxrs:$tokensupportVersion")
