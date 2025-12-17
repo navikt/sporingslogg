@@ -16,7 +16,6 @@ import org.springframework.kafka.test.context.EmbeddedKafka
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 
-
 @SpringBootTest( classes = [DataSourceTestConfig::class, KafkaTestConfig::class, TestApplication::class])
 @ActiveProfiles("test")
 @DirtiesContext
@@ -24,7 +23,6 @@ import org.springframework.test.context.ActiveProfiles
 internal class KafkaInnkommendeFlereHendelserTest: KafkaTests() {
 
 
-    @Disabled
     @Test
     fun `Naar en flere hendelser er gyldige og ugyldige skal gyldige lagres i db`() {
 
