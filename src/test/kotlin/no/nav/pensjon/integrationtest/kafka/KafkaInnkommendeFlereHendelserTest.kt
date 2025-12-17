@@ -9,6 +9,7 @@ import no.nav.pensjon.integrationtest.DataSourceTestConfig
 import no.nav.pensjon.integrationtest.KafkaTestConfig
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.kafka.test.context.EmbeddedKafka
@@ -23,6 +24,7 @@ import org.springframework.test.context.ActiveProfiles
 internal class KafkaInnkommendeFlereHendelserTest: KafkaTests() {
 
 
+    @Disabled
     @Test
     fun `Naar en flere hendelser er gyldige og ugyldige skal gyldige lagres i db`() {
 

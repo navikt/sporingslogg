@@ -4,6 +4,7 @@ import no.nav.pensjon.integrationtest.BaseTests
 import no.nav.pensjon.metrics.MetricsHelper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -22,8 +23,10 @@ internal class ActuatorTest: BaseTests() {
         metric = metricsHelper.init("dummyles")
     }
 
-    @Test
+     @Test
     fun `sjekk for actuator er klar`() {
+        val expected = """{"groups":["liveness","readiness"],"status":"UP"}""".trimIndent()
+
 
         repeat(3) {
             metric.measure {
@@ -40,7 +43,7 @@ internal class ActuatorTest: BaseTests() {
             .andReturn()
 
         val result = response.response.getContentAsString(charset("UTF-8"))
-        assertEquals("{\"status\":\"UP\"}", result)
+        assertEquals(expected, result)
     }
 
 }
