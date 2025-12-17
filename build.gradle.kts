@@ -1,8 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
-
-val springkafkaVersion="4.0.0"
+val springkafkaVersion="4.0.1"
 val prometeusVersion= "1.16.1"
 val jacksonkotlinVersion= "2.20.1"
 val slf4jVersion= "2.0.17"
@@ -10,7 +9,7 @@ val logstashlogbackVersion="9.0"
 val tokensupportVersion = "6.0.0"
 val tokensupporttestVersion = "2.0.5"
 val oracle11Version="23.26.0.0.0"
-val hibernateCoreVersion = "7.1.11.Final"
+val hibernateCoreVersion = "7.2.0.Final"
 val jakartaAnnotationApiVersion = "3.0.0"
 val jakartaInjectApiVersion = "2.0.1"
 val mockOAuth2ServerVersion = "3.0.1"
