@@ -9,7 +9,6 @@ import no.nav.pensjon.TestHelper.mockLoggMeldingAsJson
 import no.nav.pensjon.TestHelper.mockNoneValidLoggMeldingJson
 import no.nav.pensjon.tjeneste.LoggTjeneste
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.kafka.support.Acknowledgment
