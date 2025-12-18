@@ -49,7 +49,7 @@ class KafkaTests: BaseTests() {
         clearAllMocks()
     }
 
-    protected fun sjekkLoggingFinnes(keywords: String): Boolean {
+    fun sjekkLoggingFinnes(keywords: String): Boolean {
         val logsList: List<ILoggingEvent> = listAppender.list
         val result : String? = logsList.find { message ->
             message.message.contains(keywords)
@@ -57,21 +57,21 @@ class KafkaTests: BaseTests() {
         return result?.contains(keywords) ?: false
     }
 
-//    protected fun debugPrintLogging() {
-//        println("==******************************************==")
-//        println("Size: ${listAppender.list.size}")
-//        listAppender.list.map { logEvent ->
-//            println(logEvent.message)
-//        }
-//        println("--******************************************--")
-//    }
+    fun debugPrintLogging() {
+        println("==******************************************==")
+        println("Size: ${listAppender.list.size}")
+        listAppender.list.map { logEvent ->
+            println(logEvent.message)
+        }
+        println("--******************************************--")
+    }
 
     private fun settOppUtitlityConsumer(): KafkaMessageListenerContainer<String, String> {
         val consumerProperties = KafkaTestUtils.consumerProps(
-            "KC-$TOPIC",
-            "false",
-            embeddedKafka
-        )
+                embeddedKafka,
+                "KC-$TOPIC",
+                false
+            )
         consumerProperties["auto.offset.reset"] = "earliest"
         val container = KafkaMessageListenerContainer(consumerFactory, ContainerProperties(TOPIC))
         container.setupMessageListener(
@@ -80,22 +80,21 @@ class KafkaTests: BaseTests() {
         return container
     }
 
-    protected fun initTestRun(timeout: Long = 10L): TestResult {
+    fun initTestRun(timeout: Long = 10L): TestResult {
         println("*** INIT START ***")
 
         listAppender.start()
-        //debugLogger.clear(MockkClear.AFTER)
         debugLogger.addAppender(listAppender)
         val container = settOppUtitlityConsumer()
         container.start()
         ContainerTestUtils.waitForAssignment(container, embeddedKafka.partitionsPerTopic)
 
-        val template = KafkaTemplate(producerFactory).apply { defaultTopic =  TOPIC }
+        val template = KafkaTemplate(producerFactory).apply { setDefaultTopic(TOPIC) }
 
         return TestResult(template, container, timeout)
     }
 
-    protected data class TestResult(
+    data class TestResult(
         val kafkaTemplate: KafkaTemplate<String, String>,
         val container: KafkaMessageListenerContainer<String, String>,
         val timeout: Long

@@ -4,6 +4,7 @@ import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Timer
 import org.springframework.stereotype.Component
+import java.util.concurrent.Callable
 
 /**
  * Denne er pent lånt fra:
@@ -43,21 +44,20 @@ class MetricsHelper(val registry: MeterRegistry) {
 
         }
 
-        fun <R> measure(block: () -> R): R {
-
+        fun <V> measure(block: () -> V): V {
             var typeTag = success
-
             try {
                 return block.let {
                     Timer.builder("$meterName.${configuration.measureTimerSuffix}")
                         .tag(configuration.methodTag, method)
                         .register(registry)
                         .recordCallable {
-                            it.invoke()
+                            Callable() {
+                                it.invoke()
+                            }.call()
                         }
                 } ?: block.invoke()
             } catch (throwable: Throwable) {
-
                 typeTag = failure
                 throw throwable
             } finally {

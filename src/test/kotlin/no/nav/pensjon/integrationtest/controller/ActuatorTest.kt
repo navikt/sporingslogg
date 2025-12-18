@@ -24,6 +24,8 @@ internal class ActuatorTest: BaseTests() {
 
     @Test
     fun `sjekk for actuator er klar`() {
+        val expected = """{"groups":["liveness","readiness"],"status":"UP"}""".trimIndent()
+
 
         repeat(3) {
             metric.measure {
@@ -40,7 +42,7 @@ internal class ActuatorTest: BaseTests() {
             .andReturn()
 
         val result = response.response.getContentAsString(charset("UTF-8"))
-        assertEquals("{\"status\":\"UP\"}", result)
+        assertEquals(expected, result)
     }
 
 }

@@ -14,7 +14,6 @@ import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
 
-
 @SpringBootTest( classes = [DataSourceTestConfig::class, KafkaTestConfig::class, TestApplication::class])
 @ActiveProfiles("test")
 @DirtiesContext
@@ -34,6 +33,8 @@ internal class KafkaInnkommendeGydligHendelseTest: KafkaTests() {
             it.sendMsgOnDefaultTopic(hendsleJson)
             it.waitForlatch(kafkaLoggMeldingConsumer)
         }
+
+        debugPrintLogging()
 
         val loggInnslagList = loggTjeneste.hentAlleLoggInnslagForPerson(personIdent)
         assertEquals(1, loggInnslagList.size)
