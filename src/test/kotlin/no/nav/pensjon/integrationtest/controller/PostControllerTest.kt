@@ -6,7 +6,6 @@ import no.nav.pensjon.TestHelper.mockLoggMeldingAsJson
 import no.nav.pensjon.integrationtest.BaseTests
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test

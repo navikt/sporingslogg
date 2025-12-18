@@ -7,7 +7,6 @@ import io.mockk.clearAllMocks
 import no.nav.pensjon.integrationtest.BaseTests
 import no.nav.pensjon.listener.KafkaLoggMeldingConsumer
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.TestInstance
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
