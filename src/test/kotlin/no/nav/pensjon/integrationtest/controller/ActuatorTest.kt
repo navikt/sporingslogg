@@ -22,7 +22,7 @@ internal class ActuatorTest: BaseTests() {
         metric = metricsHelper.init("dummyles")
     }
 
-     @Test
+    @Test
     fun `sjekk for actuator er klar`() {
         val expected = """{"groups":["liveness","readiness"],"status":"UP"}""".trimIndent()
 
