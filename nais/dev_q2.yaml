@@ -42,7 +42,8 @@ spec:
   port: 8080
   ingresses:
     - "https://sporingslogg-q2.dev.intern.nav.no"
-    - "https://sporingslogg-q2.dev-fss-pub.nais.io"
+    - https://sporingslogg-q2.intern.dev.nav.no
+    - https://sporingslogg-q2.dev-fss-pub.nais.io
   secureLogs:
     enabled: false
   prometheus:
