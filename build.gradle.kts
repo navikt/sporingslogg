@@ -74,7 +74,7 @@ dependencies {
     testImplementation("no.nav.security:token-validation-test-support:${tokensupporttestVersion}")
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testImplementation("org.springframework.boot:spring-boot-starter-restclient-test")
-    testImplementation("io.dropwizard.metrics:metrics-core:4.2.22")
+    testImplementation("io.dropwizard.metrics:metrics-core:4.2.37")
 
     testImplementation("no.nav.security:mock-oauth2-server:${mockOAuth2ServerVersion}")
     testImplementation("no.nav.security:token-validation-spring-test:${tokensupportVersion}")
