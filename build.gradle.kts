@@ -16,7 +16,7 @@ val mockOAuth2ServerVersion = "3.0.1"
 val springwebmvcpac4jVersion = "8.0.1"
 val mockkVersion = "1.14.7"
 val springmockkVersion = "5.0.1"
-val junitplatformVersion = "6.0.1"
+val junitplatformVersion = "6.0.2"
 val h2DbVersion = "2.4.240"
 val commonsLang3Version = "3.18.0"
 
