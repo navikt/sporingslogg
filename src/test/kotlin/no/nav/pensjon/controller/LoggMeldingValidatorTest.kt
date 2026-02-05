@@ -185,7 +185,7 @@ internal class LoggMeldingValidatorTest {
         @Test
         fun `validate on samtykkeToken is too long`() {
             assertThrows<SporingsloggValidationException> {
-                LoggMeldingValidator.validateRequest(mockLoggMelding().copy(samtykkeToken = "samtykkeToken".repeat(100)))
+                LoggMeldingValidator.validateRequest(mockLoggMelding().copy(samtykkeToken = "samtykkeToken".repeat(3000)))
             }
         }
 
