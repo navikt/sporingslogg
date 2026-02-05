@@ -33,7 +33,7 @@ Disse meldinger skal lagres og gjøres tilgjengelig for brukere når de logger i
 "behandlingsGrunnlag": "hjemmelbeskrivelse",       // Beskriver hjemmel/samtykke som er bakgrunn for at dataene utleveres TODO kodeverk e.l. Max 100 tegn
 "uthentingsTidspunkt": "2018-10-19T12:24:21.675",  // Tidspunkt for utlevering, ISO-format uten tidssone
 "leverteData": "<Base64-encodet JSON-melding>",    // Utleverte data, max 1.000.000 tegn (i praksis må hele loggmeldingen være under Kafkas grense på 1 MB)
-"samtykkeToken": "<JSON Web Token, encodet form>", // Samtykketoken produsert av Altinn, definert i https://altinn.github.io/docs/guides/samtykke/datakilde/bruk-av-token/ Max 1000 tegn
+"samtykkeToken": "<JSON Web Token, encodet form>", // Samtykketoken produsert av Altinn, definert i https://altinn.github.io/docs/guides/samtykke/datakilde/bruk-av-token/ Max 3995 tegn
 "dataForespoersel": "<forespørselen som er brukt>", // Request/dok hvordan NAV hentet data, max 100.000 tegn
 "leverandoer": "123456789"                          // Orgnr til den som har utleveringsavtalen, benyttes ved delegering Skal være 9 sifre
 }
