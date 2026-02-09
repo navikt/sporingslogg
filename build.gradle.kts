@@ -21,7 +21,7 @@ val h2DbVersion = "2.4.240"
 val commonsLang3Version = "3.18.0"
 
 plugins {
-    kotlin("jvm") version "2.3.0"
+    kotlin("jvm") version "2.3.10"
     kotlin("plugin.spring") version "2.3.10"
     kotlin("plugin.jpa") version "2.3.10"
     id("org.springframework.boot") version "4.0.2"
