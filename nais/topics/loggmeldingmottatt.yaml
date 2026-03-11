@@ -36,10 +36,6 @@ spec:
     - team: pensjonsamhandling
       application: tp
       access: write
-
-#    - team: pensjon
-#      application: pensjon-q2
-#      access: write   #write
-#    - team: andre
-#      application: team-andre
-#      access: write
+    - team: pensjondeployer
+      application: pensjon-pen
+      access: write
