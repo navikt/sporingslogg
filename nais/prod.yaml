@@ -34,8 +34,6 @@ spec:
   ingresses:
     - "https://sporingslogg.intern.nav.no"
     - "https://sporingslogg.prod-fss-pub.nais.io"
-  secureLogs:
-    enabled: false
   prometheus:
     enabled: true
     path: actuator/prometheus
