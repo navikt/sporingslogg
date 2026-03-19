@@ -1,7 +1,6 @@
 package no.nav.pensjon.controller
 
 import io.micrometer.core.instrument.Metrics
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import jakarta.annotation.PostConstruct
 import no.nav.pensjon.controller.LoggMeldingValidator.validateRequestAsResponseRequestExcption
 import no.nav.pensjon.domain.LoggMelding
@@ -11,7 +10,6 @@ import no.nav.pensjon.util.scrable
 import no.nav.security.token.support.core.api.Protected
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -22,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 class PostController(
     private val loggTjeneste: LoggTjeneste,
     private val tokenHelper: TokenHelper,
-    @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper(SimpleMeterRegistry())
+    private val metricsHelper: MetricsHelper
 ) {
 
     private val log = LoggerFactory.getLogger(javaClass)

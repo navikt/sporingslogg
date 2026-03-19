@@ -1,6 +1,5 @@
 package no.nav.pensjon.tjeneste
 
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import jakarta.annotation.PostConstruct
 import jakarta.transaction.Transactional
 import no.nav.pensjon.domain.LoggInnslag
@@ -10,14 +9,13 @@ import no.nav.pensjon.tjeneste.ValideringTjeneste.validerIkkeBlank
 import no.nav.pensjon.tjeneste.ValideringTjeneste.validerMaxLengde
 import no.nav.pensjon.util.scrable
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
 class LoggTjeneste(
     private val loggRepository: LoggRepository,
-    @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper(SimpleMeterRegistry()) ) {
+    private val metricsHelper: MetricsHelper) {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
