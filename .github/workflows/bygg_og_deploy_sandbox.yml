@@ -48,8 +48,8 @@ jobs:
 
   deployToQ2:
     permissions:
-      contents: "read"
-      id-token: "write"
+      contents: write
+      id-token: write
     name: 'Deploy NAIS Q2'
     needs: build_and_tag
     outputs:
@@ -66,8 +66,8 @@ jobs:
 
   deployTopicToQ2:
     permissions:
-      contents: "read"
-      id-token: "write"
+      contents: write
+      id-token: write
     name: 'Deploy topics DEV'
     needs: deployToQ2
     runs-on: ubuntu-latest
