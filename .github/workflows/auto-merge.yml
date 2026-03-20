@@ -3,6 +3,14 @@ name: Auto-merge Dependabot Patch Updates
 on:
   pull_request:
     types: [opened, synchronize, labeled]
+  push:
+    branches:
+      - '!*'
+      - '!*/**'
+      - '!release/*'
+      - '!master'
+      - '!main'
+      - '!sandbox'
 
 permissions:
   contents: write

@@ -9,7 +9,7 @@ val logstashlogbackVersion="9.0"
 val tokensupportVersion = "6.0.4"
 val tokensupporttestVersion = "2.0.5"
 val oracle11Version="23.26.1.0.0"
-val hibernateCoreVersion = "7.2.7.Final"
+val hibernateCoreVersion = "7.3.0.Final"
 val jakartaAnnotationApiVersion = "3.0.0"
 val jakartaInjectApiVersion = "2.0.1"
 val mockOAuth2ServerVersion = "3.0.1"
@@ -30,7 +30,7 @@ plugins {
 }
 
 group = "no.nav.pensjon"
-java.sourceCompatibility = JavaVersion.VERSION_21
+java.sourceCompatibility = JavaVersion.VERSION_25
 
 repositories {
     mavenCentral()
@@ -108,7 +108,7 @@ tasks {
 
     withType<KotlinJvmCompile>().configureEach {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
+            jvmTarget.set(JvmTarget.JVM_25)
             freeCompilerArgs.add("-Xjsr305=strict")
         }
     }

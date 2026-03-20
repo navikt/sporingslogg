@@ -1,5 +1,6 @@
 package no.nav.pensjon.listener
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -7,6 +8,7 @@ import no.nav.pensjon.TestHelper.mapAnyToJson
 import no.nav.pensjon.TestHelper.mockLoggMelding
 import no.nav.pensjon.TestHelper.mockLoggMeldingAsJson
 import no.nav.pensjon.TestHelper.mockNoneValidLoggMeldingJson
+import no.nav.pensjon.metrics.MetricsHelper
 import no.nav.pensjon.tjeneste.LoggTjeneste
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -17,7 +19,7 @@ internal class KafkaLoggMeldingConsumerTest {
 
     val loggTjeneste : LoggTjeneste = mockk(relaxed = true)
     val acknowledgment: Acknowledgment = mockk(relaxed = true)
-    val kafkaLoggMeldingConsumer = KafkaLoggMeldingConsumer(loggTjeneste)
+    val kafkaLoggMeldingConsumer = KafkaLoggMeldingConsumer(loggTjeneste, MetricsHelper(SimpleMeterRegistry()))
 
     @BeforeEach
     fun setup() {

@@ -65,7 +65,7 @@ spec:
     limits:
       memory: 725Mi
     requests:
-      cpu: 50m
+      cpu: 100m
       memory: 650Mi
   webproxy: true
   kafka:
