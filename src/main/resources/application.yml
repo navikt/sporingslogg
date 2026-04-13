@@ -1,8 +1,5 @@
 no.nav.security.jwt:
   issuer:
-    servicebruker:
-      discoveryurl: '${SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL}'
-      accepted_audience: 'srvpensjon,srvsporingslogg'
     tokendings:
       discoveryurl: ${TOKEN_X_WELL_KNOWN_URL}
       accepted_audience: ${TOKEN_X_CLIENT_ID}
@@ -18,10 +15,6 @@ kafka:
     aiventopic: ${SPORINGSLOGG_AIVEN_KAFKA_TOPIC}
     aivengroupid: ${SPORINGSLOGG_AIVEN_KAFKA_GROUP}
 
-server:
-  error:
-    include-message: always
-
 management:
   endpoint:
     health:
@@ -35,3 +28,7 @@ management:
     web:
       exposure:
         include: prometheus, health, info, metrics
+spring:
+  web:
+    error:
+      include-message: always

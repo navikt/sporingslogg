@@ -20,7 +20,7 @@ class FinnController(private val loggTjeneste: LoggTjeneste, private val tokenHe
     private val log = LoggerFactory.getLogger(javaClass)
 
     @GetMapping("/sporingslogg/api/test/finn/", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @ProtectedWithClaims(issuer = "servicebruker")
+    @ProtectedWithClaims(issuer = "entraid")
     fun finnLoggMelding(
         @RequestHeader("ident", required = true) ident: String) : List<String> {
         log.debug("søker innslag på : $ident")
@@ -30,7 +30,7 @@ class FinnController(private val loggTjeneste: LoggTjeneste, private val tokenHe
     }
 
     @GetMapping("/sporingslogg/api/test/hent/", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @ProtectedWithClaims(issuer = "servicebruker")
+    @ProtectedWithClaims(issuer = "entraid")
     fun hentLoggMelding(@RequestHeader("ident", required = true) ident: String) : List<LoggMelding> {
         if (ident.length != 11) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Ugyldig ident")
         log.debug("Henter ut pid : $ident")
@@ -46,10 +46,10 @@ class FinnController(private val loggTjeneste: LoggTjeneste, private val tokenHe
     }
 
     @GetMapping("/sporingslogg/api/test/antall/", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @ProtectedWithClaims(issuer = "servicebruker")
+    @ProtectedWithClaims(issuer = "entraid")
     fun hentLoggMeldingAntall(@RequestHeader("ident", required = true) ident: String) : String {
         if (ident.length != 11) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Ugyldig ident")
-        log.debug("Henter ut pid : $ident, for systembruker: ${tokenHelper.getSystemUserId()}")
+        log.debug("Henter ut pid : $ident, for systembruker: ${tokenHelper.getSystemUserOrEntraId()}")
 
         val result = loggTjeneste.countAlleLoggInnslagForPerson(ident)
         log.debug("Hentat antall: $result")
