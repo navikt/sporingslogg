@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 val springkafkaVersion="4.0.1"
-val prometeusVersion= "1.16.4"
+val prometeusVersion= "1.16.5"
 val jacksonkotlinVersion= "2.21.2"
 val slf4jVersion= "2.0.17"
 val logstashlogbackVersion="9.0"
