@@ -20,9 +20,6 @@ spec:
         - application: pensjon-pen
           namespace: pensjondeployer
           cluster: prod-fss
-        - application: dsop-api # Fjernes når tms-personopplysninger-api har tatt over
-          namespace: personbruker
-          cluster: prod-gcp
         - application: tms-personopplysninger-api  # Tar over for dsop-api
           namespace: min-side
           cluster: prod-gcp

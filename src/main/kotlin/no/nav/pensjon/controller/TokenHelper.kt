@@ -14,7 +14,6 @@ class TokenHelper(private val tokenValidationContextHolder: TokenValidationConte
     // se appliation.yam #no.nav.security.jwt. under issuer.xxxx
     enum class Issuer {
         DIFI,
-        SERVICEBRUKER,
         TOKENDINGS,
         ENTRAID;
         fun lowercase(): String = this.name.lowercase()
@@ -70,14 +69,14 @@ class TokenHelper(private val tokenValidationContextHolder: TokenValidationConte
 
     fun getPid(): String = getClaims(Issuer.DIFI)
 
-    fun getSystemUserId(): String = getClaims(Issuer.SERVICEBRUKER)
+    //fun getSystemUserId(): String = getClaims(Issuer.SERVICEBRUKER)
 
     fun getEntraId(): String = getClaims(Issuer.ENTRAID)
 
     fun getPidFromToken(): String = extractForTokendingsIssuer()
 
-    fun getSystemUserOrEntraId(): String = try { getClaims(Issuer.SERVICEBRUKER, true)
+    fun getSystemUserOrEntraId(): String = try { getEntraId()
                                                   } catch (e: Exception) {
-                                                    getEntraId()
+                                                      "N/A"
                                                   }
 }

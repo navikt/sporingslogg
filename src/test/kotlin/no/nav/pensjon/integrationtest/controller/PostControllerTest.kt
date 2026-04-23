@@ -56,7 +56,7 @@ internal class PostControllerTest: BaseTests() {
             loggTjeneste.lagreLoggInnslag(mockLoggMelding("12886512250"))
             loggTjeneste.lagreLoggInnslag(mockLoggMelding(brukerpid, samtykke = "DummyToken"))
 
-            val token: String = mockServiceToken()
+            val token: String = mockEntraIdToken()
             val jsondata = mockLoggMeldingAsJson(brukerpid)
 
             val response = mockMvc.perform(
@@ -83,7 +83,7 @@ internal class PostControllerTest: BaseTests() {
         fun `sjekk for postcontroller gyldig loggmelding ferdig base64 lagres i db`() {
             val brukerpid = "01884512234"
             val jsondata = mockLoggMeldingAsJson(brukerpid, samtykkeToken = "DummyToken")
-            val token: String = mockServiceToken()
+            val token: String = mockEntraIdToken()
 
             val response = mockMvc.perform(
                 MockMvcRequestBuilders.post("/sporingslogg/api/post")
@@ -105,7 +105,7 @@ internal class PostControllerTest: BaseTests() {
         fun `sjekk postcontroller ugyldig loggmelding sendes inn`() {
             val brukerpid = "08886512234"
             val jsondata = mockLoggMeldingAsJson(brukerpid, mottaker = "123123")
-            val token: String = mockServiceToken()
+            val token: String = mockEntraIdToken()
 
             val response = mockMvc.perform(
                 MockMvcRequestBuilders.post("/sporingslogg/api/post")
