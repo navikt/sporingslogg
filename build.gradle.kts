@@ -23,7 +23,7 @@ val commonsLang3Version = "3.18.0"
 plugins {
     kotlin("jvm") version "2.3.21"
     kotlin("plugin.spring") version "2.3.21"
-    kotlin("plugin.jpa") version "2.3.20"
+    kotlin("plugin.jpa") version "2.3.21"
     id("org.springframework.boot") version "4.0.6"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.owasp.dependencycheck") version "12.2.1"
