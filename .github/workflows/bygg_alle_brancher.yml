@@ -38,3 +38,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew build --stacktrace
+
+      # 5. Publish Gradle Test Results to GitHub UI
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always() # Must run even if tests failed
+        with:
+          files: |
+            **/build/test-results/**/*.xml        
