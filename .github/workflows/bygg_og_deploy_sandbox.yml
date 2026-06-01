@@ -42,7 +42,7 @@ jobs:
         if: always() # Must run even if tests failed
         with:
           files: |
-            **/build/test-results/**/*.xml        
+            **/build/test-results/test/*.xml        
 
       - name: Nais docker-build
         uses: nais/docker-build-push@v0
