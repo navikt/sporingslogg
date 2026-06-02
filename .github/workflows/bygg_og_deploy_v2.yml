@@ -46,12 +46,13 @@ jobs:
       - name: Build and test with Gradle
         run: ./gradlew build --stacktrace
 
-      - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always() # Must run even if tests failed
+      - name: Publish Test Report
+        uses: dorny/test-reporter@v3
+        if: success() || failure() # Reports even if some tests fail
         with:
-          files: |
-            **/build/test-results/test/*.xml        
+          name: Gradle Tests
+          path: '**/build/test-results/**/*.xml' # Default Gradle test output path
+          reporter: java-junit
 
       - name: Nais docker-build
         uses: nais/docker-build-push@v0
