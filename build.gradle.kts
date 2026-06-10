@@ -6,17 +6,17 @@ val prometeusVersion= "1.16.5"
 val jacksonkotlinVersion= "2.21.3"
 val slf4jVersion= "2.0.18"
 val logstashlogbackVersion="9.0"
-val tokensupportVersion = "6.0.7"
+val tokensupportVersion = "6.0.8"
 val tokensupporttestVersion = "2.0.5"
 val oracle11Version="23.26.2.0.0"
-val hibernateCoreVersion = "7.3.4.Final"
+val hibernateCoreVersion = "7.4.0.Final"
 val jakartaAnnotationApiVersion = "3.0.0"
 val jakartaInjectApiVersion = "2.0.1"
-val mockOAuth2ServerVersion = "3.0.3"
+val mockOAuth2ServerVersion = "4.0.0"
 val springwebmvcpac4jVersion = "8.0.3"
 val mockkVersion = "1.14.9"
 val springmockkVersion = "5.0.1"
-val junitplatformVersion = "6.0.3"
+val junitplatformVersion = "6.1.0"
 val h2DbVersion = "2.4.240"
 val commonsLang3Version = "3.18.0"
 
@@ -74,7 +74,8 @@ dependencies {
     testImplementation("no.nav.security:token-validation-test-support:${tokensupporttestVersion}")
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testImplementation("org.springframework.boot:spring-boot-starter-restclient-test")
-    testImplementation("io.dropwizard.metrics:metrics-core:4.2.38")
+    //testImplementation("io.dropwizard.metrics:metrics-core:4.2.38")
+    testImplementation("io.dropwizard.metrics5:metrics-core:5.0.7")
 
     testImplementation("no.nav.security:mock-oauth2-server:${mockOAuth2ServerVersion}")
     testImplementation("no.nav.security:token-validation-spring-test:${tokensupportVersion}")
