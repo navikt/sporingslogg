@@ -1,21 +1,12 @@
 name: Bygg og deploy v2
 
 on:
-  workflow_run:
-    workflows: [ "Auto-merge Dependabot Patch Updates" ]
-    types:
-      - completed
   push:
     branches:
       - master
 
 jobs:
   build_and_tag:
-    if: >
-      (github.event_name == 'workflow_run' &&
-       github.event.workflow_run.conclusion == 'success' &&
-       github.event.workflow_run.actor.login == 'dependabot[bot]') ||
-      (github.event_name == 'push')
     name: 'Build and tag'
     runs-on: ubuntu-latest
     permissions:
