@@ -19,7 +19,7 @@ jobs:
     steps:
       # PULL REPO
       - name: Pull repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       # JAVA
       - name: Java 25
@@ -66,7 +66,7 @@ jobs:
       image: ${{ needs.build_and_tag.outputs.image }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Deploy to Q2
         uses: nais/deploy/actions/deploy@v2
         env:
@@ -82,7 +82,7 @@ jobs:
     needs: deployToQ2
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Deploy public-sporingslogg-loggmeldingMottatt-q2 to pensjonsamhandling namespace
         uses: nais/deploy/actions/deploy@v2
         env:
@@ -97,7 +97,7 @@ jobs:
     needs: deployToQ2
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Deploy to PROD
         uses: nais/deploy/actions/deploy@v2
         env:
@@ -113,7 +113,7 @@ jobs:
     needs: deployToProd
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Deploy public-sporingslogg-loggmeldingMottatt to pensjonsamhandling namespace
         uses: nais/deploy/actions/deploy@v2
         env:
