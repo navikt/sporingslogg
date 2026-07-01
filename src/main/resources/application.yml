@@ -6,9 +6,6 @@ no.nav.security.jwt:
     entraid:
      discovery-url: ${AZURE_APP_WELL_KNOWN_URL}
      accepted_audience: ${AZURE_APP_CLIENT_ID}
-oracle:
-  user: ${DBUSERNAME}
-  password: ${DBPASSWORD}
 kafka:
   security.protocol: SSL
   sporingslogg:
@@ -29,6 +26,18 @@ management:
       exposure:
         include: prometheus, health, info, metrics
 spring:
+  datasource:
+    url: ${DBURL}
+    username: ${DBUSERNAME}
+    password: ${DBPASSWORD}
+    hikari:
+      maximum-pool-size: 3
+      idle-timeout: 300000
+      max-lifetime: 1800000
+  flyway:
+    enabled: true
+    baselineOnMigrate: true
+    baselineVersion: 1
   web:
     error:
       include-message: always

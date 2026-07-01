@@ -2,7 +2,6 @@ package no.nav.pensjon.integrationtest.kafka
 
 import no.nav.pensjon.TestApplication
 import no.nav.pensjon.TestHelper.mockNoneValidLoggMeldingJson
-import no.nav.pensjon.integrationtest.DataSourceTestConfig
 import no.nav.pensjon.integrationtest.KafkaTestConfig
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -12,7 +11,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 
-@SpringBootTest( classes = [DataSourceTestConfig::class, KafkaTestConfig::class, TestApplication::class])
+@SpringBootTest( classes = [KafkaTestConfig::class, TestApplication::class])
 @ActiveProfiles("test")
 @DirtiesContext
 @EmbeddedKafka(topics = [TOPIC])

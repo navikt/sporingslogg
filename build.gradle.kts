@@ -48,6 +48,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+    implementation("org.flywaydb:flyway-core:12.0.1")
+    implementation("org.flywaydb:flyway-database-oracle:12.9.0")
+
     implementation("org.springframework.kafka:spring-kafka")
     implementation("com.oracle.database.jdbc:ojdbc11:${oracle11Version}")
     implementation("org.hibernate.orm:hibernate-core:${hibernateCoreVersion}")

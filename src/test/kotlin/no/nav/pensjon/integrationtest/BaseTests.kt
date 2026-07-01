@@ -18,7 +18,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import java.util.*
 
-@SpringBootTest(classes = [DataSourceTestConfig::class, TestApplication::class, KafkaTestConfig::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = [TestApplication::class, KafkaTestConfig::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(profiles = ["test"])
 @EnableMockOAuth2Server
 @AutoConfigureMockMvc

@@ -3,6 +3,8 @@ ENV: 'test'
 spring:
   profiles:
     active: 'test'
+  flyway:
+    enabled: false
   web:
     error:
       include-message: always
@@ -15,7 +17,7 @@ AZURE_APP_CLIENT_ID: 'entraid-test'
 
 DIFI_TOKEN_CONFIGURATION_URL: "http://localhost"
 
-DBURL: 'jdbc:h2:mem:mydbsporingslogg'
+DBURL: 'jdbc:h2:mem:mydbsporingslogg;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
 DBUSERNAME: 'sa'
 DBPASSWORD: ''
 
