@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 val springkafkaVersion="4.0.1"
 val prometeusVersion= "1.17.0"
-val jacksonkotlinVersion= "2.22.0"
+val jacksonkotlinVersion= "2.22.1"
 val slf4jVersion= "2.0.18"
 val logstashlogbackVersion="9.0"
 val tokensupportVersion = "6.0.11"
@@ -63,7 +63,7 @@ dependencies {
     implementation("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
     implementation("io.micrometer:micrometer-registry-prometheus:${prometeusVersion}")
 
-    implementation("org.hibernate.validator:hibernate-validator:9.1.1.Final")
+    implementation("org.hibernate.validator:hibernate-validator:9.1.2.Final")
     implementation("no.nav.security:token-validation-core")
     implementation("no.nav.security:token-validation-spring:$tokensupportVersion")
     implementation("no.nav.security:token-validation-jaxrs:$tokensupportVersion")
