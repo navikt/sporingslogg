@@ -39,3 +39,6 @@ spec:
     - team: pensjondeployer
       application: pensjon-pen
       access: write
+    - team: pensjonsamhandling
+      application: samordning-hendelse-api
+      access: write
