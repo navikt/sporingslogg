@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 val springkafkaVersion="4.0.1"
-val prometeusVersion= "1.17.0"
-val jacksonkotlinVersion= "2.22.1"
+val prometeusVersion= "1.17.1"
+val jacksonkotlinVersion= "2.22.2"
 val slf4jVersion= "2.0.18"
 val logstashlogbackVersion="9.0"
 val tokensupportVersion = "6.0.12"
@@ -12,7 +12,7 @@ val oracle11Version="23.26.3.0.0"
 val hibernateCoreVersion = "7.4.5.Final"
 val jakartaAnnotationApiVersion = "3.0.0"
 val jakartaInjectApiVersion = "2.0.1"
-val mockOAuth2ServerVersion = "6.0.0"
+val mockOAuth2ServerVersion = "6.0.2"
 val springwebmvcpac4jVersion = "8.0.3"
 val mockkVersion = "1.14.11"
 val springmockkVersion = "5.0.1"
@@ -24,7 +24,7 @@ plugins {
     kotlin("jvm") version "2.4.10"
     kotlin("plugin.spring") version "2.4.10"
     kotlin("plugin.jpa") version "2.4.10"
-    id("org.springframework.boot") version "4.1.0"
+    id("org.springframework.boot") version "4.1.1"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.owasp.dependencycheck") version "13.0.0"
 }
