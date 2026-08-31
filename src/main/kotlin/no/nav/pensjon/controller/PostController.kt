@@ -37,14 +37,12 @@ class PostController(
         return postController.measure {
             val trimmedRequest = request.copy(person = request.person?.trim())
             MDC.put("tema", trimmedRequest.tema)
+
             log.info("*** Innkommende request")
 
             validateRequestAsResponseRequestExcption(trimmedRequest) //viktig må være først
-
-            log.debug("LoggMelding Base64? = ${LoggMelding.checkForEncode(trimmedRequest)}")
             val loggMelding = LoggMelding.checkForAndEncode(trimmedRequest) //Check for base64 encode if plain text
 
-            //log.info("Følgende medling kommet inn: ${loggMelding.tema}, systemBruker: ${tokenHelper.getSystemUserId()}")
             log.info("Følgende medling kommet inn: ${loggMelding.tema}, ident: ${tokenHelper.getSystemUserOrEntraId()}")
 
             val loggId = loggTjeneste.lagreLoggInnslag(loggMelding)
