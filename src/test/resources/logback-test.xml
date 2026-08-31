@@ -7,12 +7,17 @@
     </appender>
     <logger name="io" level="INFO"/>
     <logger name="org" level="INFO"/>
-    <logger name="org.hibernate" level="DEBUG"/>
+    <logger name="org.hibernate.orm" level="OFF"/>
     <logger name="com" level="INFO"/>
     <logger name="org.apache.zookeeper" level="OFF"/>
     <logger name="kafka" level="OFF" />
     <logger name="no.nav.security" level="WARN"/>
     <logger name="no.nav.pensjon" level="DEBUG"/>
+    <logger name="org.apache.kafka.clients.consumer.internals.ConsumerCoordinator" level="OFF" />
+    <logger name="org.apache.kafka.controller.ReplicationControlManager" level="OFF" />
+    <logger name="state.change.logger" level="OFF" />
+    <logger name="org.apache.kafka.storage.internals.log.UnifiedLog" level="OFF" />
+
     <root level="DEBUG">
         <appender-ref ref="stdout" />
     </root>

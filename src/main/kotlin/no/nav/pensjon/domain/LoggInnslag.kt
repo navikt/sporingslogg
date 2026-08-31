@@ -1,14 +1,6 @@
 package no.nav.pensjon.domain
 
-import jakarta.persistence.Column
-import jakarta.persistence.Convert
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.Lob
-import jakarta.persistence.SequenceGenerator
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import no.nav.pensjon.util.scrable
 import java.time.LocalDateTime
 
@@ -65,7 +57,7 @@ open class LoggInnslag(
         fun fromLoggMelding(loggMelding: LoggMelding): LoggInnslag {
             return LoggInnslag(
                 id = null,
-                person = loggMelding.person,
+                person = loggMelding.person?.trim(),
                 mottaker =loggMelding.mottaker,
                 tema = loggMelding.tema,
                 hjemmel = loggMelding.behandlingsGrunnlag,

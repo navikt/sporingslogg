@@ -47,7 +47,7 @@ class PostController(
             log.info("Følgende medling kommet inn: ${loggMelding.tema}, ident: ${tokenHelper.getSystemUserOrEntraId()}")
 
             val loggId = loggTjeneste.lagreLoggInnslag(loggMelding)
-            val meldingid = "ID: $loggId, person: ${loggMelding.person.scrable()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
+            val meldingid = "ID: $loggId, person: ${loggMelding.person?.trim().scrable()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
 
             log.info("Lagret melding: $meldingid")
 

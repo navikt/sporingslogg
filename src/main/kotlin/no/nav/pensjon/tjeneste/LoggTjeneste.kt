@@ -35,12 +35,12 @@ class LoggTjeneste(
 
     fun lagreLoggInnslag(loggMelding: LoggMelding): Long {
         val loggInnslag = LoggInnslag.fromLoggMelding(loggMelding)
-        log.debug("Lagrer for person " + loggInnslag.person.scrable() + ", mottaker: " + loggInnslag.mottaker + ", tema: " + loggInnslag.tema)
+        log.debug("Lagrer for person " + loggInnslag.person?.trim().scrable() + ", mottaker: " + loggInnslag.mottaker + ", tema: " + loggInnslag.tema)
 
         return validerOgLagre.measure {
 
         validerIkkeBlank(loggInnslag.person, "person")
-        validerMaxLengde(loggInnslag.person, 11, "person")
+        validerMaxLengde(loggInnslag.person!!.trim(), 11, "person")
 //        validerIkkeBlank(loggInnslag.mottaker, "mottaker")
 //        validerMaxLengde(loggInnslag.mottaker, 9, "mottaker")
 //        validerIkkeBlank(loggInnslag.tema, "tema")
@@ -71,7 +71,8 @@ class LoggTjeneste(
     @Transactional
     fun hentAlleLoggInnslagForPerson(person: String): List<LoggInnslag> {
         return hentLoggInnslag.measure {
-            return@measure loggRepository.hantAlleLoggInnslagForPerson(person)
+            log.debug("Henter logginnslag for person ${person.trim().scrable()}")
+            return@measure loggRepository.hantAlleLoggInnslagForPerson(person.trim())
         }
     }
 
@@ -81,6 +82,9 @@ class LoggTjeneste(
             return@measure loggRepository.finnAllePersonStarterMed(ident).mapNotNull { innslag -> innslag.person }
         }
     }
+
+    @Transactional
+    fun finnAlleLoggInslagOnId(id: Long) = loggRepository.findById(id)
 
     @Transactional
     fun countAlleLoggInnslagForPerson(ident: String): Int = loggRepository.countAlleLoggInnslagForPerson(ident)

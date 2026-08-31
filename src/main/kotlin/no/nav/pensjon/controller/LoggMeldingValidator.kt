@@ -41,8 +41,8 @@ object LoggMeldingValidator {
 
     private fun personNrValidation(sporingsloggRequest: LoggMelding) {
         throwExceptionIfEmpty(sporingsloggRequest.person, "Person can not be empty")
-        throwExceptionIfNotDigits(sporingsloggRequest.person!!, "Person must be a digit")
-        if (sporingsloggRequest.person.length != PERSON_NR_LENGTH) throw SporingsloggValidationException("Person must be of length $PERSON_NR_LENGTH")
+        throwExceptionIfNotDigits(sporingsloggRequest.person!!.trim(), "Person must be a digit")
+        if (sporingsloggRequest.person.trim().length != PERSON_NR_LENGTH) throw SporingsloggValidationException("Person must be of length $PERSON_NR_LENGTH")
     }
 
     private fun mottakerValidation(sporingsloggRequest: LoggMelding) {

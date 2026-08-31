@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.transaction.annotation.Transactional
 
 internal class PostControllerTest: BaseTests() {
 
@@ -47,7 +48,7 @@ internal class PostControllerTest: BaseTests() {
 
     @Nested
     @DisplayName("Post med servicebruker")
-    inner class PostServicebruker {
+    open inner class PostServicebruker {
 
         @Test
         fun `Post gyldig loggmelding lagres i db med servicebruker`() {
@@ -78,6 +79,44 @@ internal class PostControllerTest: BaseTests() {
                 assertEquals(base64LevertData(), loggInnslag.leverteData)
             }
         }
+
+        @Test
+        @Transactional
+        open fun `Post gyldig loggmelding lagres i db med servicebruker selv med mellomrom i person`() {
+            val brukerpid = "08886512236   "
+
+            //loggTjeneste.lagreLoggInnslag(mockLoggMelding(brukerpid))
+
+            val token: String = mockEntraIdToken()
+            val jsondata = mockLoggMeldingAsJson(brukerpid)
+
+            val response = mockMvc.perform(
+                MockMvcRequestBuilders.post("/sporingslogg/api/post")
+                    .header("Authorization", "Bearer $token")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content( jsondata ))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
+
+            val result = response.response.getContentAsString(charset("UTF-8"))
+            println("")
+            println("Result : $result")
+
+            assertTrue(result.toLong() >= 1L)
+
+            val sets2 = loggTjeneste.finnAlleLoggInslagOnId(result.toLong())
+            println("")
+            println("Logginnslag: $sets2")
+
+
+            val sets = loggTjeneste.hentAlleLoggInnslagForPerson(brukerpid)
+            println("")
+            println("Logginnslag: $sets")
+
+            //assertEquals(1, sets.size )
+
+        }
+
 
         @Test
         fun `sjekk for postcontroller gyldig loggmelding ferdig base64 lagres i db`() {
