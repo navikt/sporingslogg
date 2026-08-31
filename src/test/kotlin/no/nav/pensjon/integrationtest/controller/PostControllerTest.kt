@@ -1,6 +1,7 @@
 package no.nav.pensjon.integrationtest.controller
 
 import no.nav.pensjon.TestHelper.base64LevertData
+import no.nav.pensjon.TestHelper.mapAnyToJson
 import no.nav.pensjon.TestHelper.mockLoggMelding
 import no.nav.pensjon.TestHelper.mockLoggMeldingAsJson
 import no.nav.pensjon.integrationtest.BaseTests
@@ -14,6 +15,41 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 internal class PostControllerTest: BaseTests() {
+
+    @Test
+    fun `Post loggmelding med trailing space i person blir trimmet og lagret`() {
+        val brukerpid = "48886512235"
+        val token: String = mockEntraIdToken()
+        val jsondataMedSpace = mapAnyToJson(mockLoggMelding(ident = "$brukerpid   "))
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/sporingslogg/api/post")
+                .header("Authorization", "Bearer $token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsondataMedSpace))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        // Eksakt match pa trimmet person-verdi -> beviser at whitespace ble fjernet for lagring
+        assertEquals(1, loggTjeneste.countAlleLoggInnslagForPerson(brukerpid))
+    }
+
+    @Test
+    fun `Post loggmelding med leading og trailing space i person valideres OK`() {
+        val brukerpid = "08886512235"
+        val token: String = mockEntraIdToken()
+        val jsondata = mapAnyToJson(mockLoggMelding(ident = "  $brukerpid  "))
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/sporingslogg/api/post")
+                .header("Authorization", "Bearer $token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsondata))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        assertEquals(1, loggTjeneste.countAlleLoggInnslagForPerson(brukerpid))
+    }
 
     @Test
     fun `Post gyldig loggmelding lagres i db med entraid`() {
