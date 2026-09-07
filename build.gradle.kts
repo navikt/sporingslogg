@@ -9,7 +9,7 @@ val logstashlogbackVersion="9.0"
 val tokensupportVersion = "6.0.12"
 val tokensupporttestVersion = "2.0.5"
 val oracle11Version="23.26.3.0.0"
-val hibernateCoreVersion = "7.4.5.Final"
+val hibernateCoreVersion = "7.4.7.Final"
 val jakartaAnnotationApiVersion = "3.0.0"
 val jakartaInjectApiVersion = "2.0.1"
 val mockOAuth2ServerVersion = "6.0.2"
@@ -75,7 +75,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testImplementation("org.springframework.boot:spring-boot-starter-restclient-test")
     //testImplementation("io.dropwizard.metrics:metrics-core:4.2.38")
-    testImplementation("io.dropwizard.metrics5:metrics-core:5.0.7")
+    testImplementation("io.dropwizard.metrics5:metrics-core:5.0.8")
 
     testImplementation("no.nav.security:mock-oauth2-server:${mockOAuth2ServerVersion}")
     testImplementation("no.nav.security:token-validation-spring-test:${tokensupportVersion}")
