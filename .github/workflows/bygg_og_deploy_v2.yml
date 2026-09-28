@@ -68,7 +68,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Deploy to Q2
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         env:
           CLUSTER: dev-fss
           RESOURCE: nais/dev_q2.yaml
@@ -84,7 +84,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Deploy public-sporingslogg-loggmeldingMottatt-q2 to pensjonsamhandling namespace
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         env:
           "CLUSTER": dev-gcp
           "RESOURCE": nais/topics/loggmeldingmottatt-q2.yaml
@@ -99,7 +99,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Deploy to PROD
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         env:
           "CLUSTER": prod-fss
           "RESOURCE": nais/prod.yaml
@@ -115,7 +115,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Deploy public-sporingslogg-loggmeldingMottatt to pensjonsamhandling namespace
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         env:
           "CLUSTER": prod-gcp
           "RESOURCE": nais/topics/loggmeldingmottatt.yaml
