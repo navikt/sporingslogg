@@ -3,27 +3,27 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 val springkafkaVersion="4.0.1"
 val prometeusVersion= "1.17.1"
-val jacksonkotlinVersion= "2.22.2"
-val slf4jVersion= "2.0.18"
+val jacksonkotlinVersion= "2.22.3"
+val slf4jVersion= "2.0.20"
 val logstashlogbackVersion="9.0"
 val tokensupportVersion = "6.0.12"
 val tokensupporttestVersion = "2.0.5"
 val oracle11Version="23.26.3.0.0"
-val hibernateCoreVersion = "7.4.7.Final"
+val hibernateCoreVersion = "7.4.11.Final"
 val jakartaAnnotationApiVersion = "3.0.0"
 val jakartaInjectApiVersion = "2.0.1"
-val mockOAuth2ServerVersion = "6.0.2"
+val mockOAuth2ServerVersion = "6.0.4"
 val springwebmvcpac4jVersion = "8.0.3"
 val mockkVersion = "1.14.11"
 val springmockkVersion = "5.0.1"
 val junitplatformVersion = "6.1.3"
-val h2DbVersion = "2.4.240"
+val h2DbVersion = "2.5.252"
 val commonsLang3Version = "3.18.0"
 
 plugins {
-    kotlin("jvm") version "2.4.10"
-    kotlin("plugin.spring") version "2.4.10"
-    kotlin("plugin.jpa") version "2.4.10"
+    kotlin("jvm") version "2.4.20"
+    kotlin("plugin.spring") version "2.4.20"
+    kotlin("plugin.jpa") version "2.4.20"
     id("org.springframework.boot") version "4.1.1"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.owasp.dependencycheck") version "13.0.0"
@@ -63,12 +63,12 @@ dependencies {
     implementation("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
     implementation("io.micrometer:micrometer-registry-prometheus:${prometeusVersion}")
 
-    implementation("org.hibernate.validator:hibernate-validator:9.1.3.Final")
+    implementation("org.hibernate.validator:hibernate-validator:9.1.4.Final")
     implementation("no.nav.security:token-validation-core")
     implementation("no.nav.security:token-validation-spring:$tokensupportVersion")
     implementation("no.nav.security:token-validation-jaxrs:$tokensupportVersion")
     implementation("no.nav.security:token-client-spring:$tokensupportVersion")
-    implementation("org.apache.commons:commons-lang3:3.20.0")
+    implementation("org.apache.commons:commons-lang3:3.21.0")
 
     // mock - test
     testImplementation("no.nav.security:token-validation-test-support:${tokensupporttestVersion}")
