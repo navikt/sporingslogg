@@ -31,7 +31,6 @@ internal class KafkaInnkommendeUGydligHendelseTest: KafkaTests(){
                 it.waitForlatch(kafkaLoggMeldingConsumer)
             }
 
-        //assertTrue(sjekkLoggingFinnes("Mottatt sporingsmelding kan ikke deserialiseres, må evt rettes og sendes inn på nytt."))
         assertTrue(sjekkLoggingFinnes("Mottatt sporingsmelding kan ikke valideres, må evt rettes og sendes inn på nytt. feil:"))
         assertEquals(0, loggTjeneste.hentAlleLoggInnslagForPerson(personIdent).size)
 

@@ -4,7 +4,6 @@ import jakarta.annotation.PostConstruct
 import no.nav.pensjon.domain.LoggMelding
 import no.nav.pensjon.metrics.MetricsHelper
 import no.nav.pensjon.tjeneste.LoggTjeneste
-import no.nav.pensjon.util.scrable
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -37,7 +36,7 @@ class LesController(
             val ident = tokenHelper.getPidFromToken()
 
             if (ident.length != 11) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Ugyldig ident")
-            log.debug("Henter ut pid : ${ident.scrable()}")
+            //log.debug("Henter ut pid : ${ident.scrable()}")
 
             return@measure loggTjeneste.hentAlleLoggInnslagForPerson(ident)
             .also { log.debug("resultat size: ${ it.size}") }

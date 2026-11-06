@@ -71,9 +71,9 @@ class KafkaLoggMeldingConsumer(
                 try {
                     val loggId = loggTjeneste.lagreLoggInnslag(LoggMelding.checkForAndEncode(loggMelding))
                     loggMelding.tema?.let { countEnhet(it) } //metrics from who. .
-                    val melding = "ID: $loggId, person: ${loggMelding.scramblePerson()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
+                    val melding = "ID: $loggId, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
                     log.info("Lagret melding med unik: $melding")
-                    log.debug("Loggelding lagret: TEMA: ${loggMelding.tema}, Grunnlag: ${loggMelding.behandlingsGrunnlag}, Mottaker: ${loggMelding.mottaker}, Leverandør: ${loggMelding.leverandoer}, Request: ${loggMelding.dataForespoersel}")
+                    log.debug("Loggelding lagret: TEMA: ${loggMelding.tema}, Grunnlag: ${loggMelding.behandlingsGrunnlag}, Mottaker: ${loggMelding.mottaker}, Leverandør: ${loggMelding.leverandoer}")
 
                     acknowledgment.acknowledge()
                     log.info("*** Acket, klar for neste loggmelding.. .")

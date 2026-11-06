@@ -43,12 +43,10 @@ internal class KafkaInnkommendeFlereHendelserTest: KafkaTests() {
             runTest.waitForlatch(kafkaLoggMeldingConsumer)
         }
 
-        //debugPrintLogging()
-
-        assertTrue(sjekkLoggingFinnes("Lagret melding med unik: ID: 1, person: 209033xxxxx, tema: PEN, mottaker: 938908909"))
+        assertTrue(sjekkLoggingFinnes("Lagret melding med unik: ID: 1, tema: PEN, mottaker: 938908909"))
         assertTrue(sjekkLoggingFinnes("Mottatt sporingsmelding kan ikke valideres, må evt rettes og sendes inn på nytt."))
-        assertTrue(sjekkLoggingFinnes("Lagret melding med unik: ID: 2, person: 174687xxxxx, tema: AAP, mottaker: 938908909"))
-        assertTrue(sjekkLoggingFinnes("Lagret melding med unik: ID: 3, person: 108053xxxxx, tema: PEN, mottaker: 123456789"))
+        assertTrue(sjekkLoggingFinnes("Lagret melding med unik: ID: 2, tema: AAP, mottaker: 938908909"))
+        assertTrue(sjekkLoggingFinnes("Lagret melding med unik: ID: 3, tema: PEN, mottaker: 123456789"))
         assertTrue(sjekkLoggingFinnes("Mottatt sporingsmelding kan ikke valideres, må evt rettes og sendes inn på nytt."))
         assertEquals(3, loggTjeneste.countAlleLogginnslag())
     }

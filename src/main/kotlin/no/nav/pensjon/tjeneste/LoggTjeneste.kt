@@ -7,7 +7,6 @@ import no.nav.pensjon.domain.LoggMelding
 import no.nav.pensjon.metrics.MetricsHelper
 import no.nav.pensjon.tjeneste.ValideringTjeneste.validerIkkeBlank
 import no.nav.pensjon.tjeneste.ValideringTjeneste.validerMaxLengde
-import no.nav.pensjon.util.scrable
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -35,7 +34,7 @@ class LoggTjeneste(
 
     fun lagreLoggInnslag(loggMelding: LoggMelding): Long {
         val loggInnslag = LoggInnslag.fromLoggMelding(loggMelding)
-        log.debug("Lagrer for person " + loggInnslag.person.scrable() + ", mottaker: " + loggInnslag.mottaker + ", tema: " + loggInnslag.tema)
+        log.debug("Lagrer for person *******, mottaker: ${loggInnslag.mottaker}. tema: ${loggInnslag.tema}")
 
         return validerOgLagre.measure {
 
