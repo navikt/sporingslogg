@@ -40,7 +40,7 @@ internal class KafkaInnkommendeGydligHendelseTest: KafkaTests() {
         assertEquals(1, loggInnslagList.size)
         val loggInnslag = loggInnslagList.first()
 
-        assertTrue(sjekkLoggingFinnes("Lagret melding med unik: ID: 1, person: 209033xxxxx, tema: PEN, mottaker: 938908909"))
+        assertTrue(sjekkLoggingFinnes("Lagret melding med unik: ID: 1, tema: PEN, mottaker: 938908909"))
         assertTrue(sjekkLoggingFinnes("*** Acket, klar for neste loggmelding.. ."))
         assertEquals(mockLoggMelding.tema, loggInnslag.tema)
         assertEquals(mockLoggMelding.mottaker, loggInnslag.mottaker)

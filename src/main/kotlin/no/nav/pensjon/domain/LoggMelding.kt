@@ -3,7 +3,6 @@ package no.nav.pensjon.domain
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import no.nav.pensjon.util.fromJson2Any
-import no.nav.pensjon.util.scrable
 import no.nav.pensjon.util.typeRefs
 import java.time.LocalDateTime
 import java.util.*
@@ -25,10 +24,8 @@ data class LoggMelding(
     val leverandoer: String?
 ) {
 
-    fun scramblePerson() = person.scrable()
-
     override fun toString(): String {
-        return "LoggMelding [person=${person.scrable()}, mottaker=$mottaker, tema=$tema, behandlingsGrunnlag=$behandlingsGrunnlag, " +
+        return "LoggMelding [person=*******, mottaker=$mottaker, tema=$tema, behandlingsGrunnlag=$behandlingsGrunnlag, " +
                 "uthentingsTidspunkt=$uthentingsTidspunkt, leverteData=$leverteData, samtykkeToken=$samtykkeToken, dataForespoersel=$dataForespoersel, " +
                 "leverandoer=$leverandoer]"
     }

@@ -1,15 +1,6 @@
 package no.nav.pensjon.domain
 
-import jakarta.persistence.Column
-import jakarta.persistence.Convert
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.Lob
-import jakarta.persistence.SequenceGenerator
-import jakarta.persistence.Table
-import no.nav.pensjon.util.scrable
+import jakarta.persistence.*
 import java.time.LocalDateTime
 
 
@@ -56,7 +47,7 @@ open class LoggInnslag(
     )  {
 
     override fun toString(): String {
-        return "LoggInnslag [id=$id, person=${person.scrable()}, mottaker=$mottaker, tema=$tema, hjemmel=$hjemmel, " +
+        return "LoggInnslag [id=$id, person=******, mottaker=$mottaker, tema=$tema, hjemmel=$hjemmel, " +
                 "uthentingsTidspunkt=$uthentingsTidspunkt, leverteData=$leverteData, samtykkeToken=$samtykkeToken, dataForespoersel=$foresporsel, " +
                 "leverandoer=$leverandor]"
     }

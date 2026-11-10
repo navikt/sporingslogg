@@ -6,7 +6,6 @@ import no.nav.pensjon.controller.LoggMeldingValidator.validateRequestAsResponseR
 import no.nav.pensjon.domain.LoggMelding
 import no.nav.pensjon.metrics.MetricsHelper
 import no.nav.pensjon.tjeneste.LoggTjeneste
-import no.nav.pensjon.util.scrable
 import no.nav.security.token.support.core.api.Protected
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
@@ -43,10 +42,10 @@ class PostController(
             validateRequestAsResponseRequestExcption(trimmedRequest) //viktig må være først
             val loggMelding = LoggMelding.checkForAndEncode(trimmedRequest) //Check for base64 encode if plain text
 
-            log.info("Følgende medling kommet inn: ${loggMelding.tema}, ident: ${tokenHelper.getSystemUserOrEntraId()}")
+            log.debug("Følgende medling kommet inn: ${loggMelding.tema}, ident: ${tokenHelper.getSystemUserOrEntraId()}")
 
             val loggId = loggTjeneste.lagreLoggInnslag(loggMelding)
-            val meldingid = "ID: $loggId, person: ${loggMelding.person.scrable()}, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
+            val meldingid = "ID: $loggId, tema: ${loggMelding.tema}, mottaker: ${loggMelding.mottaker}"
 
             log.info("Lagret melding: $meldingid")
 
