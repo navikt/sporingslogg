@@ -25,4 +25,7 @@ interface LoggRepository: JpaRepository<LoggInnslag, Long> {
     @Query(value = "from LoggInnslag as l where l.person like CONCAT(:personIdent, '%%')" )
     fun finnAllePersonStarterMed(@Param("personIdent") personIdent: String): List<LoggInnslag>
 
+    @Query("select l.tema, count(l), count(l.samtykkeToken) from LoggInnslag as l group by l.tema")
+    fun tellPerTema(): List<Array<Any>>
+
 }
