@@ -3,18 +3,18 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 val springkafkaVersion="4.0.1"
 val prometeusVersion= "1.17.2"
-val jacksonkotlinVersion= "2.22.4"
+val jacksonkotlinVersion= "2.23.0"
 val slf4jVersion= "2.0.20"
 val logstashlogbackVersion="9.0"
 val tokensupportVersion = "6.0.12"
 val tokensupporttestVersion = "2.0.5"
 val oracle11Version="23.26.4.0.0"
-val hibernateCoreVersion = "7.4.14.Final"
+val hibernateCoreVersion = "7.4.15.Final"
 val jakartaAnnotationApiVersion = "3.0.0"
 val jakartaInjectApiVersion = "2.0.1"
-val mockOAuth2ServerVersion = "6.1.4"
+val mockOAuth2ServerVersion = "6.1.5"
 val springwebmvcpac4jVersion = "8.0.4"
-val mockkVersion = "1.14.11"
+val mockkVersion = "1.14.12"
 val springmockkVersion = "5.0.1"
 val junitplatformVersion = "6.1.3"
 val h2DbVersion = "2.5.252"
@@ -63,12 +63,12 @@ dependencies {
     implementation("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
     implementation("io.micrometer:micrometer-registry-prometheus:${prometeusVersion}")
 
-    implementation("org.hibernate.validator:hibernate-validator:9.1.5.Final")
+    implementation("org.hibernate.validator:hibernate-validator:9.1.6.Final")
     implementation("no.nav.security:token-validation-core")
     implementation("no.nav.security:token-validation-spring:$tokensupportVersion")
     implementation("no.nav.security:token-validation-jaxrs:$tokensupportVersion")
     implementation("no.nav.security:token-client-spring:$tokensupportVersion")
-    implementation("org.apache.commons:commons-lang3:3.21.0")
+    implementation("org.apache.commons:commons-lang3:3.22.0")
 
     // mock - test
     testImplementation("no.nav.security:token-validation-test-support:${tokensupporttestVersion}")
