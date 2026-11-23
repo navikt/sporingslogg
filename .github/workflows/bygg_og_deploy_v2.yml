@@ -46,7 +46,7 @@ jobs:
           reporter: java-junit
 
       - name: Nais docker-build
-        uses: nais/docker-build-push@v0
+        uses: nais/docker-build-push@v1
         id: docker-push
         with:
           team: pensjonsamhandling
